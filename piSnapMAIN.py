@@ -10,21 +10,11 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         super().__init__() #now start drawing the GUI
         self.initUI()
     def initUI(self):
-        self.setGeometry(100, 100, 400, 300)
         self.setWindowTitle('PiSnap!')
         self.makeMenu() # run makemenu method
         self.addMainWidgets()
-        self.cw = qtw.QWidget()
-        self.setCentralWidget(self.cw)
-        self.vlayout = qtw.QVBoxLayout()
-        self.cw.setLayout(self.vlayout)
-        self.st = qtw.QTabWidget()
-        self.qualityTab = QualityTab()
-        self.st.addTab(self.qualityTab,"Quality")
-        self.vlayout.addWidget(self.st)
-    
-
         self.show()
+
     def makeMenu(self): #create menu
         #create actions for file menu
         vwopen = qtw.QAction('&Open', self)
@@ -63,17 +53,34 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
     #def makeStatusBar(self): #create status bar
         #self.qtw.SetStatusBar(QStatusBar(self))
         
-        self.addWidget()
-        
-    def addWidget(parent):
-       label = qtw.QLabel('This is a label',parent)
-       label.setGeometry(200,200,200,200)
     def doSave(self):
         print('Save code here')
     def doSaveAs(self):
         print('Save As code here')
     def addMainWidgets(self):
-        print('add main widgets')
+        #set a central widget
+        self.centralWidget = qtw.QWidget()
+        self.setCentralWidget(self.centralWidget)
+        #define some layouts
+        self.vlayout = qtw.QVBoxLayout()
+        self.hlayout = qtw.QHBoxLayout()
+        #set the horizontal layout as the central widget
+        self.centralWidget.setLayout(self.hlayout)
+        #add the vertical layout to the horizontal layout
+        self.hlayout.addLayout(self.vlayout)
+        #make a dummy widget
+        self.dummy = qtw.QPlainTextEdit()
+        self.dummy.setStyleSheet("background-color: green;")
+        #add the dummy widget to the horizontal layout
+        self.hlayout.addWidget(self.dummy)
+        #now add the stuff for the vertical layout
+        self.settingsWidget = qtw.QTabWidget()
+        self.qualityTab = QualityTab()
+        self.settingsWidget.addTab(self.qualityTab,"Quality")
+        self.vlayout.addWidget(self.settingsWidget)
+        self.terminalWidget = qtw.QPlainTextEdit()
+        self.vlayout.addWidget(self.terminalWidget)
+        self.terminalWidget.setStyleSheet("background-color: black; color: SpringGreen; font-weight: bold")
     
 
 #end of class
