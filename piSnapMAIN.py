@@ -3,6 +3,7 @@ import sys
 from PyQt5 import QtWidgets as qtw 
 from PyQt5 import QtGui as qtg 
 from PyQt5 import QtCore as qtc 
+from qualityTabMAIN import QualityTab
 
 class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
     def __init__(self):  #first initialize the super class QWidget
@@ -18,8 +19,10 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.vlayout = qtw.QVBoxLayout()
         self.cw.setLayout(self.vlayout)
         self.st = qtw.QTabWidget()
-
-
+        self.qualityTab = QualityTab()
+        self.st.addTab(self.qualityTab,"Quality")
+        self.vlayout.addWidget(self.st)
+    
 
         self.show()
     def makeMenu(self): #create menu
