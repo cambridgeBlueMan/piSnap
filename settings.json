@@ -1,0 +1,91 @@
+{
+    "analog_gain": 0,
+    "annotate_background": null,
+    "annotate_frame_num": false,
+    "annotate_text_size": 32,
+    "awb_gains": [
+        0,
+        0
+    ],
+    "awb_mode": "auto",
+    "brightness": 80,
+    "clock_mode": "reset",
+    "closed": false,
+    "color_effects": [128, 128],
+    "contrast": -6,
+    "crop": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+    ],
+    "digital_gain": 0,
+    "drc_strength": "off",
+    "exposure_compensation": 8,
+    "exposure_mode": "antishake",
+    "exposure_speed": 0,
+    "flash_mode": "redeye",
+    "framerate": [
+        30,
+        1
+    ],
+    "hflip": false,
+    "image_denoise": true,
+    "image_effect": "emboss",
+    "image_effect_params": null,
+    "iso": 0,
+    "meter_mode": "average",
+    "overlays": [],
+    "preview": null,
+    "preview_alpha": 255,
+    "preview_fullscreen": true,
+    "preview_layer": 2,
+    "preview_window": null,
+    "previewing": false,
+    "raw_format": "yuv",
+    "recording": false,
+    "resolution": [
+        920,
+        1080
+    ],
+    "rotation": 0,
+    "saturation": 100,
+    "sensor_mode": 0,
+    "sharpness": 100,
+    "shutter_speed": 0,
+    "still_stats": false,
+    "vflip": false,
+    "video_denoise": true,
+    "video_stabilization": false,
+    "zoom": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+    ],
+    "stillFileRoot": "img_",
+    "vidFileRoot": "vid_",
+    "stillFormat": "jpeg",
+    "videoFormat": "h264",
+    "fileCounter": 46,
+    "vidres": [
+        1600,
+        900
+    ],
+    "imgres": [
+        1600,
+        1200
+    ],
+    "zStartX": 25,
+    "zStartY": 36,
+    "zStartWidth": 23,
+    "zStartHeight": 37,
+    "zEndX": 0,
+    "zEndY": 0,
+    "zEndWidth": 0,
+    "zEndHeight": 0,
+    "zoomX": 0,
+    "zoomY": 0,
+    "zoomWidth": 0,
+    "zoomHeight": 0
+}

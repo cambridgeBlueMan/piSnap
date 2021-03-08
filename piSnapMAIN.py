@@ -3,16 +3,30 @@ import sys
 from PyQt5 import QtWidgets as qtw 
 from PyQt5 import QtGui as qtg 
 from PyQt5 import QtCore as qtc 
+
 from qualityTabMAIN import QualityTab
+from cameraSettings import CameraSettings
+from picamera import PiCamera
 
 class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
     def __init__(self):  #first initialize the super class QWidget
-        super().__init__() #now start drawing the GUI
+        super().__init__() 
+        # get the settings
+        self.camera = PiCamera()
+        # pass the main window and camera objects to a settings object
+        self.settings = CameraSettings(self, self.camera)
+        #now start drawing the GUI
         self.initUI()
+        
+
     def initUI(self):
         self.setWindowTitle('PiSnap!')
         self.makeMenu() # run makemenu method
         self.addMainWidgets()
+<<<<<<< HEAD
+        
+=======
+>>>>>>> 4cbec87cd340a75229375a55d36a9435e9589dbd
         self.show()
 
     def makeMenu(self): #create menu
@@ -50,14 +64,49 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         edit_menu.addAction(preferences)
         edit_menu.addAction(undo)
         undo.setShortcut('Ctrl+Z')
-    #def makeStatusBar(self): #create status bar
+        #def makeStatusBar(self): #create status bar
         #self.qtw.SetStatusBar(QStatusBar(self))
+<<<<<<< HEAD
+
+=======
         
+>>>>>>> 4cbec87cd340a75229375a55d36a9435e9589dbd
     def doSave(self):
         print('Save code here')
+
     def doSaveAs(self):
         print('Save As code here')
+
     def addMainWidgets(self):
+<<<<<<< HEAD
+        # set a central widget
+        self.centralWidget = qtw.QWidget()
+        self.setCentralWidget(self.centralWidget)
+        # define some layouts
+        self.hlayout = qtw.QHBoxLayout()
+        self.vlayout = qtw.QVBoxLayout()
+        # set the horizontal layout as the central widget
+        self.centralWidget.setLayout(self.hlayout)
+        # add the vertical layout to the horizontal layout
+        self.hlayout.addLayout(self.vlayout)
+        # make a dummy widget
+        self.dummy = qtw.QPlainTextEdit()
+        self.dummy.setStyleSheet("background-color:green;")
+        # add the dummy widget to the horizontal layout
+        self.hlayout.addWidget(self.dummy)
+        # now add the stuff to the vertical layout
+        self.settingsWidget = qtw.QTabWidget()
+        # make a quality tab widget 
+        self.qualityTab = QualityTab()
+        # now register it to the settings class
+        self.settings.registerWidget(self.qualityTab)
+        
+        self.settingsWidget.addTab(self.qualityTab,"Quality")
+        self.terminalWidget = qtw.QPlainTextEdit()
+        self.terminalWidget.setStyleSheet("background-color:black;color:SpringGreen;")
+        self.vlayout.addWidget(self.settingsWidget)
+        self.vlayout.addWidget(self.terminalWidget)
+=======
         #set a central widget
         self.centralWidget = qtw.QWidget()
         self.setCentralWidget(self.centralWidget)
@@ -81,6 +130,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.terminalWidget = qtw.QPlainTextEdit()
         self.vlayout.addWidget(self.terminalWidget)
         self.terminalWidget.setStyleSheet("background-color: black; color: SpringGreen; font-weight: bold")
+>>>>>>> 4cbec87cd340a75229375a55d36a9435e9589dbd
     
 
 #end of class
