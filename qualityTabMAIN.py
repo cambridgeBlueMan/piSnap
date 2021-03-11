@@ -5,6 +5,8 @@ from PyQt5 import QtWidgets as qtw
 # insert appropriate names here
 from qualityTab import Ui_Form
 #
+from cameraSettings import CameraSettings
+
 from picamera import PiCamera
 from time import sleep
 import sys
@@ -15,11 +17,15 @@ for your containing window: main window, dialog box etc)
 """
 class QualityTab(qtw.QWidget):
 
-    def __init__(self):
+    def __init__(self, camvals):
         super().__init__()
         # Ui_Form is the main designer generated class. so instantiate one. Precede the variable name with
         # the word 'self'
-        
+        if camvals == None:
+            self.camvals = {}
+        else:
+            self.camvals = camvals
+        #print(camvals)
         self.ui = Ui_Form()
         # now pass the main window object to it so that the setupUi method can draw all
         # the widgets into the window
@@ -27,6 +33,7 @@ class QualityTab(qtw.QWidget):
         self.ui.setupUi(self)
 
         self.finishUi(self)
+        self.applySettings()
         """
         self.show()
         # now instantiate a camera object. Again the variable name is preceded by the word 'self'
@@ -56,27 +63,40 @@ class QualityTab(qtw.QWidget):
         args[0].ui.videoBitRate.addItems(["0", "17000000"])
         args[0].ui.videoQuality.addItems(["10", "20", "25", "30", "35", "40"])
 
+    def applySettings(self):
+        #for each key in the settings dictionery 
+        for key in self.camvals:
+        #check if widget with the same name exists in the GUI
+            if hasattr(self.ui,key):
+                #pass
+                print(getattr(self.ui,key))
+                if type(getattr(self.ui, key)) == qtw.QComboBox:
+                    self.ui.audioBitRate.setCurrentText(str(self.camvals["audioBitRate"]))
+                    self.ui.videoQuality.setCurrentText(str(self.camvals["videoQuality"]))
+                #elif  type(getattr(self.ui, key)) == qtw.QCheckBox:
+                    
 
+        
         
     def setAudioBitRate(self):
-        print(self)
+        pass #print(self)
         
     def setAudioSampleRate(self):
-        print(self)
+        pass #print(self)
 
     def setAudioFileFormat(self):
-        print(self)
+        pass #print(self)
 
     def doMux(self):
-        print(self)
+        pass #print(self)
 
     def isAudioActive(self):
-        print(self)
+        pass #print(self)
 
     def setVideoBitRate(self):
-        print(self)
+        pass #print(self)
     def setVideoQuality(self):
-        print(self)
+        pass #print(self)
  
 
 #######################################################################################
@@ -86,8 +106,12 @@ if __name__ == "__main__":
     import sys
     # instiantiate an app object from the QApplication class 
     app = qtw.QApplication(sys.argv)
+    # get the settings
+    camera = PiCamera()
+        # pass the main window and camera objects to a settings object
+    # settings = CameraSettings(camera)
     # instantiate an object containing the logic code
-    qualityTab = QualityTab()
+    qualityTab = QualityTab(None)
     qualityTab.show()
     sys.exit(app.exec_())
 

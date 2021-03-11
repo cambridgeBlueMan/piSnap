@@ -3,6 +3,7 @@
     "annotate_background": null,
     "annotate_frame_num": false,
     "annotate_text_size": 32,
+    "audioBitRate": 16,
     "awb_gains": [
         0,
         0
@@ -56,6 +57,7 @@
     "still_stats": false,
     "vflip": false,
     "video_denoise": true,
+    "videoQuality": 20,
     "video_stabilization": false,
     "zoom": [
         0.0,

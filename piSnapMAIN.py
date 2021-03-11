@@ -23,7 +23,6 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.setWindowTitle('PiSnap!')
         self.makeMenu() # run makemenu method
         self.addMainWidgets()
-        
         self.show()
 
     def makeMenu(self): #create menu
@@ -64,7 +63,6 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         #def makeStatusBar(self): #create status bar
         #self.qtw.SetStatusBar(QStatusBar(self))
 
-        
     def doSave(self):
         print('Save code here')
 
@@ -88,19 +86,21 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         # add the dummy widget to the horizontal layout
         self.hlayout.addWidget(self.dummy)
         # now add the stuff to the vertical layout
-        #first make the settings QTabwidget
+        # first make the settings QTab widget
         self.settingsWidget = qtw.QTabWidget()
-        # make a quality tab widget 
-        self.qualityTab = QualityTab()
+        # make a quality tab widget, and pass the settings dictionary to it
+        self.qualityTab = QualityTab(self.settings.camvals)
         # now register it to the settings class
         self.settings.registerWidget(self.qualityTab)
-        #now add it to the tab
+        # now add it to the tab
         self.settingsWidget.addTab(self.qualityTab,"Quality")
-        #now make an ad the terminalwindow
+        # now make and add ththe terminal window
         self.terminalWidget = qtw.QPlainTextEdit()
         self.terminalWidget.setStyleSheet("background-color:black;color:SpringGreen;")
         self.vlayout.addWidget(self.settingsWidget)
         self.vlayout.addWidget(self.terminalWidget)
+   
+
 #end of class
 
     #run the program
@@ -108,5 +108,4 @@ if __name__=='__main__':
     app = qtw.QApplication(sys.argv)
     window = PiSnap()
     sys.exit(app.exec_())
-
 

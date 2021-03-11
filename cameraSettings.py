@@ -6,8 +6,8 @@ class CameraSettings():
         with open("settings.json", "r") as settings:
             self.camvals = json.load(settings)
             #print(self.camvals)
-            print(win)
-            print(camera)
+            #print(win)
+            #print(camera)
             self.widgetList = []
 
     def registerWidget(self, widg):
