@@ -23,7 +23,6 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.setWindowTitle('PiSnap!')
         self.makeMenu() # run makemenu method
         self.addMainWidgets()
-        
         self.show()
 
     def makeMenu(self): #create menu
@@ -64,7 +63,6 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         #def makeStatusBar(self): #create status bar
         #self.qtw.SetStatusBar(QStatusBar(self))
 
-        
     def doSave(self):
         print('Save code here')
 
@@ -101,6 +99,8 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.terminalWidget.setStyleSheet("background-color:black;color:SpringGreen;")
         self.vlayout.addWidget(self.settingsWidget)
         self.vlayout.addWidget(self.terminalWidget)
+   
+
 #end of class
 
     #run the program
