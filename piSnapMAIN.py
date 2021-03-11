@@ -23,6 +23,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.setWindowTitle('PiSnap!')
         self.makeMenu() # run makemenu method
         self.addMainWidgets()
+        self.setWidgetSizes()
         self.show()
 
     def makeMenu(self): #create menu
@@ -99,11 +100,16 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.terminalWidget.setStyleSheet("background-color:black;color:SpringGreen;")
         self.vlayout.addWidget(self.settingsWidget)
         self.vlayout.addWidget(self.terminalWidget)
-   
+    def setWidgetSizes(self):
+        self.settingsWidget.setMinimumHeight(750)
+        self.settingsWidget.setMinimumWidth(400)
+        self.dummy.setMinimumWidth(1300)
+        self.terminalWidget.setMinimumHeight(200)
+    
 
-#end of class
+    #end of class
 
-    #run the program
+#run the program
 if __name__=='__main__':
     app = qtw.QApplication(sys.argv)
     window = PiSnap()
