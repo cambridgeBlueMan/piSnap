@@ -1,94 +1,93 @@
-# -*- coding: utf-8 -*-
+from PyQt5 import QtCore as qtc
+from PyQt5 import QtGui as qtg 
+from PyQt5 import QtWidgets as qtw
 
-# Form implementation generated from reading ui file 'qualityTab.ui'
+# insert appropriate names here
+from qualityTab import Ui_Form
 #
-# Created by: PyQt5 UI code generator 5.11.3
-#
-# WARNING! All changes made in this file will be lost!
+from cameraSettings import CameraSettings
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from picamera import PiCamera
+from time import sleep
+import sys
+import datetime
+import json
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(525, 503)
-        self.groupBox = QtWidgets.QGroupBox(Form)
-        self.groupBox.setGeometry(QtCore.QRect(60, 40, 241, 171))
-        self.groupBox.setObjectName("groupBox")
-        self.formLayoutWidget = QtWidgets.QWidget(self.groupBox)
-        self.formLayoutWidget.setGeometry(QtCore.QRect(10, 30, 239, 181))
-        self.formLayoutWidget.setObjectName("formLayoutWidget")
-        self.formLayout = QtWidgets.QFormLayout(self.formLayoutWidget)
-        self.formLayout.setContentsMargins(0, 0, 0, 0)
-        self.formLayout.setObjectName("formLayout")
-        self.label = QtWidgets.QLabel(self.formLayoutWidget)
-        self.label.setObjectName("label")
-        self.formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label)
-        self.label_2 = QtWidgets.QLabel(self.formLayoutWidget)
-        self.label_2.setObjectName("label_2")
-        self.formLayout.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.label_2)
-        self.label_3 = QtWidgets.QLabel(self.formLayoutWidget)
-        self.label_3.setObjectName("label_3")
-        self.formLayout.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.label_3)
-        self.audioBitRate = QtWidgets.QComboBox(self.formLayoutWidget)
-        self.audioBitRate.setObjectName("audioBitRate")
-        self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.audioBitRate)
-        self.audioSampleRate = QtWidgets.QComboBox(self.formLayoutWidget)
-        self.audioSampleRate.setObjectName("audioSampleRate")
-        self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.audioSampleRate)
-        self.audioFileFormat = QtWidgets.QComboBox(self.formLayoutWidget)
-        self.audioFileFormat.setObjectName("audioFileFormat")
-        self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.audioFileFormat)
-        self.mux = QtWidgets.QCheckBox(self.formLayoutWidget)
-        self.mux.setChecked(True)
-        self.mux.setObjectName("mux")
-        self.formLayout.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.mux)
-        self.groupBox_2 = QtWidgets.QGroupBox(Form)
-        self.groupBox_2.setGeometry(QtCore.QRect(50, 250, 211, 211))
-        self.groupBox_2.setObjectName("groupBox_2")
-        self.formLayoutWidget_2 = QtWidgets.QWidget(self.groupBox_2)
-        self.formLayoutWidget_2.setGeometry(QtCore.QRect(20, 30, 160, 80))
-        self.formLayoutWidget_2.setObjectName("formLayoutWidget_2")
-        self.formLayout_2 = QtWidgets.QFormLayout(self.formLayoutWidget_2)
-        self.formLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.formLayout_2.setObjectName("formLayout_2")
-        self.label_4 = QtWidgets.QLabel(self.formLayoutWidget_2)
-        self.label_4.setObjectName("label_4")
-        self.formLayout_2.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_4)
-        self.videoBitRate = QtWidgets.QComboBox(self.formLayoutWidget_2)
-        self.videoBitRate.setObjectName("videoBitRate")
-        self.formLayout_2.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.videoBitRate)
-        self.label_5 = QtWidgets.QLabel(self.formLayoutWidget_2)
-        self.label_5.setObjectName("label_5")
-        self.formLayout_2.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.label_5)
-        self.videoQuality = QtWidgets.QComboBox(self.formLayoutWidget_2)
-        self.videoQuality.setObjectName("videoQuality")
-        self.formLayout_2.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.videoQuality)
-        self.audioActive = QtWidgets.QCheckBox(Form)
-        self.audioActive.setGeometry(QtCore.QRect(70, 210, 141, 27))
-        self.audioActive.setObjectName("audioActive")
+class QualityTab(qtw.QWidget):
 
-        self.retranslateUi(Form)
-        self.audioBitRate.currentIndexChanged['int'].connect(Form.setAudioBitRate)
-        self.audioSampleRate.currentIndexChanged['int'].connect(Form.setAudioSampleRate)
-        self.audioFileFormat.currentIndexChanged['int'].connect(Form.setAudioFileFormat)
-        self.mux.clicked['bool'].connect(Form.doMux)
-        self.videoBitRate.currentIndexChanged['int'].connect(Form.setVideoBitRate)
-        self.videoQuality.currentIndexChanged['int'].connect(Form.setVideoQuality)
-        self.mux.clicked['bool'].connect(Form.doMux)
-        self.audioActive.clicked['bool'].connect(Form.isAudioActive)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+    def __init__(self, camvals):
+        super().__init__()
+        # camvals = None means we are running the code as stand alone
+        # so we need to load the settings file
+        if camvals == None:
+            with open("settings.json", "r") as settings:
+                self.camvals = json.load(settings)
+        else:
+            self.camvals = camvals
+        self.ui = Ui_Form()
+        self.ui.setupUi(self)
+        # add combo box items
+        self.finishUi(self)
+        
+        self.applySettings()
 
-    def retranslateUi(self, Form):
-        _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
-        self.groupBox.setTitle(_translate("Form", "audio"))
-        self.label.setText(_translate("Form", "bit rate"))
-        self.label_2.setText(_translate("Form", "sample rate"))
-        self.label_3.setText(_translate("Form", "file format"))
-        self.mux.setText(_translate("Form", "mux after record"))
-        self.groupBox_2.setTitle(_translate("Form", "video"))
-        self.label_4.setText(_translate("Form", "bit rate"))
-        self.label_5.setText(_translate("Form", "Quality"))
-        self.audioActive.setText(_translate("Form", "audio is active"))
+    def finishUi(*args):
+        args[0].ui.audioBitRate.addItems(["16", "24"])
+        args[0].ui.audioSampleRate.addItems(["44.1kz", "48kz"])
+        args[0].ui.audioFileFormat.addItems(["wav", "aiff"])
+        args[0].ui.videoBitRate.addItems(["0", "17000000"])
+        args[0].ui.videoQuality.addItems(["10", "20", "25", "30", "35", "40"])
+
+    def applySettings(self):
+        #for each key in the settings dictionery 
+        for key in self.camvals:
+        #check if widget with the same name exists in the GUI
+            if hasattr(self.ui,key):
+                #pass
+                print(getattr(self.ui,key))
+                if type(getattr(self.ui, key)) == qtw.QComboBox:
+                    self.ui.audioBitRate.setCurrentText(str(self.camvals["audioBitRate"]))
+                    self.ui.videoQuality.setCurrentText(str(self.camvals["videoQuality"]))
+                #elif  type(getattr(self.ui, key)) == qtw.QCheckBox:
+                    
+
+        
+        
+    def setAudioBitRate(self):
+        pass #print(self)
+        
+    def setAudioSampleRate(self):
+        pass #print(self)
+
+    def setAudioFileFormat(self):
+        pass #print(self)
+
+    def doMux(self):
+        pass #print(self)
+
+    def isAudioActive(self):
+        pass #print(self)
+
+    def setVideoBitRate(self):
+        pass #print(self)
+    def setVideoQuality(self):
+        pass #print(self)
+ 
+
+#######################################################################################
+    #                           END OF CLASS
+#######################################################################################
+if __name__ == "__main__":
+    import sys
+    # instiantiate an app object from the QApplication class 
+    app = qtw.QApplication(sys.argv)
+    # get the settings
+    camera = PiCamera()
+        # pass the main window and camera objects to a settings object
+    # settings = CameraSettings(camera)
+    # instantiate an object containing the logic code
+    qualityTab = QualityTab(None)
+    qualityTab.show()
+    sys.exit(app.exec_())
+
 

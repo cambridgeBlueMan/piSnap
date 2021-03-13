@@ -5,14 +5,16 @@ from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc 
 
 from qualityTabMAIN import QualityTab
+from cameraAppMAIN import MainWindow
 from cameraSettings import CameraSettings
-from picamera import PiCamera
+from myCamera import MyCamera
+#from picamera import PiCamera
 
 class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
     def __init__(self):  #first initialize the super class QWidget
         super().__init__() 
         # get the settings
-        self.camera = PiCamera()
+        self.camera = MyCamera(self)
         # pass the main window and camera objects to a settings object
         self.settings = CameraSettings(self, self.camera)
         #now start drawing the GUI
@@ -81,11 +83,16 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.centralWidget.setLayout(self.hlayout)
         # add the vertical layout to the horizontal layout
         self.hlayout.addLayout(self.vlayout)
-        # make a dummy widget
+
+        """ # make a dummy widget
         self.dummy = qtw.QPlainTextEdit()
         self.dummy.setStyleSheet("background-color:green;")
         # add the dummy widget to the horizontal layout
         self.hlayout.addWidget(self.dummy)
+
+         """
+        self.mainWidget = MainWindow(self.settings.camvals)
+        self.hLayout.addWidget(mainWidget)
         # now add the stuff to the vertical layout
         # first make the settings QTab widget
         self.settingsWidget = qtw.QTabWidget()
