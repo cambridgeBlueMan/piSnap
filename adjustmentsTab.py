@@ -14,7 +14,7 @@ import json
 
 class Adjustments(qtw.QWidget):
 
-    def __init__(self, camvals, camera):
+    def __init__(self,camvals, camera):
         super().__init__()
         # camvals = None means we are running the code as stand alone
         # so we need to load the settings file
@@ -26,8 +26,6 @@ class Adjustments(qtw.QWidget):
         self.camera = camera
         self.ui = Ui_adjustments()
         self.ui.setupUi(self)
-
-
         
         self.ui.sharpness.setRanges(-100,100,self.camera.sharpness)
         #print(type(self.ui.contrast))
