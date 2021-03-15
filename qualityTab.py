@@ -42,8 +42,12 @@ class QualityTab(qtw.QWidget):
     def applySettings(self):
         #for each key in the settings dictionery 
         self.ui.audioBitRate.setCurrentText(str(self.camvals["audioBitRate"]))
+        self.ui.audioSampleRate.setCurrentText(str(self.camvals["audioSampleRate"]))
+        self.ui.audioFileFormat.setCurrentText(str(self.camvals["audioFileFormat"]))
+        self.ui.videoBitRate.setCurrentText(str(self.camvals["videoBitRate"]))                
         self.ui.videoQuality.setCurrentText(str(self.camvals["videoQuality"]))
-        self.ui.audioFileFormat.setCurrentText(str(self.camvals["audioFileFormat"]))                
+        self.ui.mux.setChecked(self.camvals["mux"])
+        self.ui.audioActive.setChecked(self.camvals["audioActive"])
 
         
         
