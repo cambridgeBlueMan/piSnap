@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1163</width>
+    <height>804</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QTabWidget" name="captureTab">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>650</y>
+     <width>801</width>
+     <height>111</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <widget class="QWidget" name="still">
+    <attribute name="title">
+     <string>Still</string>
+    </attribute>
+    <widget class="QPushButton" name="snapHold">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>99</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Snap/Save</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="snapSave">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>20</y>
+       <width>99</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Snap/Hold</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="isCounter">
+     <property name="geometry">
+      <rect>
+       <x>620</x>
+       <y>20</y>
+       <width>119</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Counter </string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="isDatestamp">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>20</y>
+       <width>119</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Datestamp</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="formLayoutWidget_3">
+     <property name="geometry">
+      <rect>
+       <x>270</x>
+       <y>20</y>
+       <width>160</width>
+       <height>34</height>
+      </rect>
+     </property>
+     <layout class="QFormLayout" name="formLayout_4">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_15">
+        <property name="text">
+         <string>File root</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="fileRoot">
+        <property name="text">
+         <string>img_</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="video">
+    <attribute name="title">
+     <string>Video</string>
+    </attribute>
+    <widget class="QSlider" name="vidPosSlider">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>30</y>
+       <width>571</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="maximum">
+      <number>1000</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QWidget" name="horizontalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>196</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QPushButton" name="startRecordVid">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="resource.qrc">
+          <normaloff>:/icons/icons/media-record.png</normaloff>:/icons/icons/media-record.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="playVid">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="resource.qrc">
+          <normaloff>:/icons/icons/media-playback-start.png</normaloff>:/icons/icons/media-playback-start.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="stopVid">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="resource.qrc">
+          <normaloff>:/icons/icons/media-playback-stop.png</normaloff>:/icons/icons/media-playback-stop.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pauseVid">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="resource.qrc">
+          <normaloff>:/icons/icons/media-playback-pause.png</normaloff>:/icons/icons/media-playback-pause.png</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QListWidget" name="thumbnails">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>10</y>
+     <width>140</width>
+     <height>601</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+     <italic>true</italic>
+    </font>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>128</width>
+     <height>96</height>
+    </size>
+   </property>
+   <property name="viewMode">
+    <enum>QListView::IconMode</enum>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QSlider" name="resizePreview">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>620</y>
+     <width>591</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="previewVisible">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>620</y>
+     <width>101</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Preview</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="imgContainer">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>10</y>
+     <width>800</width>
+     <height>600</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+ </widget>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>thumbnails</sender>
+   <signal>itemDoubleClicked(QListWidgetItem*)</signal>
+   <receiver>Form</receiver>
+   <slot>doThumbnailClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>516</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>10</x>
+     <y>522</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>stopVid</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>doStopVid()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>724</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>31</x>
+     <y>693</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>startRecordVid</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>doRecordVid()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>205</x>
+     <y>735</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>45</x>
+     <y>737</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>resizePreview</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>Form</receiver>
+   <slot>setPreviewSize(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>359</x>
+     <y>628</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>141</x>
+     <y>619</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>vidPosSlider</sender>
+   <signal>sliderMoved(int)</signal>
+   <receiver>Form</receiver>
+   <slot>setPosition(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>425</x>
+     <y>721</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>119</x>
+     <y>704</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>snapSave</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>snapAndHold()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>343</x>
+     <y>718</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>27</x>
+     <y>677</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>snapHold</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>snapAndSave()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>225</x>
+     <y>723</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>46</x>
+     <y>722</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>previewVisible</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>showPreview()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>197</x>
+     <y>639</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>98</x>
+     <y>647</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>playVid</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>doPlayVid()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>270</x>
+     <y>730</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>110</x>
+     <y>749</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pauseVid</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>doPauseVid()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>381</x>
+     <y>723</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>971</x>
+     <y>627</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>isDatestamp</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>isDateStamp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>703</x>
+     <y>719</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>119</x>
+     <y>743</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>isCounter</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>isCounter()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>853</x>
+     <y>720</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>124</x>
+     <y>683</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>fileRoot</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>Form</receiver>
+   <slot>setFileRoot(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>574</x>
+     <y>719</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>154</x>
+     <y>688</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>captureTab</sender>
+   <signal>currentChanged(int)</signal>
+   <receiver>Form</receiver>
+   <slot>setCaptureMode(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>302</x>
+     <y>663</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>154</x>
+     <y>754</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>setPosition(int)</slot>
+  <slot>doThumbnailClicked()</slot>
+  <slot>doStopVid()</slot>
+  <slot>doRecordVid()</slot>
+  <slot>setPreviewSize(int)</slot>
+  <slot>snapAndHold()</slot>
+  <slot>snapAndSave()</slot>
+  <slot>showPreview()</slot>
+  <slot>doPlayVid()</slot>
+  <slot>doPauseVid()</slot>
+  <slot>isDateStamp()</slot>
+  <slot>isCounter()</slot>
+  <slot>setFileRoot(QString)</slot>
+  <slot>setCaptureMode(int)</slot>
+ </slots>
+</ui>

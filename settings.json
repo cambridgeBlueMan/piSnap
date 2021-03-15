@@ -12,7 +12,10 @@
     "brightness": 80,
     "clock_mode": "reset",
     "closed": false,
-    "color_effects": [128, 128],
+    "color_effects": [
+        128,
+        128
+    ],
     "contrast": -6,
     "crop": [
         0.0,
@@ -69,7 +72,7 @@
     "vidFileRoot": "vid_",
     "stillFormat": "jpeg",
     "videoFormat": "h264",
-    "fileCounter": 46,
+    "fileCounter": 55,
     "vidres": [
         1600,
         900

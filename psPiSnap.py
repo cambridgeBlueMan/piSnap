@@ -4,17 +4,19 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtGui as qtg 
 from PyQt5 import QtCore as qtc 
 
-from qualityTabMAIN import QualityTab
-from cameraSettings import CameraSettings
-from picamera import PiCamera
+from qualityTab import QualityTab
+from shooter import PSSnapper
+from psSettings import PSSettings
+from psPiCamera import PSPiCamera
+#from picamera import PiCamera
 
 class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
     def __init__(self):  #first initialize the super class QWidget
         super().__init__() 
         # get the settings
-        self.camera = PiCamera()
+        self.camera = PSPiCamera(self)
         # pass the main window and camera objects to a settings object
-        self.settings = CameraSettings(self, self.camera)
+        self.settings = PSSettings(self, self.camera)
         #now start drawing the GUI
         self.initUI()
         
@@ -22,7 +24,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
     def initUI(self):
         self.setWindowTitle('PiSnap!')
         self.makeMenu() # run makemenu method
-        self.addMainWidgets()
+        self.addMainWidgets() 
         self.setWidgetSizes()
         self.show()
 
@@ -71,6 +73,9 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         print('Save As code here')
 
     def addMainWidgets(self):
+        ##########################################################
+        #             DEFINE THE CONTAINER BOXES
+        ##########################################################
         # set a central widget
         self.centralWidget = qtw.QWidget()
         self.setCentralWidget(self.centralWidget)
@@ -81,29 +86,62 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.centralWidget.setLayout(self.hlayout)
         # add the vertical layout to the horizontal layout
         self.hlayout.addLayout(self.vlayout)
+
+        # 
+        ##########################################################
+        #    DEFINE A SNAPPER OBJECT TO BE THE CENTRAL WIDGET
+        ##########################################################
+        # set a central widget
+
         # make a dummy widget
-        self.dummy = qtw.QPlainTextEdit()
+        """ self.dummy = qtw.QPlainTextEdit()
         self.dummy.setStyleSheet("background-color:green;")
         # add the dummy widget to the horizontal layout
-        self.hlayout.addWidget(self.dummy)
+        self.hlayout.addWidget(self.dummy) """
+        
+        print(self.hlayout)
+        self.mWidget = PSSnapper(self.settings.camvals, self.camera)
+        print(self.mWidget)
+        self.hlayout.addWidget(self.mWidget)
+        # add it to the settings registry
+        self.settings.registerWidget(self.mWidget)
+
+
+        ############################################################
+        # MAKE THE VERTICAL STUFF: TAB WIDGET AND PLAIN TEXT WIDGET
+        ############################################################
+
         # now add the stuff to the vertical layout
         # first make the settings QTab widget
         self.settingsWidget = qtw.QTabWidget()
-        # make a quality tab widget, and pass the settings dictionary to it
-        self.qualityTab = QualityTab(self.settings.camvals)
-        # now register it to the settings class
-        self.settings.registerWidget(self.qualityTab)
-        # now add it to the tab
-        self.settingsWidget.addTab(self.qualityTab,"Quality")
+
         # now make and add ththe terminal window
         self.terminalWidget = qtw.QPlainTextEdit()
         self.terminalWidget.setStyleSheet("background-color:black;color:SpringGreen;")
         self.vlayout.addWidget(self.settingsWidget)
         self.vlayout.addWidget(self.terminalWidget)
+
+        ############################################################
+        # ADD VARIIOUS TABS TO THE TAB WIDGET
+        ############################################################
+
+        # #################################################################
+        # make a quality tab widget, and pass the settings dictionary to it
+        self.qualityTab = QualityTab(self.settings.camvals, self.camera)
+        # now register it to the settings class
+        self.settings.registerWidget(self.qualityTab)
+        # now add it to the tab
+        self.settingsWidget.addTab(self.qualityTab,"Quality")
+
+        # ##################################################################
+        # make a brightness object and do the same 
+
+
+
     def setWidgetSizes(self):
         self.settingsWidget.setMinimumHeight(750)
         self.settingsWidget.setMinimumWidth(400)
-        self.dummy.setMinimumWidth(1300)
+        self.mWidget.setMinimumWidth(1300)
         self.terminalWidget.setMinimumHeight(200)
     
 
