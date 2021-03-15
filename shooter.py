@@ -336,7 +336,7 @@ class PSSnapper(qtw.QWidget):
         sleep(2)
         self.thumb = (self.vidRoot + self.camvals["stillFormat"]) 
         self.myIcon = qtg.QIcon(self.thumb) 
-        self.myItem = qtw.QListWidgetItem(self.myIcon, self.vidRoot, self.ui.thumbnails)        
+        self.myItem = qtw.QListWidgetItem(self.myIcon, self.vidRoot + self.camvals["videoFormat"], self.ui.thumbnails)        
         # then add it to the widget
 
     def setupVideoCapture(self):
