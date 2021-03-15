@@ -4,6 +4,7 @@
     "annotate_frame_num": false,
     "annotate_text_size": 32,
     "audioBitRate": 16,
+    "audioFileFormat": "aiff",
     "awb_gains": [
         0,
         0
@@ -72,7 +73,7 @@
     "vidFileRoot": "vid_",
     "stillFormat": "jpeg",
     "videoFormat": "h264",
-    "fileCounter": 55,
+    "fileCounter": 59,
     "vidres": [
         1600,
         900

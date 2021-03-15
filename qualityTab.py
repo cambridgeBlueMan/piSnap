@@ -41,16 +41,9 @@ class QualityTab(qtw.QWidget):
 
     def applySettings(self):
         #for each key in the settings dictionery 
-        for key in self.camvals:
-        #check if widget with the same name exists in the GUI
-            if hasattr(self.ui,key):
-                #pass
-                print(getattr(self.ui,key))
-                if type(getattr(self.ui, key)) == qtw.QComboBox:
-                    self.ui.audioBitRate.setCurrentText(str(self.camvals["audioBitRate"]))
-                    self.ui.videoQuality.setCurrentText(str(self.camvals["videoQuality"]))
-                #elif  type(getattr(self.ui, key)) == qtw.QCheckBox:
-                    
+        self.ui.audioBitRate.setCurrentText(str(self.camvals["audioBitRate"]))
+        self.ui.videoQuality.setCurrentText(str(self.camvals["videoQuality"]))
+        self.ui.audioFileFormat.setCurrentText(str(self.camvals["audioFileFormat"]))                
 
         
         
