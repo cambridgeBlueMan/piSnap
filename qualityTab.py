@@ -54,7 +54,7 @@ class QualityTab(qtw.QWidget):
     def setAudioBitRate(self):
         pass #print(self)
         
-    def setAudioSampleRate(self):Qt
+    def setAudioSampleRate(self):
         pass #print(self)
 
     def setAudioFileFormat(self):

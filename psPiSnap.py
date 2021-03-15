@@ -5,6 +5,7 @@ from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc 
 
 from qualityTab import QualityTab
+from adjustmentsTab import Adjustments
 from shooter import PSSnapper
 from psSettings import PSSettings
 from psPiCamera import PSPiCamera
@@ -135,6 +136,9 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
 
         # ##################################################################
         # make a brightness object and do the same 
+        self.adjustmentsTab = Adjustments(self.settings.camvals, self.camera)
+        self.settings.registerWidget(self.adjustmentsTab)
+        self.settingsWidget.addTab(self.adjustmentsTab, "Adjustments")
 
 
 

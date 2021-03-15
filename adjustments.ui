@@ -38,7 +38,7 @@
      </widget>
     </item>
     <item row="3" column="1">
-     <widget class="CompositeSlider" name="color_effects_v" native="true"/>
+     <widget class="PSCompositeSlider" name="color_effects_v" native="true"/>
     </item>
     <item row="1" column="1">
      <widget class="QLabel" name="label">
@@ -54,7 +54,7 @@
      </widget>
     </item>
     <item row="2" column="1">
-     <widget class="CompositeSlider" name="color_effects_u" native="true"/>
+     <widget class="PSCompositeSlider" name="color_effects_u" native="true"/>
     </item>
     <item row="4" column="1">
      <widget class="QCheckBox" name="color_effects_none">
@@ -200,7 +200,7 @@
      </widget>
     </item>
     <item row="0" column="1">
-     <widget class="CompositeSlider" name="sharpness" native="true"/>
+     <widget class="PSCompositeSlider" name="sharpness" native="true"/>
     </item>
     <item row="1" column="0">
      <widget class="QLabel" name="label_13">
@@ -210,7 +210,7 @@
      </widget>
     </item>
     <item row="1" column="1">
-     <widget class="CompositeSlider" name="contrast" native="true"/>
+     <widget class="PSCompositeSlider" name="contrast" native="true"/>
     </item>
     <item row="2" column="0">
      <widget class="QLabel" name="label_14">
@@ -227,19 +227,19 @@
      </widget>
     </item>
     <item row="3" column="1">
-     <widget class="CompositeSlider" name="brightness" native="true"/>
+     <widget class="PSCompositeSlider" name="brightness" native="true"/>
     </item>
     <item row="2" column="1">
-     <widget class="CompositeSlider" name="saturation" native="true"/>
+     <widget class="PSCompositeSlider" name="saturation" native="true"/>
     </item>
    </layout>
   </widget>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>CompositeSlider</class>
+   <class>PSCompositeSlider</class>
    <extends>QWidget</extends>
-   <header location="global">mysliders</header>
+   <header location="global">psSliders</header>
    <container>1</container>
    <slots>
     <signal>lnValueChanged(int)</signal>

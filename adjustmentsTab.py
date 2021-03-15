@@ -3,7 +3,7 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtGui as qtg
 
 # insert appropriate names here
-from adjustmentsGui import Ui_Dialog
+from adjustments import Ui_adjustments
 from psSettings import PSSettings
 
 from picamera import PiCamera
@@ -12,10 +12,10 @@ import sys
 import datetime
 import json
 
-class Code_Dialog(qtw.QWidget):
+class Adjustments(qtw.QWidget):
 
-    def __init__(self):
-        super().__init__(camvals, camera)
+    def __init__(self,camvals, camera):
+        super().__init__()
         # camvals = None means we are running the code as stand alone
         # so we need to load the settings file
         if camvals == None:
@@ -24,13 +24,8 @@ class Code_Dialog(qtw.QWidget):
         else:
             self.camvals = camvals
         self.camera = camera
-        self.ui = Ui_Dialog()
+        self.ui = Ui_adjustments()
         self.ui.setupUi(self)
-        self.finishUi(self)
-        self.applySettings()
-
-    def finishUi():
-
         
         self.ui.sharpness.setRanges(-100,100,self.camera.sharpness)
         #print(type(self.ui.contrast))
@@ -54,8 +49,9 @@ class Code_Dialog(qtw.QWidget):
         self.ui.meter_mode.addItems(self.camera.METER_MODES)
         self.ui.meter_mode.setCurrentText('average')
 
+        self.applySettings()
        
-    def applySettings():
+    def applySettings(self):
         #for each key in the settings dictionery 
         for key in self.camvals:
         #check if widget with the same name exists in the GUI
@@ -69,13 +65,12 @@ class Code_Dialog(qtw.QWidget):
                     self.ui.color_effects_u.setValue(self.camvals[key][0])
                     self.ui.color_effects_v.setValue(self.camvals[key][1])
         # This should automatically update through to the camera
-        self.camera.framerate = self.framerate
         #self.ui.brightness.sendValue(self.cs["brightness"])
         #self.cs["brightness"]
         ##print(self.cs["brightness"])
         
         
-        self.ui.image_effect.setCurrentText(self.cs ["image_effect"])
+        self.ui.image_effect.setCurrentText(self.camvals ["image_effect"])
         
         # add your own method functions below
 
@@ -121,27 +116,27 @@ class Code_Dialog(qtw.QWidget):
         #if we find the control is to set the u value
         #set the first element of the "color effects" dictionary item to value
         if control == "color_effects_u":
-            self.cs["color_effects"][0] = value
+            self.camvals["color_effects"][0] = value
             #if "color effects" is set to none in the GUI 
             if self.ui.color_effects_none.isChecked:
                 pass #don't do anything
             else: #otherwise set the "color effects" to the value held in the color effects element of the settings dictionary
                 #note that this dictionary item is a 2 element python list although the camera expects a 2 element tuple
                 #however, it seems to buy this
-                self.camera.color_effects = self.cs["color_effects"]
+                self.camera.color_effects = self.camvals["color_effects"]
         if control == "color_effects_v":
-            self.cs["color_effects"][1] = value
+            self.camvals["color_effects"][1] = value
             if self.ui.color_effects_none.isChecked:
                 pass
             else:
-                self.camera.color_effects = self.cs["color_effects"]
+                self.camera.color_effects = self.camvals["color_effects"]
         if control =="color_effects_none":
             print(value)
             if value == 2:
                 
                 self.camera.color_effects = None
             else:
-                self.camera.color_effects = self.cs["color_effects"]
+                self.camera.color_effects = self.camvals["color_effects"]
                 
         
     def setImageEffect(self):
