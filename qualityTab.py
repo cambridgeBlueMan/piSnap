@@ -3,9 +3,9 @@ from PyQt5 import QtGui as qtg
 from PyQt5 import QtWidgets as qtw
 
 # insert appropriate names here
-from qualityTab import Ui_Form
+from qualityTabGui import Ui_Form
 #
-from cameraSettings import CameraSettings
+from psSettings import PSSettings
 
 from picamera import PiCamera
 from time import sleep
@@ -15,7 +15,7 @@ import json
 
 class QualityTab(qtw.QWidget):
 
-    def __init__(self, camvals):
+    def __init__(self, camvals, camera):
         super().__init__()
         # camvals = None means we are running the code as stand alone
         # so we need to load the settings file
@@ -24,6 +24,7 @@ class QualityTab(qtw.QWidget):
                 self.camvals = json.load(settings)
         else:
             self.camvals = camvals
+        self.camera = camera
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         # add combo box items

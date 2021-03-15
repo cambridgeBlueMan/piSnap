@@ -1,8 +1,10 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMessageBox, QPushButton
-from myCamera import MyCamera
-from cameraSettings import CameraSettings
-
+from PyQt5 import QtCore as qtc
+from PyQt5 import QtGui as qtg
+from PyQt5 import QtWidgets as qtw
+#from qtw import QMessageBox, QPushButton
+from psPiCamera import PSPiCamera
+from psSettings import PSSettings
+from shooterGui import Ui_Form
 from io import BytesIO
 from time import sleep
 # used to test if file exists
@@ -14,13 +16,13 @@ from os import path
 import json
 import vlc
 #import regexp
-from cameraApp import *
+#from  import *
 #from settings import camvals
 #print(camvals)
 
-class MainWindow(QtWidgets.QWidget):
+class PSSnapper(qtw.QWidget):
 
-    def __init__(self, camvals):
+    def __init__(self, camvals, camera):
         super().__init__()
 
         # instantiate a camera from the extended camera class
@@ -31,7 +33,7 @@ class MainWindow(QtWidgets.QWidget):
         # use its setupUi method to draw the widgets into the main window
         self.ui.setupUi(self)
         # now show the main window with its widgets
-        self.show()
+        #self.show()
 
        # camvals = None means we are running the code as stand alone
         # so we need to load the settings file
@@ -41,10 +43,25 @@ class MainWindow(QtWidgets.QWidget):
         else:
             self.camvals = camvals
 
+        self.camera = camera
         # do we want to capture audio?
         self.getAudio = False
+        # apply settings derived from settings file
+        self.setupVideoCapture()   
 
-        self.setupVideoCapture(self)   
+        self.doTimerStuff()
+
+    def doTimerStuff(self):
+        self.timer = qtc.QTimer(self)
+        self.timer.setInterval(100)
+        self.timer.timeout.connect(self.updateUi)
+        # is_paused indicates whether video is paused or not
+        self.is_paused = False
+        self.vlcObj = vlc.Instance()
+        self.media = None
+        self.mediaplayer = self.vlcObj.media_player_new()
+        self.is_paused = False 
+
     
     def snapAndSave(self):  
         """ takes a still picture and automatically generates a file name """
@@ -53,7 +70,13 @@ class MainWindow(QtWidgets.QWidget):
         filename = self.camvals["stillFileRoot"] + '{:04d}'.format(self.camvals["fileCounter"]) + '.' + self.camvals["stillFormat"]
 
         # set the settings for the camera
-        self.camera.resolution = tuple(self.imgres)
+        ##issue##
+        """
+        all of the camera settings should be being made elsewhere and they shuld therefore be in place 
+        ready for when a shot is taken
+
+        """
+        self.camera.resolution = tuple(self.camvals["imgres"])
 
         # does the file exist? if not then write it
         if path.exists(filename):
@@ -96,13 +119,13 @@ class MainWindow(QtWidgets.QWidget):
     
     def showImage(self, filename):
         """ displays a graphic file in the picture window """
-        pixmap = QtGui.QPixmap(filename)
-        pixmapResized = pixmap.scaled(self.camvals["imgres"][0]/2, self.camvals["imgres"][1]/2, QtCore.Qt.KeepAspectRatio)
+        pixmap = qtg.QPixmap(filename)
+        pixmapResized = pixmap.scaled(self.camvals["imgres"][0]/2, self.camvals["imgres"][1]/2, qtc.Qt.KeepAspectRatio)
         self.ui.imgContainer.setPixmap(pixmapResized) #.scaled(size,Qt.keepAspectRatio))
 
         # then add it to the selector widget
-        self.myIcon = QtGui.QIcon(filename) 
-        self.myItem = QtWidgets.QListWidgetItem(self.myIcon, filename, self.ui.thumbnails)        
+        self.myIcon = qtg.QIcon(filename) 
+        self.myItem = qtw.QListWidgetItem(self.myIcon, filename, self.ui.thumbnails)        
         
     def incFileCounter(self):
         """ increments the file counter and saves it to the settings file """
@@ -114,6 +137,12 @@ class MainWindow(QtWidgets.QWidget):
     def imgToStream(self):
         """ uses camera to take a still picture and returns that in a stream/buffer object """
         stream = BytesIO()
+        ##issue
+        """
+        all of the camera settings should be being made elsewhere and they shuld therefore be in place 
+        ready for when a shot is taken
+
+        """
         self.camera.capture(stream, 'jpeg')
         return stream.getbuffer()
     
@@ -178,7 +207,7 @@ class MainWindow(QtWidgets.QWidget):
             self.mediaplayer.set_xwindow(int(self.ui.imgContainer.winId()))
 
             #self.mediaplayer.set_position(0)
-            self.addToMediaList(self)
+            self.addToMediaList()
             self.media = self.vlcObj.media_new(output)
             self.mediaplayer.set_media(self.media)
             self.mediaplayer.play()
@@ -227,11 +256,11 @@ class MainWindow(QtWidgets.QWidget):
         #print(self, ix)
         # if video is selected then instantiate the vlc stuff
         if ix == 1:
-            self.setupVideoCapture(self)
+            self.setupVideoCapture()
             
         else:
             # clean it all up, still to write
-            self.setupStillCapture(self)
+            self.setupStillCapture()
 
     def updateUi(self):
         """
@@ -263,7 +292,7 @@ class MainWindow(QtWidgets.QWidget):
     def doThumbnailClicked(self,widg):
         # start playing the selected video
         # put the file name to the video player?
-        self.media = self.vlcObj.media_new(widg.text() + "h264")
+        self.media = self.vlcObj.media_new(widg.text())
         self.mediaplayer.set_media(self.media)
         self.mediaplayer.play()
         #print(self.mediaplayer.video_take_snapshot(0 , "filename2.jpeg", 80, 60))        
@@ -289,47 +318,49 @@ class MainWindow(QtWidgets.QWidget):
         pass 
     
     def addToMediaList(self):
-    """ 
-    Use ffmpegthumbnailer to create a thumbnail image to represent the video
-    and display the thumbnail and file name in a ListWidget
+        """ 
+        Use ffmpegthumbnailer to create a thumbnail image to represent the video
+        and display the thumbnail and file name in a ListWidget
 
-     """
+        """
 
-    # ffmpeg -i twat.h264 -frames:v 1 -f image2 frame.png
+        # ffmpeg -i twat.h264 -frames:v 1 -f image2 frame.png
 
-    makeThumbnail = subprocess.Popen(["ffmpeg",  "-i" ,  (self.vidRoot + self.camvals["videoFormat"]),
-    "-frames:v", "1",  "-f",  "image2",   (self.vidRoot + self.camvals["stillFormat"])])
-    
-    # mpeg conversion takes a little time, so we wait for it before loading into the list widget item
-    # I think in an  ideal world this should be a BytesIO object rather than a file.
-    # much easier to clean all that up at end of session
+        makeThumbnail = subprocess.Popen(["ffmpeg",  "-i" ,  (self.vidRoot + self.camvals["videoFormat"]),
+        "-frames:v", "1",  "-f",  "image2",   (self.vidRoot + self.camvals["stillFormat"])])
+        
+        # mpeg conversion takes a little time, so we wait for it before loading into the list widget item
+        # I think in an  ideal world this should be a BytesIO object rather than a file.
+        # much easier to clean all that up at end of session
 
-    sleep(2)
-    self.thumb = (self.vidRoot + self.camvals["stillFormat"]) 
-    self.myIcon = QtGui.QIcon(self.thumb) 
-    self.myItem = QtWidgets.QListWidgetItem(self.myIcon, self.vidRoot, self.ui.thumbnails)        
-    # then add it to the widget
+        sleep(2)
+        self.thumb = (self.vidRoot + self.camvals["stillFormat"]) 
+        self.myIcon = qtg.QIcon(self.thumb) 
+        self.myItem = qtw.QListWidgetItem(self.myIcon, self.vidRoot, self.ui.thumbnails)        
+        # then add it to the widget
 
-def setupVideoCapture(self):
-    #print ("++++++++++++++++++++++++++++++++++++++++++" ,  dir(self))
-    """ make all relevant settings appropriate for video capture """
-    # make vlc media player
-    #self.vlcObj = vlc.Instance()
-    #self.media = None
-    #self.mediaplayer = self.vlcObj.media_player_new()
-    #self.is_paused = False
-    # set resolution for video
-    self.resolution = tuple(self.camvals["vidres"])
-    # adjust display area for video
-    self.ui.imgContainer.resize(800,600)
+    def setupVideoCapture(self):
+        #print ("++++++++++++++++++++++++++++++++++++++++++" ,  dir(self))
+        """ make all relevant settings appropriate for video capture """
+        # make vlc media player
+        self.vlcObj = vlc.Instance()
+        self.media = None
+        self.mediaplayer = self.vlcObj.media_player_new()
+        self.is_paused = False
+        # set resolution for video
+        self.resolution = tuple(self.camvals["vidres"])
+        # adjust display area for video
+        ##issue##
+        self.ui.imgContainer.resize(800,600)
 
-def setupStillCapture(self):
-    #print(self)
-    """ make all relevant settings for still capture """
-    # set resolution for still
-    self.resolution = tuple(self.imgres)
-    # adjust display area for video
-    self.ui.imgContainer.resize(self.resolution[0]/2, self.resolution[1]/2)
+    def setupStillCapture(self):
+        #print(self)
+        """ make all relevant settings for still capture """
+        # set resolution for still
+        self.resolution = tuple(self.camvals["imgres"])
+        # adjust display area for video
+        ##issue##
+        self.ui.imgContainer.resize(self.resolution[0]/2, self.resolution[1]/2)
 
 
 
@@ -339,7 +370,7 @@ if __name__ == "__main__":
     import sys
    
     # instiantiate an app object from the QApplication class 
-    app = QtWidgets.QApplication(sys.argv)
+    app = qtw.QApplication(sys.argv)
     # instantiate an object containing the logic code
-    mw = MainWindow(None)
+    mw = PSSnapper(None)
     sys.exit(app.exec_())

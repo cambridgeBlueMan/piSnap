@@ -1,7 +1,7 @@
 import json
 
 # open the settings file and put the contents into the 
-class CameraSettings():
+class PSSettings():
     def __init__(self, win, camera):  #first initialize the super class QWidget
         with open("settings.json", "r") as settings:
             self.camvals = json.load(settings)
