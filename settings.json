@@ -73,7 +73,7 @@
     "vidFileRoot": "vid_",
     "stillFormat": "jpeg",
     "videoFormat": "h264",
-    "fileCounter": 59,
+    "fileCounter": 63,
     "vidres": [
         1600,
         900
