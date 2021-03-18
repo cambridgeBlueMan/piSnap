@@ -274,7 +274,7 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="QPushButton" name="previewButton">
+   <widget class="DragButton" name="previewButton">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -289,6 +289,13 @@
    </widget>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DragButton</class>
+   <extends>QPushButton</extends>
+   <header location="global">dragbutton</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="resource.qrc"/>
  </resources>
