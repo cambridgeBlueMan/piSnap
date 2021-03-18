@@ -4,9 +4,9 @@
     "annotate_frame_num": false,
     "annotate_text_size": 32,
     "audioActive": false,
-    "audioBitRate": "24",
-    "audioFileFormat": "aiff",
-    "audioSampleRate": "48kz",
+    "audioBitRate": "8",
+    "audioFileFormat": "wav",
+    "audioSampleRate": "44.1kz",
     "awb_gains": [
         0,
         0
@@ -63,11 +63,11 @@
     "shutter_speed": 0,
     "still_stats": false,
     "vflip": false,
-    "videoBitRate": "17000000",
+    "videoBitRate": "0",
     "video_denoise": true,
     "videoLevel": "4",
-    "videoProfile": "high",
-    "videoQuality": 20,
+    "videoProfile": "baseline",
+    "videoQuality": "10",
     "video_stabilization": false,
     "zoom": [
         0.0,

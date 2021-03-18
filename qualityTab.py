@@ -36,7 +36,7 @@ class QualityTab(qtw.QWidget):
         self.applySettings()
 
     def finishUi(*args):
-        args[0].ui.audioBitRate.addItems(["16", "24"])
+        args[0].ui.audioBitRate.addItems(["8", "16", "24", "48"])
         args[0].ui.audioSampleRate.addItems(["44.1kz", "48kz"])
         args[0].ui.audioFileFormat.addItems(["wav", "aiff"])
         args[0].ui.videoBitRate.addItems(["0", "2000000", "4000000","8000000", "17000000"])
@@ -45,6 +45,7 @@ class QualityTab(qtw.QWidget):
         args[0].ui.videoLevel.addItems(["4","4.1", "4.2"])
 
     def applySettings(self):
+        print (self.camvals["audioBitRate"])
         #for each key in the settings dictionery 
         self.ui.audioBitRate.setCurrentText(str(self.camvals["audioBitRate"]))
         self.ui.audioSampleRate.setCurrentText(str(self.camvals["audioSampleRate"]))
@@ -56,36 +57,34 @@ class QualityTab(qtw.QWidget):
         self.ui.videoProfile.setCurrentText(str(self.camvals["videoProfile"]))
         self.ui.videoLevel.setCurrentText(str(self.camvals["videoLevel"]))
 
-        
-        #take value from gui and update camvals
+       
+        #set the audio bitrate in the dictionary to the currently selected audio bit rate in the drop down box
     def setAudioBitRate(self, ix):
-        #self.ui.audioBitRate.CurrentText
-        #self.camvals["audioBitRate"]
-        val = self.ui.audioBitRate.currentText()
-        print (val)
-        val = self.camvals["audioBitRate"]
-
+        self.camvals["audioBitRate"] = self.ui.audioBitRate.currentText()
         
-    def setAudioSampleRate(self):
-        pass #print(self)
+    def setAudioSampleRate(self, ix):
+        self.camvals["audioSampleRate"] = self.ui.audioSampleRate.currentText()
 
-    def setAudioFileFormat(self):
-        pass #print(self)
+    def setAudioFileFormat(self, ix):
+        self.camvals["audioFileFormat"] = self.ui.audioFileFormat.currentText()
 
     def doMux(self):
-        pass #print(self)
+        pass
 
     def isAudioActive(self):
-        pass #print(self)
+        pass
 
-    def setVideoBitRate(self):
-        pass #print(self)
-    def setVideoQuality(self):
-        pass #print(self)
-    def setVideoProfile(tab, ix):
-        pass
-    def setVideoLevel(tab, ix):
-        pass
+    def setVideoBitRate(self, ix):
+        self.camvals["videoBitRate"] = self.ui.videoBitRate.currentText()
+
+    def setVideoQuality(self, ix):
+        self.camvals["videoQuality"] = self.ui.videoQuality.currentText()
+
+    def setVideoProfile(self, ix):
+        self.camvals["videoProfile"] = self.ui.videoProfile.currentText()
+
+    def setVideoLevel(self, ix):
+        self.camvals["videoLevel"] = self.ui.videoLevel.currentText()
  
 
 #######################################################################################
