@@ -41,6 +41,8 @@ class QualityTab(qtw.QWidget):
         args[0].ui.audioFileFormat.addItems(["wav", "aiff"])
         args[0].ui.videoBitRate.addItems(["0", "2000000", "4000000","8000000", "17000000"])
         args[0].ui.videoQuality.addItems(["10", "20", "25", "30", "35", "40"])
+        args[0].ui.videoProfile.addItems(["baseline", "main", "extended", "high", "constrained"])
+        args[0].ui.videoLevel.addItems(["4","4.1", "4.2"])
 
     def applySettings(self):
         #for each key in the settings dictionery 
@@ -51,11 +53,18 @@ class QualityTab(qtw.QWidget):
         self.ui.videoQuality.setCurrentText(str(self.camvals["videoQuality"]))
         self.ui.mux.setChecked(self.camvals["mux"])
         self.ui.audioActive.setChecked(self.camvals["audioActive"])
+        self.ui.videoProfile.setCurrentText(str(self.camvals["videoProfile"]))
+        self.ui.videoLevel.setCurrentText(str(self.camvals["videoLevel"]))
 
         
-        
-    def setAudioBitRate(self):
-        pass #print(self)
+        #take value from gui and update camvals
+    def setAudioBitRate(self, ix):
+        #self.ui.audioBitRate.CurrentText
+        #self.camvals["audioBitRate"]
+        val = self.ui.audioBitRate.currentText()
+        print (val)
+        val = self.camvals["audioBitRate"]
+
         
     def setAudioSampleRate(self):
         pass #print(self)
@@ -73,6 +82,10 @@ class QualityTab(qtw.QWidget):
         pass #print(self)
     def setVideoQuality(self):
         pass #print(self)
+    def setVideoProfile(tab, ix):
+        pass
+    def setVideoLevel(tab, ix):
+        pass
  
 
 #######################################################################################

@@ -4,7 +4,7 @@
     "annotate_frame_num": false,
     "annotate_text_size": 32,
     "audioActive": false,
-    "audioBitRate": 16,
+    "audioBitRate": "24",
     "audioFileFormat": "aiff",
     "audioSampleRate": "48kz",
     "awb_gains": [
@@ -65,6 +65,8 @@
     "vflip": false,
     "videoBitRate": "17000000",
     "video_denoise": true,
+    "videoLevel": "4",
+    "videoProfile": "high",
     "videoQuality": 20,
     "video_stabilization": false,
     "zoom": [
