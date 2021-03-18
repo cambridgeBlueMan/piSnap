@@ -51,6 +51,9 @@ class PSSnapper(qtw.QWidget):
 
         self.doTimerStuff()
 
+    def movePreview(self):
+        pass
+
     def doTimerStuff(self):
         self.timer = qtc.QTimer(self)
         self.timer.setInterval(100)

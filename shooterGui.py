@@ -107,6 +107,14 @@ class Ui_Form(object):
         self.imgContainer.setFrameShape(QtWidgets.QFrame.Box)
         self.imgContainer.setText("")
         self.imgContainer.setObjectName("imgContainer")
+        self.previewFrame = QtWidgets.QFrame(Form)
+        self.previewFrame.setGeometry(QtCore.QRect(30, 650, 120, 80))
+        self.previewFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.previewFrame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.previewFrame.setObjectName("previewFrame")
+        self.previewButton = QtWidgets.QPushButton(self.previewFrame)
+        self.previewButton.setGeometry(QtCore.QRect(10, 10, 31, 30))
+        self.previewButton.setObjectName("previewButton")
 
         self.retranslateUi(Form)
         self.captureTab.setCurrentIndex(0)
@@ -124,6 +132,7 @@ class Ui_Form(object):
         self.isCounter.clicked.connect(Form.isCounter)
         self.fileRoot.textChanged['QString'].connect(Form.setFileRoot)
         self.captureTab.currentChanged['int'].connect(Form.setCaptureMode)
+        self.previewButton.released.connect(Form.movePreview)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -138,5 +147,6 @@ class Ui_Form(object):
         self.captureTab.setTabText(self.captureTab.indexOf(self.still), _translate("Form", "Still"))
         self.captureTab.setTabText(self.captureTab.indexOf(self.video), _translate("Form", "Video"))
         self.previewVisible.setText(_translate("Form", "Preview"))
+        self.previewButton.setText(_translate("Form", "b"))
 
 import resource_rc
