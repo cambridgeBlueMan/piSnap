@@ -19,6 +19,7 @@ class QualityTab(qtw.QWidget):
         super().__init__()
         # camvals = None means we are running the code as stand alone
         # so we need to load the settings file
+        self.comboItemsAdded = False
         if camvals == None:
             with open("settings.json", "r") as settings:
                 self.camvals = json.load(settings)
@@ -28,25 +29,25 @@ class QualityTab(qtw.QWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         # add combo box items
-        self.finishUi(self)
+        self.comboItemsAdded = self.addItemsToCombos(self)
         
         self.applySettings()
 
-    def finishUi(*args):
+    def addItemsToCombos(*args):
         args[0].ui.audioBitRate.addItems(["16", "24"])
         args[0].ui.audioSampleRate.addItems(["44.1kz", "48kz"])
         args[0].ui.audioFileFormat.addItems(["wav", "aiff"])
         args[0].ui.videoBitRate.addItems(["0", "17000000"])
         args[0].ui.videoQuality.addItems(["10", "20", "25", "30", "35", "40"])
+        return True
 
     def applySettings(self):
-        #for each key in the settings dictionery 
-        self.ui.audioBitRate.setCurrentText(str(self.camvals["audioBitRate"]))
-        self.ui.videoQuality.setCurrentText(str(self.camvals["videoQuality"]))
-        self.ui.audioFileFormat.setCurrentText(str(self.camvals["audioFileFormat"]))                
-
-        
-        
+        if self.comboItemsAdded == True:
+            #for each key in the settings dictionery 
+            self.ui.audioBitRate.setCurrentText(str(self.camvals["audioBitRate"]))
+            self.ui.videoQuality.setCurrentText(str(self.camvals["videoQuality"]))
+            self.ui.audioFileFormat.setCurrentText(str(self.camvals["audioFileFormat"]))                
+ 
     def setAudioBitRate(self):
         pass #print(self)
         

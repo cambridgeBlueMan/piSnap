@@ -51,8 +51,8 @@ class PSSnapper(qtw.QWidget):
 
         self.doTimerStuff()
 
-    def movePreview(self):
-        pass
+
+
 
     def doTimerStuff(self):
         self.timer = qtc.QTimer(self)
@@ -310,13 +310,23 @@ class PSSnapper(qtw.QWidget):
         pass
     def isCounter(*args):
         pass
-    def showPreview(self, state):
+
+    def movePreview(self):
+        pass
+  
+    def previewPos(self, x,y):
+        self.camera.stop_preview
+        print("in pos", x, y, self.camera.resolution)
+        self.camera.start_preview(fullscreen=False, window = (0, 0,int(self.camera.resolution[0]/2),int(self.camera.resolution[0]/2)))
+
+    def showPreview(self, state, xPos=0, yPos=0):
         if state == True:
-            x = int(self.camera.resolution[0]/2)
-            y = int(self.camera.resolution[1]/2) 
-            self.camera.start_preview(fullscreen=False, window = (0, 0,x,y))
+            width = int(self.camera.resolution[0]/2)
+            height = int(self.camera.resolution[1]/2) 
+            self.camera.start_preview(fullscreen=False, window = (0, 0,width,height))
         else:
             self.camera.stop_preview()
+
     def setPreviewSize(*args):
         pass 
     

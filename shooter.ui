@@ -16,14 +16,14 @@
   <widget class="QTabWidget" name="captureTab">
    <property name="geometry">
     <rect>
-     <x>190</x>
+     <x>240</x>
      <y>650</y>
      <width>801</width>
      <height>111</height>
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="still">
     <attribute name="title">
@@ -220,7 +220,7 @@
   <widget class="QSlider" name="resizePreview">
    <property name="geometry">
     <rect>
-     <x>310</x>
+     <x>360</x>
      <y>620</y>
      <width>591</width>
      <height>26</height>
@@ -233,7 +233,7 @@
   <widget class="QCheckBox" name="previewVisible">
    <property name="geometry">
     <rect>
-     <x>190</x>
+     <x>240</x>
      <y>620</y>
      <width>101</width>
      <height>27</height>
@@ -262,10 +262,10 @@
   <widget class="QFrame" name="previewFrame">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>20</x>
      <y>650</y>
-     <width>120</width>
-     <height>80</height>
+     <width>192</width>
+     <height>108</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -277,8 +277,8 @@
    <widget class="DragButton" name="previewButton">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>10</y>
+      <x>70</x>
+      <y>20</y>
       <width>31</width>
       <height>30</height>
      </rect>
@@ -294,6 +294,13 @@
    <class>DragButton</class>
    <extends>QPushButton</extends>
    <header location="global">dragbutton</header>
+   <slots>
+    <signal>xChanged(int)</signal>
+    <signal>yChanged(int)</signal>
+    <signal>posChanged(int,int)</signal>
+    <slot>movePreviewX(int)</slot>
+    <slot>movePreviewPos(list)</slot>
+   </slots>
   </customwidget>
  </customwidgets>
  <resources>
@@ -323,8 +330,8 @@
    <slot>doStopVid()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>724</y>
+     <x>396</x>
+     <y>739</y>
     </hint>
     <hint type="destinationlabel">
      <x>31</x>
@@ -339,7 +346,7 @@
    <slot>doRecordVid()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>205</x>
+     <x>255</x>
      <y>735</y>
     </hint>
     <hint type="destinationlabel">
@@ -355,7 +362,7 @@
    <slot>setPreviewSize(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>359</x>
+     <x>409</x>
      <y>628</y>
     </hint>
     <hint type="destinationlabel">
@@ -371,7 +378,7 @@
    <slot>setPosition(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>425</x>
+     <x>475</x>
      <y>721</y>
     </hint>
     <hint type="destinationlabel">
@@ -387,7 +394,7 @@
    <slot>snapAndHold()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>343</x>
+     <x>393</x>
      <y>718</y>
     </hint>
     <hint type="destinationlabel">
@@ -403,7 +410,7 @@
    <slot>snapAndSave()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>225</x>
+     <x>275</x>
      <y>723</y>
     </hint>
     <hint type="destinationlabel">
@@ -419,7 +426,7 @@
    <slot>showPreview()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>197</x>
+     <x>247</x>
      <y>639</y>
     </hint>
     <hint type="destinationlabel">
@@ -435,7 +442,7 @@
    <slot>doPlayVid()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>270</x>
+     <x>320</x>
      <y>730</y>
     </hint>
     <hint type="destinationlabel">
@@ -451,8 +458,8 @@
    <slot>doPauseVid()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>381</x>
-     <y>723</y>
+     <x>446</x>
+     <y>739</y>
     </hint>
     <hint type="destinationlabel">
      <x>971</x>
@@ -467,7 +474,7 @@
    <slot>isDateStamp()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>703</x>
+     <x>753</x>
      <y>719</y>
     </hint>
     <hint type="destinationlabel">
@@ -483,7 +490,7 @@
    <slot>isCounter()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>853</x>
+     <x>903</x>
      <y>720</y>
     </hint>
     <hint type="destinationlabel">
@@ -499,7 +506,7 @@
    <slot>setFileRoot(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>574</x>
+     <x>624</x>
      <y>719</y>
     </hint>
     <hint type="destinationlabel">
@@ -531,8 +538,8 @@
    <slot>movePreview()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>55</x>
-     <y>662</y>
+     <x>115</x>
+     <y>672</y>
     </hint>
     <hint type="destinationlabel">
      <x>178</x>
@@ -540,8 +547,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>previewButton</sender>
+   <signal>posChanged(int,int)</signal>
+   <receiver>Form</receiver>
+   <slot>previewPos(int,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>101</x>
+     <y>693</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>536</x>
+     <y>775</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
+  <signal>signal1()</signal>
   <slot>setPosition(int)</slot>
   <slot>doThumbnailClicked()</slot>
   <slot>doStopVid()</slot>
@@ -556,6 +580,10 @@
   <slot>isCounter()</slot>
   <slot>setFileRoot(QString)</slot>
   <slot>setCaptureMode(int)</slot>
-  <slot>movePreview()</slot>
+  <slot>previewXPos(int)</slot>
+  <slot>previewYPos(int)</slot>
+  <slot>previewPos(int,int)</slot>
+  <slot>slot1()</slot>
+  <slot>slot2()</slot>
  </slots>
 </ui>

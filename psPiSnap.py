@@ -19,7 +19,8 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.settings = PSSettings(self, self.camera)
         #now start drawing the GUI
         self.initUI()
-        
+
+    
 
     def initUI(self):
         self.setWindowTitle('PiSnap!')

@@ -13,7 +13,7 @@ class Ui_Form(object):
         Form.setObjectName("Form")
         Form.resize(1163, 804)
         self.captureTab = QtWidgets.QTabWidget(Form)
-        self.captureTab.setGeometry(QtCore.QRect(190, 650, 801, 111))
+        self.captureTab.setGeometry(QtCore.QRect(240, 650, 801, 111))
         self.captureTab.setObjectName("captureTab")
         self.still = QtWidgets.QWidget()
         self.still.setObjectName("still")
@@ -96,11 +96,11 @@ class Ui_Form(object):
         self.thumbnails.setWordWrap(True)
         self.thumbnails.setObjectName("thumbnails")
         self.resizePreview = QtWidgets.QSlider(Form)
-        self.resizePreview.setGeometry(QtCore.QRect(310, 620, 591, 26))
+        self.resizePreview.setGeometry(QtCore.QRect(360, 620, 591, 26))
         self.resizePreview.setOrientation(QtCore.Qt.Horizontal)
         self.resizePreview.setObjectName("resizePreview")
         self.previewVisible = QtWidgets.QCheckBox(Form)
-        self.previewVisible.setGeometry(QtCore.QRect(190, 620, 101, 27))
+        self.previewVisible.setGeometry(QtCore.QRect(240, 620, 101, 27))
         self.previewVisible.setObjectName("previewVisible")
         self.imgContainer = QtWidgets.QLabel(Form)
         self.imgContainer.setGeometry(QtCore.QRect(190, 10, 800, 600))
@@ -108,16 +108,16 @@ class Ui_Form(object):
         self.imgContainer.setText("")
         self.imgContainer.setObjectName("imgContainer")
         self.previewFrame = QtWidgets.QFrame(Form)
-        self.previewFrame.setGeometry(QtCore.QRect(30, 650, 120, 80))
+        self.previewFrame.setGeometry(QtCore.QRect(20, 650, 192, 108))
         self.previewFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.previewFrame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.previewFrame.setObjectName("previewFrame")
-        self.previewButton = QtWidgets.QPushButton(self.previewFrame)
-        self.previewButton.setGeometry(QtCore.QRect(10, 10, 31, 30))
+        self.previewButton = DragButton(self.previewFrame)
+        self.previewButton.setGeometry(QtCore.QRect(70, 20, 31, 30))
         self.previewButton.setObjectName("previewButton")
 
         self.retranslateUi(Form)
-        self.captureTab.setCurrentIndex(0)
+        self.captureTab.setCurrentIndex(1)
         self.thumbnails.itemDoubleClicked['QListWidgetItem*'].connect(Form.doThumbnailClicked)
         self.stopVid.clicked.connect(Form.doStopVid)
         self.startRecordVid.clicked.connect(Form.doRecordVid)
@@ -133,6 +133,7 @@ class Ui_Form(object):
         self.fileRoot.textChanged['QString'].connect(Form.setFileRoot)
         self.captureTab.currentChanged['int'].connect(Form.setCaptureMode)
         self.previewButton.released.connect(Form.movePreview)
+        self.previewButton.posChanged['int','int'].connect(Form.previewPos)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -149,4 +150,5 @@ class Ui_Form(object):
         self.previewVisible.setText(_translate("Form", "Preview"))
         self.previewButton.setText(_translate("Form", "b"))
 
+from dragbutton import DragButton
 import resource_rc

@@ -4,11 +4,10 @@ from PyQt5 import QtWidgets as qtw
 
 
 class DragButton(qtw.QPushButton):
-    xChanged =  qtc.pyqtSignal(int)
-    yChanged = qtc.pyqtSignal(int)
+    posChanged = qtc.pyqtSignal(int,int)
     global newPos
-    def __init__(self, text, win):
-        super().__init__(text, win)
+    def __init__(self, win):
+        super().__init__(win)
         #print(self.parent)
         self.setText("\u26ab")
         self.setFixedSize(22, 22)
@@ -46,7 +45,6 @@ class DragButton(qtw.QPushButton):
                 x = 0
             else:
                 x = newPos.x()
-            self.sendX(x)
             # get the y val
             if newPos.y() > self.containerHeight:
                 y = self.containerHeight
@@ -54,21 +52,19 @@ class DragButton(qtw.QPushButton):
                 y = 0
             else:
                 y = newPos.y()
-            self.sendY(y)
+            self.sendPos((x,y))
+
             self.move(x,y)
             self.__mouseMovePos = globalPos
 
 
         super(DragButton, self).mouseMoveEvent(event)
 
-    def sendX(self,x):
-        print(x)
-        self.xChanged.emit(x)
 
+    def sendPos(self, pos):
+        print(pos)
+        self.posChanged.emit(pos[0], pos[1])
 
-    def sendY(self, y):
-        print(y)
-        self.yChanged.emit(y)
 
     def mouseReleaseEvent(self, event):
         if self.__mousePressPos is not None:
