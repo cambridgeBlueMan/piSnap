@@ -4,7 +4,7 @@
     "annotate_frame_num": false,
     "annotate_text_size": 32,
     "audioActive": false,
-    "audioBitRate": "8",
+    "audioBitRate": "24",
     "audioFileFormat": "wav",
     "audioSampleRate": "44.1kz",
     "awb_gains": [
