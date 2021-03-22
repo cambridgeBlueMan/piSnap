@@ -27,11 +27,15 @@ class Adjustments(qtw.QWidget):
         self.camera = camera
         self.ui = Ui_adjustments()
         self.ui.setupUi(self)
-        self.setCompositeSliderRanges()
+
         self.comboItemsAdded = self.addItemsToCombos()
+
+        self.setCompositeSliderRanges()
+
         self.applySettings()
 
     def addItemsToCombos(self):
+        
         self.ui.image_effect.addItems(self.camera.IMAGE_EFFECTS)
         self.ui.image_effect.setCurrentText('none')
         self.ui.awb_mode.addItems(self.camera.AWB_MODES)
@@ -47,7 +51,6 @@ class Adjustments(qtw.QWidget):
         return True
 
     def setCompositeSliderRanges(self):
-
         self.ui.sharpness.setRanges(-100,100,self.camera.sharpness)
         #print(type(self.ui.contrast))
         self.ui.contrast.setRanges(-100,100,self.camera.sharpness)
