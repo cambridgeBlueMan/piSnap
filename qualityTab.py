@@ -55,7 +55,7 @@ class QualityTab(qtw.QWidget):
         self.ui.audioFileFormat.setCurrentText(str(self.camvals["audioFileFormat"]))
         self.ui.videoBitRate.setCurrentText(str(self.camvals["videoBitRate"]))                
         self.ui.videoQuality.setCurrentText(str(self.camvals["videoQuality"]))
-        self.ui.mux.setChecked(self.camvals["mux"])
+        self.ui.mux.setChecked(bool(self.camvals["mux"]))
         self.ui.audioActive.setChecked(self.camvals["audioActive"])
         self.ui.videoProfile.setCurrentText(str(self.camvals["videoProfile"]))
         self.ui.videoLevel.setCurrentText(str(self.camvals["videoLevel"]))
@@ -74,8 +74,13 @@ class QualityTab(qtw.QWidget):
         if self.comboItemsAdded == True:
             self.camvals["audioFileFormat"] = self.ui.audioFileFormat.currentText()
 
-    def doMux(self):
-        pass
+    def doMux(self, state):
+        print ("The value of state is: ", state)
+        if state == True:
+            self.camvals["mux"] = "true"
+        else:
+            self.camvals["mux"] = "false"
+        
 
     def isAudioActive(self):
         pass
