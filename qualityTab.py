@@ -82,8 +82,14 @@ class QualityTab(qtw.QWidget):
             self.camvals["mux"] = "false"
         
 
-    def isAudioActive(self):
-        pass
+    def isAudioActive(self, state):
+        print ("The value of state is: ", state)
+        if state == True:
+            self.camvals["mux"] = "true"
+        else:
+            self.camvals["mux"] = "false"
+        
+
 
     def setVideoBitRate(self, ix):
         if self.comboItemsAdded == True:

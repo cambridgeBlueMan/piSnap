@@ -42,7 +42,7 @@
     "image_effect_params": null,
     "iso": 0,
     "meter_mode": "average",
-    "mux": "true",
+    "mux": "false",
     "overlays": [],
     "preview": null,
     "preview_alpha": 255,

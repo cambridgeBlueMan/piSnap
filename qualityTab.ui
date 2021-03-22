@@ -2,12 +2,15 @@
 <ui version="4.0">
  <class>Form</class>
  <widget class="QWidget" name="Form">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>525</width>
-    <height>503</height>
+    <width>844</width>
+    <height>805</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -67,11 +70,14 @@
      </item>
      <item row="3" column="0">
       <widget class="QCheckBox" name="mux">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="text">
         <string>mux after record</string>
        </property>
        <property name="checked">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -204,22 +210,6 @@
     <hint type="destinationlabel">
      <x>388</x>
      <y>166</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>mux</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>Form</receiver>
-   <slot>doMux(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>183</x>
-     <y>201</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>411</x>
-     <y>208</y>
     </hint>
    </hints>
   </connection>
