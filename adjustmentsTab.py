@@ -3,7 +3,7 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtGui as qtg
 
 # insert appropriate names here
-from adjustments import Ui_adjustments
+from adjustmentsTabGui import Ui_adjustments
 from psSettings import PSSettings
 
 from picamera import PiCamera
@@ -16,6 +16,7 @@ class Adjustments(qtw.QWidget):
 
     def __init__(self,camvals, camera):
         super().__init__()
+        self.comboItemsAdded = False
         # camvals = None means we are running the code as stand alone
         # so we need to load the settings file
         if camvals == None:
@@ -26,15 +27,14 @@ class Adjustments(qtw.QWidget):
         self.camera = camera
         self.ui = Ui_adjustments()
         self.ui.setupUi(self)
-        
-        self.ui.sharpness.setRanges(-100,100,self.camera.sharpness)
-        #print(type(self.ui.contrast))
-        self.ui.contrast.setRanges(-100,100,self.camera.sharpness)
-        self.ui.saturation.setRanges(-100,100,self.camera.saturation)
-        self.ui.brightness.setRanges(0,100,self.camera.brightness)
-        #set vales for color effects composite sliders u and v values
-        self.ui.color_effects_u.setRanges(0,255,128)
-        self.ui.color_effects_v.setRanges(0,255,128)
+
+        self.comboItemsAdded = self.addItemsToCombos()
+
+        self.setCompositeSliderRanges()
+
+        self.applySettings()
+
+    def addItemsToCombos(self):
         
         self.ui.image_effect.addItems(self.camera.IMAGE_EFFECTS)
         self.ui.image_effect.setCurrentText('none')
@@ -48,8 +48,18 @@ class Adjustments(qtw.QWidget):
         self.ui.flash_mode.setCurrentText('off')
         self.ui.meter_mode.addItems(self.camera.METER_MODES)
         self.ui.meter_mode.setCurrentText('average')
+        return True
 
-        self.applySettings()
+    def setCompositeSliderRanges(self):
+        self.ui.sharpness.setRanges(-100,100,self.camera.sharpness)
+        #print(type(self.ui.contrast))
+        self.ui.contrast.setRanges(-100,100,self.camera.sharpness)
+        self.ui.saturation.setRanges(-100,100,self.camera.saturation)
+        self.ui.brightness.setRanges(0,100,self.camera.brightness)
+        #set vales for color effects composite sliders u and v values
+        self.ui.color_effects_u.setRanges(0,255,128)
+        self.ui.color_effects_v.setRanges(0,255,128)
+
        
     def applySettings(self):
         #for each key in the settings dictionery 

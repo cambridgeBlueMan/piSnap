@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(525, 503)
+        Form.resize(863, 660)
         self.groupBox = QtWidgets.QGroupBox(Form)
         self.groupBox.setGeometry(QtCore.QRect(30, 30, 241, 171))
         self.groupBox.setObjectName("groupBox")
@@ -40,7 +40,7 @@ class Ui_Form(object):
         self.audioFileFormat.setObjectName("audioFileFormat")
         self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.audioFileFormat)
         self.mux = QtWidgets.QCheckBox(self.formLayoutWidget)
-        self.mux.setChecked(True)
+        self.mux.setChecked(False)
         self.mux.setObjectName("mux")
         self.formLayout.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.mux)
         self.groupBox_2 = QtWidgets.QGroupBox(Form)
@@ -87,7 +87,6 @@ class Ui_Form(object):
         self.mux.clicked['bool'].connect(Form.doMux)
         self.videoBitRate.currentIndexChanged['int'].connect(Form.setVideoBitRate)
         self.videoQuality.currentIndexChanged['int'].connect(Form.setVideoQuality)
-        self.mux.clicked['bool'].connect(Form.doMux)
         self.audioActive.clicked['bool'].connect(Form.isAudioActive)
         self.videoProfile.currentIndexChanged['int'].connect(Form.setVideoProfile)
         self.videoLevel.currentIndexChanged['int'].connect(Form.setVideoLevel)

@@ -3,7 +3,7 @@
     "annotate_background": null,
     "annotate_frame_num": false,
     "annotate_text_size": 32,
-    "audioActive": false,
+    "audioActive": "true",
     "audioBitRate": "16",
     "audioFileFormat": "aiff",
     "audioSampleRate": "48kz",

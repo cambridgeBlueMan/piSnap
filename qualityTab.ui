@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>525</width>
-    <height>503</height>
+    <width>863</width>
+    <height>661</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -71,7 +71,7 @@
         <string>mux after record</string>
        </property>
        <property name="checked">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -252,22 +252,6 @@
     <hint type="destinationlabel">
      <x>359</x>
      <y>394</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>mux</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>Form</receiver>
-   <slot>doMux(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>100</x>
-     <y>198</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>192</x>
-     <y>461</y>
     </hint>
    </hints>
   </connection>

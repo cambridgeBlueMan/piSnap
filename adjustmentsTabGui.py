@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'adjustments.ui'
+# Form implementation generated from reading ui file 'adjustmentsTab.ui'
 #
 # Created by: PyQt5 UI code generator 5.11.3
 #
@@ -13,7 +13,7 @@ class Ui_adjustments(object):
         adjustments.setObjectName("adjustments")
         adjustments.resize(1026, 848)
         self.formLayoutWidget_3 = QtWidgets.QWidget(adjustments)
-        self.formLayoutWidget_3.setGeometry(QtCore.QRect(110, 270, 721, 171))
+        self.formLayoutWidget_3.setGeometry(QtCore.QRect(30, 270, 721, 171))
         self.formLayoutWidget_3.setObjectName("formLayoutWidget_3")
         self.formLayout_3 = QtWidgets.QFormLayout(self.formLayoutWidget_3)
         self.formLayout_3.setContentsMargins(0, 0, 0, 0)
@@ -24,7 +24,7 @@ class Ui_adjustments(object):
         self.label_3 = QtWidgets.QLabel(self.formLayoutWidget_3)
         self.label_3.setObjectName("label_3")
         self.formLayout_3.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.label_3)
-        self.color_effects_v = CompositeSlider(self.formLayoutWidget_3)
+        self.color_effects_v = PSCompositeSlider(self.formLayoutWidget_3)
         self.color_effects_v.setObjectName("color_effects_v")
         self.formLayout_3.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.color_effects_v)
         self.label = QtWidgets.QLabel(self.formLayoutWidget_3)
@@ -34,7 +34,7 @@ class Ui_adjustments(object):
         self.label.setFont(font)
         self.label.setObjectName("label")
         self.formLayout_3.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.label)
-        self.color_effects_u = CompositeSlider(self.formLayoutWidget_3)
+        self.color_effects_u = PSCompositeSlider(self.formLayoutWidget_3)
         self.color_effects_u.setObjectName("color_effects_u")
         self.formLayout_3.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.color_effects_u)
         self.color_effects_none = QtWidgets.QCheckBox(self.formLayoutWidget_3)
@@ -42,7 +42,7 @@ class Ui_adjustments(object):
         self.color_effects_none.setObjectName("color_effects_none")
         self.formLayout_3.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.color_effects_none)
         self.formLayoutWidget = QtWidgets.QWidget(adjustments)
-        self.formLayoutWidget.setGeometry(QtCore.QRect(120, 460, 341, 252))
+        self.formLayoutWidget.setGeometry(QtCore.QRect(30, 460, 341, 252))
         self.formLayoutWidget.setObjectName("formLayoutWidget")
         self.formLayout = QtWidgets.QFormLayout(self.formLayoutWidget)
         self.formLayout.setContentsMargins(0, 0, 0, 0)
@@ -108,7 +108,7 @@ class Ui_adjustments(object):
         self.image_effect.setObjectName("image_effect")
         self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.image_effect)
         self.formLayoutWidget_2 = QtWidgets.QWidget(adjustments)
-        self.formLayoutWidget_2.setGeometry(QtCore.QRect(110, 70, 731, 191))
+        self.formLayoutWidget_2.setGeometry(QtCore.QRect(30, 60, 731, 191))
         self.formLayoutWidget_2.setObjectName("formLayoutWidget_2")
         self.formLayout_2 = QtWidgets.QFormLayout(self.formLayoutWidget_2)
         self.formLayout_2.setContentsMargins(0, 3, 0, 3)
@@ -116,13 +116,13 @@ class Ui_adjustments(object):
         self.label_12 = QtWidgets.QLabel(self.formLayoutWidget_2)
         self.label_12.setObjectName("label_12")
         self.formLayout_2.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_12)
-        self.sharpness = CompositeSlider(self.formLayoutWidget_2)
+        self.sharpness = PSCompositeSlider(self.formLayoutWidget_2)
         self.sharpness.setObjectName("sharpness")
         self.formLayout_2.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.sharpness)
         self.label_13 = QtWidgets.QLabel(self.formLayoutWidget_2)
         self.label_13.setObjectName("label_13")
         self.formLayout_2.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.label_13)
-        self.contrast = CompositeSlider(self.formLayoutWidget_2)
+        self.contrast = PSCompositeSlider(self.formLayoutWidget_2)
         self.contrast.setObjectName("contrast")
         self.formLayout_2.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.contrast)
         self.label_14 = QtWidgets.QLabel(self.formLayoutWidget_2)
@@ -131,10 +131,10 @@ class Ui_adjustments(object):
         self.label_15 = QtWidgets.QLabel(self.formLayoutWidget_2)
         self.label_15.setObjectName("label_15")
         self.formLayout_2.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.label_15)
-        self.brightness = CompositeSlider(self.formLayoutWidget_2)
+        self.brightness = PSCompositeSlider(self.formLayoutWidget_2)
         self.brightness.setObjectName("brightness")
         self.formLayout_2.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.brightness)
-        self.saturation = CompositeSlider(self.formLayoutWidget_2)
+        self.saturation = PSCompositeSlider(self.formLayoutWidget_2)
         self.saturation.setObjectName("saturation")
         self.formLayout_2.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.saturation)
 
@@ -172,4 +172,4 @@ class Ui_adjustments(object):
         self.label_14.setText(_translate("adjustments", "Saturation"))
         self.label_15.setText(_translate("adjustments", "Brightness"))
 
-from psSliders import CompositeSlider
+from psSliders import PSCompositeSlider
