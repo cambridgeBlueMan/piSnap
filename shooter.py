@@ -46,15 +46,12 @@ class PSSnapper(qtw.QWidget):
         self.camera = camera
         # do we want to capture audio?
         self.getAudio = False
-        # apply settings derived from settings file
+        # set text to medium bullet
+        self.ui.previewButton.setText(u"\u26AB")
         self.setupVideoCapture()   
+        self.setupVLCPlayer()
 
-        self.doTimerStuff()
-
-
-
-
-    def doTimerStuff(self):
+    def setupVLCPlayer(self):
         self.timer = qtc.QTimer(self)
         self.timer.setInterval(100)
         self.timer.timeout.connect(self.updateUi)
@@ -71,16 +68,6 @@ class PSSnapper(qtw.QWidget):
 
         # get a file name
         filename = self.camvals["stillFileRoot"] + '{:04d}'.format(self.camvals["fileCounter"]) + '.' + self.camvals["stillFormat"]
-
-        # set the settings for the camera
-        ##issue##
-        """
-        all of the camera settings should be being made elsewhere and they shuld therefore be in place 
-        ready for when a shot is taken
-
-        """
-        self.camera.resolution = tuple(self.camvals["imgres"])
-
         # does the file exist? if not then write it
         if path.exists(filename):
             # if file exists then put the picture to a stream object
@@ -317,13 +304,19 @@ class PSSnapper(qtw.QWidget):
     def previewPos(self, x,y):
         self.camera.stop_preview
         print("in pos", x, y, self.camera.resolution)
-        self.camera.start_preview(fullscreen=False, window = (0, 0,int(self.camera.resolution[0]/2),int(self.camera.resolution[0]/2)))
+        width = int(self.camera.resolution[0]/2)
+        height = int(self.camera.resolution[1]/2) 
+        self.ui.previewVisible.setChecked(True)
+        self.camera.start_preview(fullscreen=False, window = (x*5, y*5,width,height))
 
     def showPreview(self, state, xPos=0, yPos=0):
         if state == True:
             width = int(self.camera.resolution[0]/2)
             height = int(self.camera.resolution[1]/2) 
-            self.camera.start_preview(fullscreen=False, window = (0, 0,width,height))
+            self.geometry().x()
+            x = self.ui.imgContainer.geometry().x() + self.geometry().x()
+            y = self.ui.imgContainer.geometry().y() + self.geometry().y()
+            self.camera.start_preview(fullscreen=False, window = (x, y,width,height))
         else:
             self.camera.stop_preview()
 
@@ -360,20 +353,29 @@ class PSSnapper(qtw.QWidget):
         self.media = None
         self.mediaplayer = self.vlcObj.media_player_new()
         self.is_paused = False
-        # set resolution for video
-        self.resolution = tuple(self.camvals["vidres"])
+        # set camera.resolution for video
+        self.camera.resolution = tuple(self.camvals["vidres"])
         # adjust display area for video
         ##issue##
-        self.ui.imgContainer.resize(800,600)
+        self.ui.imgContainer.resize(self.camera.resolution[0]/2, self.camera.resolution[1]/2)
+        self.ui.previewFrame.resize(((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
+        self.ui.previewButton.setContainerSize(((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
+        print("££££££££££££££££££££££££3", self.camera.resolution)
+        print("**********************", ((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
 
     def setupStillCapture(self):
         #print(self)
         """ make all relevant settings for still capture """
-        # set resolution for still
-        self.resolution = tuple(self.camvals["imgres"])
+        # set camera.resolution for still
+        self.camera.resolution = tuple(self.camvals["imgres"])
         # adjust display area for video
         ##issue##
-        self.ui.imgContainer.resize(self.resolution[0]/2, self.resolution[1]/2)
+        self.ui.imgContainer.resize(self.camera.resolution[0]/2, self.camera.resolution[1]/2)
+        self.ui.previewFrame.resize(((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
+        self.ui.previewButton.setContainerSize(((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
+
+        print("**********************", ((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
+
 
 
 

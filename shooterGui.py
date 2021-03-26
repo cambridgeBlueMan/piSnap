@@ -108,7 +108,7 @@ class Ui_Form(object):
         self.imgContainer.setText("")
         self.imgContainer.setObjectName("imgContainer")
         self.previewFrame = QtWidgets.QFrame(Form)
-        self.previewFrame.setGeometry(QtCore.QRect(20, 650, 192, 108))
+        self.previewFrame.setGeometry(QtCore.QRect(20, 650, 214, 130))
         self.previewFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.previewFrame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.previewFrame.setObjectName("previewFrame")

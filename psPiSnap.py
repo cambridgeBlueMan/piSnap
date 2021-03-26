@@ -139,6 +139,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
 
 
 
+
     def setWidgetSizes(self):
         self.settingsWidget.setMinimumHeight(750)
         self.settingsWidget.setMinimumWidth(400)
