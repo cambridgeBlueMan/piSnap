@@ -52,6 +52,9 @@ class PSCompositeSlider(qtw.QWidget):
         # show it
         self.show()
 
+    def setValue(self,val):
+        self.slider.setValue(val)
+        print("in setValue")
     def sendValue(*args):
         args[0].lnValueChanged.emit(args[1])
 

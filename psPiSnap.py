@@ -1,11 +1,14 @@
 # import necessary modules
 import sys
+import json
 from PyQt5 import QtWidgets as qtw 
 from PyQt5 import QtGui as qtg 
 from PyQt5 import QtCore as qtc 
 
 from qualityTab import QualityTab
+from adjustmentsTab import Adjustments
 from shooter import PSSnapper
+from adjustmentsTab import Adjustments
 from psSettings import PSSettings
 from psPiCamera import PSPiCamera
 #from picamera import PiCamera
@@ -17,10 +20,29 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.camera = PSPiCamera(self)
         # pass the main window and camera objects to a settings object
         self.settings = PSSettings(self, self.camera)
+        self.camvals = self.settings.camvals
         #now start drawing the GUI
         self.initUI()
+    def closeEvent(self, event):
+        """
+        overrides closEvent of QWidget, so we can save the
+        settings file before we quit
+        :param event:
+        :return:
+        """
+        reply = qtw.QMessageBox.question(self, 'Window Close', 'Are you sure you want to quit the Camera App?',
+                                     qtw.QMessageBox.Yes | qtw.QMessageBox.No, qtw.QMessageBox.No)
 
-    
+        if reply == qtw.QMessageBox.Yes:
+            x = json.dumps(self.camvals, indent=4)
+            with open('settings.json', 'w') as f:
+                f.write(x)
+                f.close()
+            event.accept()
+            #print('Window closed')
+        else:
+            event.ignore()
+      
 
     def initUI(self):
         self.setWindowTitle('PiSnap!')
@@ -136,6 +158,9 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
 
         # ##################################################################
         # make a brightness object and do the same 
+        self.adjustmentsTab = Adjustments(self.settings.camvals, self.camera)
+        self.settings.registerWidget(self.adjustmentsTab)
+        self.settingsWidget.addTab(self.adjustmentsTab, "Adjustments")
 
 
 
