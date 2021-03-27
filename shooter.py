@@ -360,6 +360,7 @@ class PSSnapper(qtw.QWidget):
         self.ui.imgContainer.resize(self.camera.resolution[0]/2, self.camera.resolution[1]/2)
         self.ui.previewFrame.resize(((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
         self.ui.previewButton.setContainerSize(((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
+        self.ui.previewButton.moveButtonToOrigin()
         print("££££££££££££££££££££££££3", self.camera.resolution)
         print("**********************", ((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
 
@@ -373,6 +374,7 @@ class PSSnapper(qtw.QWidget):
         self.ui.imgContainer.resize(self.camera.resolution[0]/2, self.camera.resolution[1]/2)
         self.ui.previewFrame.resize(((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
         self.ui.previewButton.setContainerSize(((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
+        self.ui.previewButton.moveButtonToOrigin()
 
         print("**********************", ((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
 

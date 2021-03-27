@@ -58,6 +58,9 @@ class DragButton(qtw.QPushButton):
             self.__mouseMovePos = globalPos
         super(DragButton, self).mouseMoveEvent(event)
 
+    def moveButtonToOrigin(self):
+        self.move(0,0)
+
     def sendPos(self, pos):
         print(pos)
         self.posChanged.emit(pos[0], pos[1])
