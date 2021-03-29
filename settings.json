@@ -12,14 +12,14 @@
         0
     ],
     "awb_mode": "auto",
-    "brightness": 80,
+    "brightness": 50,
     "clock_mode": "reset",
     "closed": false,
     "color_effects": [
         128,
         128
     ],
-    "contrast": -6,
+    "contrast": 39,
     "crop": [
         0.0,
         0.0,
@@ -57,9 +57,9 @@
         1080
     ],
     "rotation": 0,
-    "saturation": 100,
+    "saturation": 31,
     "sensor_mode": 0,
-    "sharpness": 100,
+    "sharpness": 36,
     "shutter_speed": 0,
     "still_stats": false,
     "vflip": false,

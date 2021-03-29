@@ -47,9 +47,19 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
     def initUI(self):
         self.setWindowTitle('PiSnap!')
         self.makeMenu() # run makemenu method
+        self.makeStatusBar()
         self.addMainWidgets() 
         self.setWidgetSizes()
         self.show()
+
+    def makeStatusBar(self):
+        statusBar = qtw.QStatusBar()
+        self.setStatusBar(statusBar)
+        statusBar.showMessage('This is a status bar')
+        statusBarPreviewCheckBox = qtw.QCheckBox()
+        self.statusBar().addPermanentWidget(statusBarPreviewCheckBox)
+        statusBarPreviewCheckBox.setText("Show preview")
+    
 
     def makeMenu(self): #create menu
         #create actions for file menu
@@ -86,8 +96,6 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         edit_menu.addAction(preferences)
         edit_menu.addAction(undo)
         undo.setShortcut('Ctrl+Z')
-        #def makeStatusBar(self): #create status bar
-        #self.qtw.SetStatusBar(QStatusBar(self))
 
     def doSave(self):
         print('Save code here')

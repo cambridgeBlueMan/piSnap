@@ -16,7 +16,7 @@ class Adjustments(qtw.QWidget):
 
     def __init__(self,camvals, camera):
         super().__init__()
-        self.comboItemsAdded = False
+        self.comboItemsAdded = False  #flag to prevent combo boxes updating camvals values when items are added to combobox
         # camvals = None means we are running the code as stand alone
         # so we need to load the settings file
         if camvals == None:
@@ -27,7 +27,7 @@ class Adjustments(qtw.QWidget):
         self.camera = camera
         self.ui = Ui_adjustments()
         self.ui.setupUi(self)
-
+        #on successful completion 'add items to combos' method returns true
         self.comboItemsAdded = self.addItemsToCombos()
 
         self.setCompositeSliderRanges()
@@ -53,7 +53,7 @@ class Adjustments(qtw.QWidget):
     def setCompositeSliderRanges(self):
         self.ui.sharpness.setRanges(-100,100,self.camera.sharpness)
         #print(type(self.ui.contrast))
-        self.ui.contrast.setRanges(-100,100,self.camera.sharpness)
+        self.ui.contrast.setRanges(-100,100,self.camera.contrast)
         self.ui.saturation.setRanges(-100,100,self.camera.saturation)
         self.ui.brightness.setRanges(0,100,self.camera.brightness)
         #set vales for color effects composite sliders u and v values
@@ -66,8 +66,8 @@ class Adjustments(qtw.QWidget):
         for key in self.camvals:
         #check if widget with the same name exists in the GUI
             if hasattr(self.ui,key):
-                pass
-                #print(key)
+                #pass
+                print(key)
         #Depending on the type of the GUI or UI widget update the GUI
             if key == "color_effects":
         #get the value of color_effects from the dictionery
@@ -82,41 +82,22 @@ class Adjustments(qtw.QWidget):
         
         self.ui.image_effect.setCurrentText(self.camvals ["image_effect"])
         
-        # add your own method functions below
-
-    def takePhoto(self):
-        ##print(self)
-        vwPhoto = cameraFunctions.generateFileName('s')
-        #print(vwPhoto)
-        self.camera.capture(vwPhoto)
-    def startRecording(self):
-        ##print(self)
-        vwVideo = cameraFunctions.generateFileName('v')
-        #print(vwVideo)
-        self.camera.start_recording(vwVideo)
-    def stopRecording(self):
-        ##print(self)
-        ##print(vwVideo)
-        self.camera.stop_recording()
-    def showPreview(self):
-        #self.camera.start_preview()
-        #print(self)
-        #print(self.sender().isChecked())
-        if self.sender().isChecked()==True:
-            self.camera.start_preview(fullscreen = False, window = (960,0,960,540))
-        else:self.camera.stop_preview()
     def changeCameraValue(self, value):
         control = self.sender().objectName()
         #value = args[1]
-        if control == "brightness":
-            self.camera.brightness = value
+        if control == "sharpness":
+            self.camera.sharpness  = value
+            self.camvals ["sharpness"] = value
+        elif control == "contrast":
+            self.camera.contrast = value
+            self.camvals ["contrast"] = value
         elif control == "saturation":
             #print("in saturation")
             self.camera.saturation = value
-        elif control == "contrast":
-            self.camera.contrast = value
-        elif control == "sharpness":
-            self.camera.sharpness  = value
+            self.camvals ["saturation"] = value
+        elif control == "brightness":
+            self.camera.brightness = value
+            self.camvals ["brightness"] = value
         else:
             pass
             #print("Unknown control!")
