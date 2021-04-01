@@ -11,7 +11,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(863, 660)
+        Form.setEnabled(True)
+        Form.resize(863, 661)
         self.groupBox = QtWidgets.QGroupBox(Form)
         self.groupBox.setGeometry(QtCore.QRect(30, 30, 241, 171))
         self.groupBox.setObjectName("groupBox")
@@ -40,6 +41,7 @@ class Ui_Form(object):
         self.audioFileFormat.setObjectName("audioFileFormat")
         self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.audioFileFormat)
         self.mux = QtWidgets.QCheckBox(self.formLayoutWidget)
+        self.mux.setEnabled(True)
         self.mux.setChecked(False)
         self.mux.setObjectName("mux")
         self.formLayout.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.mux)
@@ -81,14 +83,15 @@ class Ui_Form(object):
         self.audioActive.setObjectName("audioActive")
 
         self.retranslateUi(Form)
-        self.audioBitRate.currentIndexChanged['int'].connect(Form.setAudioBitRate)
-        self.audioSampleRate.currentIndexChanged['int'].connect(Form.setAudioSampleRate)
-        self.audioFileFormat.currentIndexChanged['int'].connect(Form.setAudioFileFormat)
-        self.videoBitRate.currentIndexChanged['int'].connect(Form.setVideoBitRate)
-        self.videoQuality.currentIndexChanged['int'].connect(Form.setVideoQuality)
+        self.audioBitRate.currentIndexChanged['QString'].connect(Form.setCamValFromCombo)
+        self.audioSampleRate.currentIndexChanged['QString'].connect(Form.setCamValFromCombo)
+        self.audioFileFormat.currentIndexChanged['QString'].connect(Form.setCamValFromCombo)
+        self.videoBitRate.currentIndexChanged['QString'].connect(Form.setCamValFromCombo)
+        self.videoQuality.currentIndexChanged['QString'].connect(Form.setCamValFromCombo)
         self.audioActive.clicked['bool'].connect(Form.isAudioActive)
-        self.videoProfile.currentIndexChanged['int'].connect(Form.setVideoProfile)
-        self.videoLevel.currentIndexChanged['int'].connect(Form.setVideoLevel)
+        self.videoProfile.currentIndexChanged['QString'].connect(Form.setCamValFromCombo)
+        self.videoLevel.currentIndexChanged['QString'].connect(Form.setCamValFromCombo)
+        self.mux.clicked['bool'].connect(Form.doMux)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):

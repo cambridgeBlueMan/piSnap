@@ -167,9 +167,9 @@
  <connections>
   <connection>
    <sender>audioBitRate</sender>
-   <signal>currentIndexChanged(int)</signal>
+   <signal>currentIndexChanged(QString)</signal>
    <receiver>Form</receiver>
-   <slot>setAudioBitRate(int)</slot>
+   <slot>setCamValFromCombo(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>255</x>
@@ -183,9 +183,9 @@
   </connection>
   <connection>
    <sender>audioSampleRate</sender>
-   <signal>currentIndexChanged(int)</signal>
+   <signal>currentIndexChanged(QString)</signal>
    <receiver>Form</receiver>
-   <slot>setAudioSampleRate(int)</slot>
+   <slot>setCamValFromCombo(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>279</x>
@@ -199,9 +199,9 @@
   </connection>
   <connection>
    <sender>audioFileFormat</sender>
-   <signal>currentIndexChanged(int)</signal>
+   <signal>currentIndexChanged(QString)</signal>
    <receiver>Form</receiver>
-   <slot>setAudioFileFormat(int)</slot>
+   <slot>setCamValFromCombo(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>289</x>
@@ -215,9 +215,9 @@
   </connection>
   <connection>
    <sender>videoBitRate</sender>
-   <signal>currentIndexChanged(int)</signal>
+   <signal>currentIndexChanged(QString)</signal>
    <receiver>Form</receiver>
-   <slot>setVideoBitRate(int)</slot>
+   <slot>setCamValFromCombo(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>199</x>
@@ -231,9 +231,9 @@
   </connection>
   <connection>
    <sender>videoQuality</sender>
-   <signal>currentIndexChanged(int)</signal>
+   <signal>currentIndexChanged(QString)</signal>
    <receiver>Form</receiver>
-   <slot>setVideoQuality(int)</slot>
+   <slot>setCamValFromCombo(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>163</x>
@@ -263,9 +263,9 @@
   </connection>
   <connection>
    <sender>videoProfile</sender>
-   <signal>currentIndexChanged(int)</signal>
+   <signal>currentIndexChanged(QString)</signal>
    <receiver>Form</receiver>
-   <slot>setVideoProfile(int)</slot>
+   <slot>setCamValFromCombo(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>150</x>
@@ -279,9 +279,9 @@
   </connection>
   <connection>
    <sender>videoLevel</sender>
-   <signal>currentIndexChanged(int)</signal>
+   <signal>currentIndexChanged(QString)</signal>
    <receiver>Form</receiver>
-   <slot>setVideoLevel(int)</slot>
+   <slot>setCamValFromCombo(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>195</x>
@@ -290,6 +290,22 @@
     <hint type="destinationlabel">
      <x>315</x>
      <y>364</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>mux</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>Form</receiver>
+   <slot>doMux(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>103</x>
+     <y>189</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>479</x>
+     <y>228</y>
     </hint>
    </hints>
   </connection>
@@ -304,5 +320,7 @@
   <slot>isAudioActive(bool)</slot>
   <slot>setVideoProfile(int)</slot>
   <slot>setVideoLevel(int)</slot>
+  <slot>slot1()</slot>
+  <slot>setCamValFromCombo(QString)</slot>
  </slots>
 </ui>
