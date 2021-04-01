@@ -61,19 +61,12 @@ class QualityTab(qtw.QWidget):
         self.ui.videoProfile.setCurrentText(str(self.camvals["videoProfile"]))
         self.ui.videoLevel.setCurrentText(str(self.camvals["videoLevel"]))
 
-       
-        #set the audio bitrate in the dictionary to the currently selected audio bit rate in the drop down box
-    def setAudioBitRate(self, ix):
-        if self.comboItemsAdded == True:
-            self.camvals["audioBitRate"] = self.ui.audioBitRate.currentText()
-        
-    def setAudioSampleRate(self, ix):
-        if self.comboItemsAdded == True:
-            self.camvals["audioSampleRate"] = self.ui.audioSampleRate.currentText()
 
-    def setAudioFileFormat(self, ix):
+    def setCamValFromCombo(self, str):
         if self.comboItemsAdded == True:
-            self.camvals["audioFileFormat"] = self.ui.audioFileFormat.currentText()
+            self.camvals[self.sender().objectName()] = str
+            setattr(self.camera,self.sender().objectName(),str)
+        
 
     def doMux(self, state):
         #print ("The value of state is: ", state)
@@ -89,23 +82,6 @@ class QualityTab(qtw.QWidget):
             self.camvals["audioActive"] = "true"
         else:
             self.camvals["audioActive"] = "false"
-
-    def setVideoBitRate(self, ix):
-        if self.comboItemsAdded == True:
-            self.camvals["videoBitRate"] = self.ui.videoBitRate.currentText()
-
-    def setVideoQuality(self, ix):
-        if self.comboItemsAdded == True:
-            self.camvals["videoQuality"] = self.ui.videoQuality.currentText()
-
-    def setVideoProfile(self, ix):
-        if self.comboItemsAdded == True:
-            self.camvals["videoProfile"] = self.ui.videoProfile.currentText()
-
-    def setVideoLevel(self, ix):
-        if self.comboItemsAdded == True:
-            self.camvals["videoLevel"] = self.ui.videoLevel.currentText()
- 
 
 #######################################################################################
     #                           END OF CLASS

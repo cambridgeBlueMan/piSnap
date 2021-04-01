@@ -141,38 +141,12 @@ class Adjustments(qtw.QWidget):
             else:
                 self.camera.color_effects = self.camvals["color_effects"]
                 
-        
-    def setImageEffect(self):
+    def setCamValFromCombo(self, str):
         if self.comboItemsAdded == True:
-            self.camera.image_effect = self.sender().currentText()
-            self.camvals["image_effect"] = self.sender().currentText()
+            self.camvals[self.sender().objectName()] = str
+            setattr(self.camera,self.sender().objectName(),str)    
 
-    def setAwbMode(self):
-        if self.comboItemsAdded == True:
-            self.camera.awb_mode = self.sender().currentText()
-            self.camvals["awb_mode"] = self.sender().currentText()
-        
-    def setDrcStrength(self):
-        if self.comboItemsAdded == True:
-            self.camera.drc_strength = self.sender().currentText()
-            self.camvals["drc_strength"] = self.sender().currentText()
-
-    def setExposureMode(self):
-        if self.comboItemsAdded == True:
-            self.camera.exposure_mode = self.sender().currentText()
-            self.camvals["exposure_mode"] = self.sender().currentText()
-
-    def setFlashMode(self):
-        if self.comboItemsAdded == True:
-            self.camera.flash_mode = self.sender().currentText()
-            self.camvals["flash_mode"] = self.sender().currentText()
-
-    def setMeterMode(self):
-        if self.comboItemsAdded == True:
-            self.camera.meter_mode = self.sender().currentText()
-            self.camvals["meter_mode"] = self.sender().currentText()
-
-
+    
 #######################################################################################
     #                           END OF CLASS
 #######################################################################################

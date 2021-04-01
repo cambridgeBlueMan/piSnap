@@ -30,7 +30,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         :param event:
         :return:
         """
-        reply = qtw.QMessageBox.question(self, 'Window Close', 'Are you sure you want to quit the Camera App?',
+        reply = qtw.QMessageBox.question(self, 'Window Close', 'Do you want to save the settings file?',
                                      qtw.QMessageBox.Yes | qtw.QMessageBox.No, qtw.QMessageBox.No)
 
         if reply == qtw.QMessageBox.Yes:
@@ -38,10 +38,8 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
             with open('settings.json', 'w') as f:
                 f.write(x)
                 f.close()
-            event.accept()
-            #print('Window closed')
-        else:
-            event.ignore()
+        event.accept()
+
       
 
     def initUI(self):
@@ -131,6 +129,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         
         #print(self.hlayout)
         self.mWidget = PSSnapper(self.settings.camvals, self.camera)
+        # self.mWidget = qtw.QWidget(self)
         #self.statusBarPreviewCheckBox.stateChanged.connect(self.mWidget.showPreview(self.mWidget, True))
 
         #print(self.mWidget)
@@ -169,7 +168,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         # make a brightness object and do the same 
         self.adjustmentsTab = Adjustments(self.settings.camvals, self.camera)
         self.settings.registerWidget(self.adjustmentsTab)
-        self.settingsWidget.addTab(self.adjustmentsTab, "Adjustments")
+        self.settingsWidget.addTab(self.adjustmentsTab, "Adjustments") 
 
 
 
