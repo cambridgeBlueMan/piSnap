@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_adjustments(object):
     def setupUi(self, adjustments):
         adjustments.setObjectName("adjustments")
-        adjustments.resize(1026, 848)
+        adjustments.resize(1321, 848)
         self.formLayoutWidget_3 = QtWidgets.QWidget(adjustments)
         self.formLayoutWidget_3.setGeometry(QtCore.QRect(30, 270, 721, 171))
         self.formLayoutWidget_3.setObjectName("formLayoutWidget_3")
@@ -146,12 +146,12 @@ class Ui_adjustments(object):
         self.color_effects_u.lnValueChanged['int'].connect(adjustments.doColorEffect)
         self.color_effects_v.lnValueChanged['int'].connect(adjustments.doColorEffect)
         self.color_effects_none.stateChanged['int'].connect(adjustments.doColorEffect)
-        self.awb_mode.currentIndexChanged['QString'].connect(adjustments.setAwbMode)
-        self.image_effect.currentIndexChanged['QString'].connect(adjustments.setImageEffect)
-        self.drc_strength.currentIndexChanged['QString'].connect(adjustments.setDrcStrength)
-        self.exposure_mode.currentIndexChanged['QString'].connect(adjustments.setExposureMode)
-        self.flash_mode.currentIndexChanged['QString'].connect(adjustments.setFlashMode)
-        self.meter_mode.currentIndexChanged['QString'].connect(adjustments.setMeterMode)
+        self.awb_mode.currentIndexChanged['QString'].connect(adjustments.setCamValFromCombo)
+        self.image_effect.currentIndexChanged['QString'].connect(adjustments.setCamValFromCombo)
+        self.drc_strength.currentIndexChanged['QString'].connect(adjustments.setCamValFromCombo)
+        self.exposure_mode.currentIndexChanged['QString'].connect(adjustments.setCamValFromCombo)
+        self.flash_mode.currentIndexChanged['QString'].connect(adjustments.setCamValFromCombo)
+        self.meter_mode.currentIndexChanged['QString'].connect(adjustments.setCamValFromCombo)
         QtCore.QMetaObject.connectSlotsByName(adjustments)
 
     def retranslateUi(self, adjustments):

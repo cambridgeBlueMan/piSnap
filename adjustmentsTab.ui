@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1026</width>
+    <width>1321</width>
     <height>848</height>
    </rect>
   </property>
@@ -288,8 +288,8 @@
    <slot>changeCameraValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>486</x>
-     <y>144</y>
+     <x>569</x>
+     <y>140</y>
     </hint>
     <hint type="destinationlabel">
      <x>1025</x>
@@ -304,8 +304,8 @@
    <slot>changeCameraValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>433</x>
-     <y>172</y>
+     <x>516</x>
+     <y>168</y>
     </hint>
     <hint type="destinationlabel">
      <x>1025</x>
@@ -365,7 +365,7 @@
    <sender>awb_mode</sender>
    <signal>currentIndexChanged(QString)</signal>
    <receiver>adjustments</receiver>
-   <slot>setAwbMode(QString)</slot>
+   <slot>setCamValFromCombo(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>303</x>
@@ -381,7 +381,7 @@
    <sender>image_effect</sender>
    <signal>currentIndexChanged(QString)</signal>
    <receiver>adjustments</receiver>
-   <slot>setImageEffect(QString)</slot>
+   <slot>setCamValFromCombo(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>265</x>
@@ -397,11 +397,11 @@
    <sender>drc_strength</sender>
    <signal>currentIndexChanged(QString)</signal>
    <receiver>adjustments</receiver>
-   <slot>setDrcStrength(QString)</slot>
+   <slot>setCamValFromCombo(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>400</x>
-     <y>552</y>
+     <x>369</x>
+     <y>568</y>
     </hint>
     <hint type="destinationlabel">
      <x>838</x>
@@ -413,11 +413,11 @@
    <sender>exposure_mode</sender>
    <signal>currentIndexChanged(QString)</signal>
    <receiver>adjustments</receiver>
-   <slot>setExposureMode(QString)</slot>
+   <slot>setCamValFromCombo(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>429</x>
-     <y>590</y>
+     <x>369</x>
+     <y>606</y>
     </hint>
     <hint type="destinationlabel">
      <x>764</x>
@@ -429,7 +429,7 @@
    <sender>flash_mode</sender>
    <signal>currentIndexChanged(QString)</signal>
    <receiver>adjustments</receiver>
-   <slot>setFlashMode(QString)</slot>
+   <slot>setCamValFromCombo(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>361</x>
@@ -445,7 +445,7 @@
    <sender>meter_mode</sender>
    <signal>currentIndexChanged(QString)</signal>
    <receiver>adjustments</receiver>
-   <slot>setMeterMode(QString)</slot>
+   <slot>setCamValFromCombo(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>336</x>
@@ -468,5 +468,6 @@
   <slot>setExposureMode(QString)</slot>
   <slot>setFlashMode(QString)</slot>
   <slot>setMeterMode(QString)</slot>
+  <slot>setCamValFromCombo(QString)</slot>
  </slots>
 </ui>

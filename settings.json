@@ -19,7 +19,7 @@
         128,
         128
     ],
-    "contrast": 18,
+    "contrast": 28,
     "crop": [
         0.0,
         0.0,
@@ -57,9 +57,9 @@
         1080
     ],
     "rotation": 0,
-    "saturation": -7,
+    "saturation": 3,
     "sensor_mode": 0,
-    "sharpness": 27,
+    "sharpness": 37,
     "shutter_speed": 0,
     "still_stats": false,
     "vflip": false,

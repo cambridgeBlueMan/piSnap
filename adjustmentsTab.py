@@ -94,10 +94,6 @@ class Adjustments(qtw.QWidget):
                     else:
                         pass
         
-        
-        
-        #self.ui.image_effect.setCurrentText(self.camvals ["image_effect"])
-        
     def changeCameraValue(self, value):
         control = self.sender().objectName()
         #value = args[1]
