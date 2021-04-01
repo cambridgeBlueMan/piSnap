@@ -53,13 +53,12 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.show()
 
     def makeStatusBar(self):
-        statusBar = qtw.QStatusBar()
-        self.setStatusBar(statusBar)
-        statusBar.showMessage('This is a status bar')
-        statusBarPreviewCheckBox = qtw.QCheckBox()
-        self.statusBar().addPermanentWidget(statusBarPreviewCheckBox)
-        statusBarPreviewCheckBox.setText("Show preview")
-    
+        self.statusBar = qtw.QStatusBar()
+        self.setStatusBar(self.statusBar)
+        self.statusBar.showMessage('This is a status bar')
+        self.statusBarPreviewCheckBox = qtw.QCheckBox()
+        self.statusBar.addPermanentWidget(self.statusBarPreviewCheckBox)
+        self.statusBarPreviewCheckBox.setText("Show preview")
 
     def makeMenu(self): #create menu
         #create actions for file menu
@@ -130,9 +129,11 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         # add the dummy widget to the horizontal layout
         self.hlayout.addWidget(self.dummy) """
         
-        print(self.hlayout)
+        #print(self.hlayout)
         self.mWidget = PSSnapper(self.settings.camvals, self.camera)
-        print(self.mWidget)
+        #self.statusBarPreviewCheckBox.stateChanged.connect(self.mWidget.showPreview(self.mWidget, True))
+
+        #print(self.mWidget)
         self.hlayout.addWidget(self.mWidget)
         # add it to the settings registry
         self.settings.registerWidget(self.mWidget)

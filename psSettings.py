@@ -12,5 +12,5 @@ class PSSettings():
 
     def registerWidget(self, widg):
         self.widgetList.append(widg)
-        print(self.widgetList)
+        #print(self.widgetList)
 

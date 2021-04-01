@@ -54,7 +54,7 @@ class PSCompositeSlider(qtw.QWidget):
 
     def setValue(self,val):
         self.slider.setValue(val)
-        print("in setValue")
+        #print("in setValue")
     def sendValue(*args):
         args[0].lnValueChanged.emit(args[1])
 
@@ -91,15 +91,15 @@ class DDPlayerWindow(qtw.QLabel):                       # - QWidget    + QLabel
         #self.setStyleSheet("QLabel { background-color : #ccd; color : blue; font-size: 20px;}")
 
     def dragEnterEvent(self, e):
-        print("DragEnter")
+        #print("DragEnter")
         e.accept()
 
     def dragMoveEvent(self, e):
-        print("DragMove")
+        #print("DragMove")
         e.accept()
 
     def dropEvent(self, e):
-        print("DropEvent")
+        #print("DropEvent")
         #print (type(e))
         #print(dir(e.mimeData().dumpObjectInfo()))
         #print(dir(e.mimeData().isWidgetType()))
@@ -107,11 +107,11 @@ class DDPlayerWindow(qtw.QLabel):                       # - QWidget    + QLabel
 
         #print ("Mime data: ", e.mimeData())
         position = e.pos()
-        print(position)
-        print(e.mimeData().text())
+        #print(position)
+        #print(e.mimeData().text())
 
         #self.setText(e.mimeData().text())                #  +++
-        print(e.dropAction)
+        #print(e.dropAction)
         e.setDropAction(qtc.Qt.MoveAction)                   #  +++
 
         e.accept()
@@ -186,15 +186,15 @@ class DDPlayerWindow(qtw.QLabel):                       # - QWidget    + QLabel
         #self.setStyleSheet("QLabel { background-color : #ccd; color : blue; font-size: 20px;}")
 
     def dragEnterEvent(self, e):
-        print("DragEnter")
+        #print("DragEnter")
         e.accept()
 
     def dragMoveEvent(self, e):
-        print("DragMove")
+        #print("DragMove")
         e.accept()
 
     def dropEvent(self, e):
-        print("DropEvent")
+        #print("DropEvent")
         #print (type(e))
         #print(dir(e.mimeData().dumpObjectInfo()))
         #print(dir(e.mimeData().isWidgetType()))
@@ -202,11 +202,11 @@ class DDPlayerWindow(qtw.QLabel):                       # - QWidget    + QLabel
 
         #print ("Mime data: ", e.mimeData())
         position = e.pos()
-        print(position)
-        print(e.mimeData().text())
+        #print(position)
+        #print(e.mimeData().text())
 
         #self.setText(e.mimeData().text())                #  +++
-        print(e.dropAction)
+        #print(e.dropAction)
         e.setDropAction(qtc.Qt.MoveAction)                   #  +++
 
         e.accept()

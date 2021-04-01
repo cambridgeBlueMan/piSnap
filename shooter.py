@@ -183,14 +183,14 @@ class PSSnapper(qtw.QWidget):
         if self.camera.recording:
             self.camera.stop_recording() # picamera method
             if self.getAudio == True:
-                print(type(self.proc))
+                #print(type(self.proc))
                 self.proc.send_signal(signal.SIGINT) ## Send interrupt signal
                 vidInput = self.vidRoot + self.camvals["videoFormat"]
                 audioInput = self.vidRoot + "wav"
                 output = self.vidRoot + "mp4"
-                print(vidInput)
-                print(audioInput)
-                print(output)
+                #print(vidInput)
+                #print(audioInput)
+                #print(output)
                 self.proc = subprocess.Popen(["ffmpeg",  "-i",  vidInput,  "-i",  audioInput,  "-c:v",  "copy","-c:a",  "aac",  output])
             else:
                 output = self.vidRoot + "h264"    
@@ -233,8 +233,8 @@ class PSSnapper(qtw.QWidget):
       
     def setPosition(self, pos):
         # called from vid pos slider
-        print ("in position vid")
-        print(pos)
+        #print ("in position vid")
+        #print(pos)
         self.timer.stop()
         self.mediaplayer.set_position(pos / 1000.0)
         self.timer.start()
@@ -267,7 +267,7 @@ class PSSnapper(qtw.QWidget):
             #self.mediaplayer.set_position(0)
             #print("hello everybody")
             self.mediaplayer.stop()
-            print(self.mediaplayer.video_take_snapshot(0 , "filename.jpeg", 240, 180 ))
+            #print(self.mediaplayer.video_take_snapshot(0 , "filename.jpeg", 240, 180 ))
 
         # No need to call this function if nothing is played
         if not self.mediaplayer.is_playing():
@@ -303,7 +303,7 @@ class PSSnapper(qtw.QWidget):
   
     def previewPos(self, x,y):
         self.camera.stop_preview
-        print("in pos", x, y, self.camera.resolution)
+        #print("in pos", x, y, self.camera.resolution)
         width = int(self.camera.resolution[0]/2)
         height = int(self.camera.resolution[1]/2) 
         self.ui.previewVisible.setChecked(True)
@@ -361,8 +361,8 @@ class PSSnapper(qtw.QWidget):
         self.ui.previewFrame.resize(((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
         self.ui.previewButton.setContainerSize(((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
         self.ui.previewButton.moveButtonToOrigin()
-        print("££££££££££££££££££££££££3", self.camera.resolution)
-        print("**********************", ((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
+        #print("££££££££££££££££££££££££3", self.camera.resolution)
+        #print("**********************", ((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
 
     def setupStillCapture(self):
         #print(self)
@@ -376,7 +376,7 @@ class PSSnapper(qtw.QWidget):
         self.ui.previewButton.setContainerSize(((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
         self.ui.previewButton.moveButtonToOrigin()
 
-        print("**********************", ((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
+        #print("**********************", ((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
 
 
 

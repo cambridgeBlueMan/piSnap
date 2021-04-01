@@ -62,7 +62,7 @@ class DragButton(qtw.QPushButton):
         self.move(0,0)
 
     def sendPos(self, pos):
-        print(pos)
+        #print(pos)
         self.posChanged.emit(pos[0], pos[1])
 
     def mouseReleaseEvent(self, event):
