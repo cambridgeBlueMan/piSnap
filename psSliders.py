@@ -9,7 +9,7 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc
 
-class PSCompositeSlider(qtw.QWidget):
+class PSCompositeSlider(qtw.QAbstractSlider):
     lnValueChanged =  qtc.pyqtSignal(int)
     global lnMin, lnMax, lnDefault
     def __init__(self, parent):
