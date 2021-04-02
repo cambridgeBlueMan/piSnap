@@ -42,18 +42,23 @@ class Adjustments(qtw.QWidget):
         """ a number of possible settings are defined in dictionaries within the Picamera class.
         we access these dictionaries and add thier contents as items for a number of gui combo boxes
          """
-        self.ui.image_effect.addItems(self.camera.IMAGE_EFFECTS)
-        self.ui.image_effect.setCurrentText('none')
-        self.ui.awb_mode.addItems(self.camera.AWB_MODES)
+        self.ui.image_effect.addItems(tuple(self.camera.IMAGE_EFFECTS.keys()))
+        self.ui.image_effect.setCurrentText('none') 
+        self.ui.awb_mode.addItems(tuple(self.camera.AWB_MODES.keys()))
         self.ui.awb_mode.setCurrentText('auto')
-        self.ui.drc_strength.addItems(self.camera.DRC_STRENGTHS)
+        """
+        following line appears to cause mouse to clog up
+        self.ui.drc_strength.addItems(tuple(self.camera.DRC_STRENGTHS.keys()))
         self.ui.drc_strength.setCurrentText('off')
-        self.ui.exposure_mode.addItems(self.camera.EXPOSURE_MODES)
+        suspect this problem lies with the PiCamera class!!!
+        """
+       
+        self.ui.exposure_mode.addItems(tuple(self.camera.EXPOSURE_MODES.keys()))
         self.ui.exposure_mode.setCurrentText('auto')
-        self.ui.flash_mode.addItems(self.camera.FLASH_MODES)
+        self.ui.flash_mode.addItems(tuple(self.camera.FLASH_MODES.keys()))
         self.ui.flash_mode.setCurrentText('off')
-        self.ui.meter_mode.addItems(self.camera.METER_MODES)
-        self.ui.meter_mode.setCurrentText('average')
+        self.ui.meter_mode.addItems(tuple(self.camera.METER_MODES.keys()))
+        self.ui.meter_mode.setCurrentText('average') 
         return True
 
     def setCompositeSliderRanges(self):

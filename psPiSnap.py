@@ -168,7 +168,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         # make a brightness object and do the same 
         self.adjustmentsTab = Adjustments(self.settings.camvals, self.camera)
         self.settings.registerWidget(self.adjustmentsTab)
-        self.settingsWidget.addTab(self.adjustmentsTab, "Adjustments") 
+        self.settingsWidget.addTab(self.adjustmentsTab, "Adjustments")  
 
 
 
