@@ -308,8 +308,15 @@ class PSSnapper(qtw.QWidget):
         height = int(self.camera.resolution[1]/2) 
         self.ui.previewVisible.setChecked(True)
         self.camera.start_preview(fullscreen=False, window = (x*5, y*5,width,height))
+        self.window().findChild(qtw.QCheckBox,"statusBarPreviewCheckBox" ).setChecked(True)
+
 
     def showPreview(self, state, xPos=0, yPos=0):
+        print("self", self.objectName())
+        print("parent", self.parent().objectName()) # parent is central widget
+        print("parentWidget", self.parentWidget().objectName())
+        print("sender", self.sender().objectName())
+        print("window", self.window().findChild(qtw.QCheckBox,"statusBarPreviewCheckBox" ))
         if state == True:
             width = int(self.camera.resolution[0]/2)
             height = int(self.camera.resolution[1]/2) 
@@ -317,8 +324,19 @@ class PSSnapper(qtw.QWidget):
             x = self.ui.imgContainer.geometry().x() + self.geometry().x()
             y = self.ui.imgContainer.geometry().y() + self.geometry().y()
             self.camera.start_preview(fullscreen=False, window = (x, y,width,height))
+            if self.ui.previewVisible.isChecked() != True:
+                self.ui.previewVisible.setChecked(True)
+            if self.sender().objectName != "statusBarPreviewCheckBox":
+                self.window().findChild(qtw.QCheckBox,"statusBarPreviewCheckBox" ).setChecked(True)
+            
         else:
             self.camera.stop_preview()
+            if self.ui.previewVisible.isChecked():
+                self.ui.previewVisible.setChecked(False)
+            if self.sender().objectName != "statusBarPreviewCheckBox":
+                self.window().findChild(qtw.QCheckBox,"statusBarPreviewCheckBox" ).setChecked(False)
+
+           
 
     def setPreviewSize(*args):
         pass 

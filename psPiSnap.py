@@ -22,6 +22,9 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.settings = PSSettings(self, self.camera)
         self.camvals = self.settings.camvals
         #now start drawing the GUI
+        ##################################  WHATS THIS?????????
+        self.setObjectName("pisnapApp")
+        ####################################
         self.initUI()
     def closeEvent(self, event):
         """
@@ -30,6 +33,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         :param event:
         :return:
         """
+        self.camera.stop_preview()
         reply = qtw.QMessageBox.question(self, 'Window Close', 'Do you want to save the settings file?',
                                      qtw.QMessageBox.Yes | qtw.QMessageBox.No, qtw.QMessageBox.No)
 
@@ -48,15 +52,23 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.makeStatusBar()
         self.addMainWidgets() 
         self.setWidgetSizes()
+        #print(self.mWidget)
+        #self.previewVisible.clicked.connect(Form.showPreview)
+
         self.show()
 
     def makeStatusBar(self):
         self.statusBar = qtw.QStatusBar()
+        self.statusBar.setObjectName("statusBar")
         self.setStatusBar(self.statusBar)
         self.statusBar.showMessage('This is a status bar')
         self.statusBarPreviewCheckBox = qtw.QCheckBox()
         self.statusBar.addPermanentWidget(self.statusBarPreviewCheckBox)
         self.statusBarPreviewCheckBox.setText("Show preview")
+        self.statusBarPreviewCheckBox.setObjectName("statusBarPreviewCheckBox") 
+
+        # processsing for preview check box
+
 
     def makeMenu(self): #create menu
         #create actions for file menu
@@ -106,10 +118,14 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         ##########################################################
         # set a central widget
         self.centralWidget = qtw.QWidget()
+        self.centralWidget.setObjectName("centralWidget")
+        print("central widget", self.centralWidget)
         self.setCentralWidget(self.centralWidget)
         # define some layouts
         self.hlayout = qtw.QHBoxLayout()
+        self.hlayout.setObjectName("hlayout")
         self.vlayout = qtw.QVBoxLayout()
+        self.vlayout.setObjectName("vlayout")
         # set the horizontal layout as the central widget
         self.centralWidget.setLayout(self.hlayout)
         # add the vertical layout to the horizontal layout
@@ -129,8 +145,8 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         
         #print(self.hlayout)
         self.mWidget = PSSnapper(self.settings.camvals, self.camera)
-        # self.mWidget = qtw.QWidget(self)
-        #self.statusBarPreviewCheckBox.stateChanged.connect(self.mWidget.showPreview(self.mWidget, True))
+        self.mWidget.setObjectName("mWidget")
+        self.statusBarPreviewCheckBox.clicked.connect(self.mWidget.showPreview)
 
         #print(self.mWidget)
         self.hlayout.addWidget(self.mWidget)
@@ -174,7 +190,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
 
 
     def setWidgetSizes(self):
-        self.settingsWidget.setMinimumHeight(750)
+        self.settingsWidget.setMinimumHeight(700)
         self.settingsWidget.setMinimumWidth(400)
         self.mWidget.setMinimumWidth(1300)
         self.terminalWidget.setMinimumHeight(200)
@@ -186,5 +202,6 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
 if __name__=='__main__':
     app = qtw.QApplication(sys.argv)
     window = PiSnap()
+    print("main window", window)
     sys.exit(app.exec_())
 

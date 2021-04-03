@@ -81,7 +81,7 @@ class Adjustments(qtw.QWidget):
                 # color_effects is a special case, it has no direct analogue in the gui
                 if key == "color_effects":
                     #get the value of color_effects from the dictionery
-                    print("color effects")
+                    #print("color effects")
                     self.ui.color_effects_u.setValue(self.camvals[key][0])
                     self.ui.color_effects_v.setValue(self.camvals[key][1])
                 #check if widget with the same name exists in the GUI
@@ -90,7 +90,7 @@ class Adjustments(qtw.QWidget):
                     #print(key)
                     #print(self.ui)
                     if  self.findChild(qtw.QComboBox, key):
-                        print(key, "combo box", self.camvals[key])
+                        #print(key, "combo box", self.camvals[key])
                         x = self.findChild(qtw.QComboBox, key)
                         x.setCurrentText(self.camvals[key])
                     elif self.findChild(PSCompositeSlider, key):

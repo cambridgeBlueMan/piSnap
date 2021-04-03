@@ -11,7 +11,7 @@
         0,
         0
     ],
-    "awb_mode": "cloudy",
+    "awb_mode": "auto",
     "brightness": 50,
     "clock_mode": "reset",
     "closed": false,
@@ -19,7 +19,7 @@
         128,
         128
     ],
-    "contrast": 28,
+    "contrast": 0,
     "crop": [
         0.0,
         0.0,
@@ -29,16 +29,16 @@
     "digital_gain": 0,
     "drc_strength": "high",
     "exposure_compensation": 8,
-    "exposure_mode": "antishake",
+    "exposure_mode": "auto",
     "exposure_speed": 0,
-    "flash_mode": "fillin",
+    "flash_mode": "off",
     "framerate": [
         30,
         1
     ],
     "hflip": false,
     "image_denoise": true,
-    "image_effect": "emboss",
+    "image_effect": "none",
     "image_effect_params": null,
     "iso": 0,
     "meter_mode": "backlit",
@@ -57,9 +57,9 @@
         1080
     ],
     "rotation": 0,
-    "saturation": 3,
+    "saturation": 0,
     "sensor_mode": 0,
-    "sharpness": 37,
+    "sharpness": 0,
     "shutter_speed": 0,
     "still_stats": false,
     "vflip": false,
