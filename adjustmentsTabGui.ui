@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>270</y>
+     <y>240</y>
      <width>721</width>
      <height>171</height>
     </rect>
@@ -72,24 +72,14 @@
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>460</y>
+     <y>440</y>
      <width>341</width>
-     <height>252</height>
+     <height>201</height>
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout">
-    <item row="0" column="0">
-     <widget class="QLabel" name="label_6">
-      <property name="font">
-       <font>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Image Effects</string>
-      </property>
-     </widget>
+    <item row="0" column="1">
+     <widget class="QComboBox" name="image_effect"/>
     </item>
     <item row="1" column="0">
      <widget class="QLabel" name="label_7">
@@ -108,29 +98,6 @@
      <widget class="QComboBox" name="awb_mode"/>
     </item>
     <item row="2" column="0">
-     <widget class="QLabel" name="label_8">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="font">
-       <font>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>DRC Strength</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QComboBox" name="drc_strength">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
      <widget class="QLabel" name="label_9">
       <property name="font">
        <font>
@@ -143,10 +110,10 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
+    <item row="2" column="1">
      <widget class="QComboBox" name="exposure_mode"/>
     </item>
-    <item row="4" column="0">
+    <item row="3" column="0">
      <widget class="QLabel" name="label_10">
       <property name="font">
        <font>
@@ -159,10 +126,10 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="1">
+    <item row="3" column="1">
      <widget class="QComboBox" name="flash_mode"/>
     </item>
-    <item row="5" column="0">
+    <item row="4" column="0">
      <widget class="QLabel" name="label_11">
       <property name="font">
        <font>
@@ -175,11 +142,21 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="1">
+    <item row="4" column="1">
      <widget class="QComboBox" name="meter_mode"/>
     </item>
-    <item row="0" column="1">
-     <widget class="QComboBox" name="image_effect"/>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_6">
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Image Effects</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -187,7 +164,7 @@
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>60</y>
+     <y>30</y>
      <width>731</width>
      <height>191</height>
     </rect>
@@ -397,22 +374,6 @@
     <hint type="destinationlabel">
      <x>1025</x>
      <y>409</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>drc_strength</sender>
-   <signal>currentIndexChanged(QString)</signal>
-   <receiver>adjustments</receiver>
-   <slot>setCamValFromCombo(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>369</x>
-     <y>568</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>838</x>
-     <y>505</y>
     </hint>
    </hints>
   </connection>

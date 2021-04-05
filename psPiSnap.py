@@ -11,6 +11,7 @@ from shooter import PSSnapper
 from adjustmentsTab import Adjustments
 from psSettings import PSSettings
 from psPiCamera import PSPiCamera
+from quit import Quit
 #from picamera import PiCamera
 
 class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
@@ -34,8 +35,12 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         :return:
         """
         self.camera.stop_preview()
-        reply = qtw.QMessageBox.question(self, 'Window Close', 'Do you want to save the settings file?',
-                                     qtw.QMessageBox.Yes | qtw.QMessageBox.No, qtw.QMessageBox.No)
+        quit = QtWidgets.QDialog()
+        ui = Quit()
+        ui.setupUi(quit)
+        quit.show()
+        #reply = qtw.QMessageBox.question(self, 'Window Close', 'Do you want to save the settings file?',
+                                     #qtw.QMessageBox.Yes | qtw.QMessageBox.No, qtw.QMessageBox.No)
 
         if reply == qtw.QMessageBox.Yes:
             x = json.dumps(self.camvals, indent=4)
@@ -106,8 +111,37 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         edit_menu.addAction(undo)
         undo.setShortcut('Ctrl+Z')
 
+        #create preview menu and add actions
+        preview_menu = menu_bar.addMenu('Preview')
+        vwvisible = qtw.QAction('&Visible',self)
+        preview_menu.addAction(vwvisible)
+        vwvisible.setShortcut('Ctrl+P')
+        #vwvisible.triggered.connect(self.mWidget.showPreview)
+        vw255 = qtw.QAction('&255%', self)
+        preview_menu.addAction(vw255)
+        vw255.setShortcut('255')
+        vw255.triggered.connect(lambda:self.setPreviewAlpha(255))
+        vw75 = qtw.QAction('&75%', self)
+        preview_menu.addAction(vw75)
+        vw75.setShortcut('7')
+        vw75.triggered.connect(lambda:self.setPreviewAlpha(75))
+        vw50 = qtw.QAction('&50%', self)
+        preview_menu.addAction(vw50)
+        vw50.setShortcut('5')
+        vw50.triggered.connect(lambda:self.setPreviewAlpha(50))
+        vw25 = qtw.QAction('&25%', self)
+        preview_menu.addAction(vw25)
+        vw25.setShortcut('2')
+        vw25.triggered.connect(lambda:self.setPreviewAlpha(25))
+        
+
     def doSave(self):
         print('Save code here')
+
+    def setPreviewAlpha(self,val):
+        #print('alpha')
+        self.camera.preview.alpha=val
+
 
     def doSaveAs(self):
         print('Save As code here')
