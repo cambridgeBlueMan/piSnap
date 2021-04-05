@@ -31,7 +31,7 @@
     "exposure_compensation": 8,
     "exposure_mode": "auto",
     "exposure_speed": 0,
-    "flash_mode": "off",
+    "flash_mode": "redeye",
     "framerate": [
         30,
         1

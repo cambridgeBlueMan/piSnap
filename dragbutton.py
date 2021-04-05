@@ -8,7 +8,6 @@ class DragButton(qtw.QPushButton):
     def __init__(self, win):
         super().__init__(win)
         self.setText(u'\u26ab')
-        self.setText("twattock")
         self.setFixedSize(22, 22)
         self.containerWidth = win.frameGeometry().width()
         self.containerHeight = win.frameGeometry().height()
