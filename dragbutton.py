@@ -5,10 +5,15 @@ from PyQt5 import QtWidgets as qtw
 class DragButton(qtw.QPushButton):
     posChanged = qtc.pyqtSignal(int,int)
     global newPos
-    def __init__(self, win):
+    def __init__(self, win, bWidth = 22, bHeight = 22):
+        self.bWidth = bWidth
+        self.bHeight = bHeight
+        # win is the containing frame or widget
         super().__init__(win)
         self.setText(u'\u26ab')
-        self.setFixedSize(22, 22)
+        # we may want to make fixedSize settable. a method setDragButtonSize
+        self.setFixedSize(self.bWidth, self.bHeight)
+        #get frame size so that we can constrain the drgbuttons movements
         self.containerWidth = win.frameGeometry().width()
         self.containerHeight = win.frameGeometry().height()
         qtc.QMetaObject.connectSlotsByName(self)
@@ -16,6 +21,12 @@ class DragButton(qtw.QPushButton):
     def setContainerSize(self, x, y):
         self.containerWidth = x
         self.containerHeight = y
+
+    def setDragButtonSize(self,w,h):
+        self.setFixedSize(w,h)
+        self.bWidth = w
+        self.bHeight = h
+
 
     # mousePressEevent
     def mousePressEvent(self, event):
@@ -38,15 +49,15 @@ class DragButton(qtw.QPushButton):
             newPos = self.mapFromGlobal(currPos + diff)
             #print(newPos)
             # get the x val
-            if newPos.x() > (self.containerWidth -22):
-                x = (self.containerWidth - 22)
+            if newPos.x() > (self.containerWidth -self.bWidth):
+                x = (self.containerWidth - self.bWidth)
             elif newPos.x() < 0:
                 x = 0
             else:
                 x = newPos.x()
             # get the y val
-            if newPos.y() > (self.containerHeight - 22):
-                y = (self.containerHeight - 22)
+            if newPos.y() > (self.containerHeight - self.bHeight):
+                y = (self.containerHeight - self.bHeight)
             elif newPos.y() < 0:
                 y = 0
             else:

@@ -35,19 +35,20 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         :return:
         """
         self.camera.stop_preview()
-        quit = QtWidgets.QDialog()
+        quit = qtw.QDialog()
         ui = Quit()
         ui.setupUi(quit)
+        quit.setModal(True)
         quit.show()
         #reply = qtw.QMessageBox.question(self, 'Window Close', 'Do you want to save the settings file?',
                                      #qtw.QMessageBox.Yes | qtw.QMessageBox.No, qtw.QMessageBox.No)
 
-        if reply == qtw.QMessageBox.Yes:
+        """ if reply == qtw.QMessageBox.Yes:
             x = json.dumps(self.camvals, indent=4)
             with open('settings.json', 'w') as f:
                 f.write(x)
-                f.close()
-        event.accept()
+                f.close() """
+        #event.accept()
 
       
 
