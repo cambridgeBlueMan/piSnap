@@ -43,19 +43,19 @@ class Code_MainWindow(QtWidgets.QMainWindow):
         self.sensorWidth = 4056
         self.sensorHeight = 3040
         self.framerate = 25
-        self.previewDivider = 2
+        self.previewDivider = 3
         self.pixelWidth  = 1/self.sensorWidth
         self.pixelHeight = 1/self.sensorHeight
         # rsolution width and height are set by the user
-        self.resolutionWidth = 600 #self.sensorWidth
-        self.resolutionHeight = 800 #self.sensorHeight
+        self.resolutionWidth = 1920 #self.sensorWidth
+        self.resolutionHeight = 1080 #self.sensorHeight
         #self.zoomDimension = 0.5
         # set max value for ui items
         self.zoom = [0,0, self.resolutionWidth/self.sensorWidth, self.resolutionWidth/self.sensorWidth]
         self.startZoom = self.zoom[:]
         self.endZoom = self.zoom[:]
-        self.ui.getYOrigin.setMaximum((1-self.resolutionWidth/self.sensorWidth)*self.sensorWidth)
-        self.ui.getXOrigin.setMaximum((1-self.resolutionWidth/self.sensorWidth)*self.sensorWidth)
+        #self.ui.getYOrigin.setMaximum((1-self.resolutionWidth/self.sensorWidth)*self.sensorWidth)
+        #self.ui.getXOrigin.setMaximum((1-self.resolutionWidth/self.sensorWidth)*self.sensorWidth)
         self.ui.getZoom.setMinimum(self.resolutionWidth)
         self.ui.getZoom.setValue(self.resolutionWidth)
         #
@@ -119,8 +119,8 @@ class Code_MainWindow(QtWidgets.QMainWindow):
         print(val)
         self.zoom[2] = val/self.sensorWidth
         self.zoom[3] = val/self.sensorWidth
-        self.ui.getYOrigin.setMaximum((1-val/self.sensorWidth)*self.sensorWidth)
-        self.ui.getXOrigin.setMaximum((1-val/self.sensorWidth)*self.sensorWidth)
+        #self.ui.getYOrigin.setMaximum((1-val/self.sensorWidth)*self.sensorWidth)
+        #self.ui.getXOrigin.setMaximum((1-val/self.sensorWidth)*self.sensorWidth)
         #print("max: ", self.ui.getYOrigin.setMaximum((1-val/self.sensorWidth)*self.sensorWidth))
         # 
         height = self.range(val)
