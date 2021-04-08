@@ -114,9 +114,12 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
 
         #create preview menu and add actions
         preview_menu = menu_bar.addMenu('Preview')
-        vwvisible = qtw.QAction('&Visible',self)
-        preview_menu.addAction(vwvisible)
-        vwvisible.setShortcut('Ctrl+P')
+        self.vwvisible = qtw.QAction('&Visible',self)
+        self.vwvisible.setObjectName("vwvisible")
+        preview_menu.addAction(self.vwvisible)
+        self.vwvisible.setShortcut('Ctrl+P')
+        self.vwvisible.setCheckable(True)
+        #self.vwvisible.toggled.connect(self.mWidget.showPreview)
         #vwvisible.triggered.connect(self.mWidget.showPreview)
         vw255 = qtw.QAction('&255%', self)
         preview_menu.addAction(vw255)
@@ -140,9 +143,11 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         print('Save code here')
 
     def setPreviewAlpha(self,val):
+        try:
         #print('alpha')
-        self.camera.preview.alpha=val
-
+            self.camera.preview.alpha=val
+        except: 
+            self.terminalWidget.appendPlainText("Preview not currently active!")
 
     def doSaveAs(self):
         print('Save As code here')
@@ -182,7 +187,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.mWidget = PSSnapper(self.settings.camvals, self.camera)
         self.mWidget.setObjectName("mWidget")
         self.statusBarPreviewCheckBox.clicked.connect(self.mWidget.showPreview)
-
+        self.vwvisible.toggled.connect(self.mWidget.showPreview)
         #print(self.mWidget)
         self.hlayout.addWidget(self.mWidget)
         # add it to the settings registry

@@ -309,14 +309,16 @@ class PSSnapper(qtw.QWidget):
         self.ui.previewVisible.setChecked(True)
         self.camera.start_preview(fullscreen=False, window = (x*5, y*5,width,height))
         self.window().findChild(qtw.QCheckBox,"statusBarPreviewCheckBox" ).setChecked(True)
+        self.window().findChild(qtw.QAction,"vwvisible" ).setChecked(True)
+        
 
 
     def showPreview(self, state, xPos=0, yPos=0):
-        print("self", self.objectName())
-        print("parent", self.parent().objectName()) # parent is central widget
-        print("parentWidget", self.parentWidget().objectName())
-        print("sender", self.sender().objectName())
-        print("window", self.window().findChild(qtw.QCheckBox,"statusBarPreviewCheckBox" ))
+        #print("self", self.objectName())
+        #print("parent", self.parent().objectName()) # parent is central widget
+        #print("parentWidget", self.parentWidget().objectName())
+        #print("sender", self.sender().objectName())
+        #print("window", self.window().findChild(qtw.QCheckBox,"statusBarPreviewCheckBox" ))
         if state == True:
             width = int(self.camera.resolution[0]/2)
             height = int(self.camera.resolution[1]/2) 
@@ -328,13 +330,17 @@ class PSSnapper(qtw.QWidget):
                 self.ui.previewVisible.setChecked(True)
             if self.sender().objectName != "statusBarPreviewCheckBox":
                 self.window().findChild(qtw.QCheckBox,"statusBarPreviewCheckBox" ).setChecked(True)
-            
+            if self.sender().objectName != "vwvisible":
+                self.window().findChild(qtw.QAction, "vwvisible").setChecked(True)
+
         else:
             self.camera.stop_preview()
             if self.ui.previewVisible.isChecked():
                 self.ui.previewVisible.setChecked(False)
             if self.sender().objectName != "statusBarPreviewCheckBox":
                 self.window().findChild(qtw.QCheckBox,"statusBarPreviewCheckBox" ).setChecked(False)
+            if self.sender().objectName != "vwvisible":
+                self.window().findChild(qtw.QAction, "vwvisible").setChecked(False)
 
            
 
