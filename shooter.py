@@ -170,7 +170,7 @@ class PSSnapper(qtw.QWidget):
             if self.getAudio == True:
                 self.proc = subprocess.Popen(["rec", (self.vidRoot + "wav"),]) ## Run program
             # you could capture here a small still
-            self.camera.start_recording(filename)
+            self.camera.start_recording(filename, bitrate=int(self.camvals["videoBitRate"]))
 
 
     def doStopVid(self, what):

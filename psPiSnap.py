@@ -9,6 +9,8 @@ from qualityTab import QualityTab
 from adjustmentsTab import Adjustments
 from shooter import PSSnapper
 from adjustmentsTab import Adjustments
+from zoomTab import ZoomTab
+from keyboardslider import KeyboardSlider
 from psSettings import PSSettings
 from psPiCamera import PSPiCamera
 from quit import Quit
@@ -225,6 +227,15 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.adjustmentsTab = Adjustments(self.settings.camvals, self.camera)
         self.settings.registerWidget(self.adjustmentsTab)
         self.settingsWidget.addTab(self.adjustmentsTab, "Adjustments")  
+
+        # ##################################################################
+        # make a zoomer object
+        self.zoomTab = ZoomTab(self.settings.camvals, self.camera)
+        self.settings.registerWidget(self.zoomTab)
+        self.settingsWidget.addTab(self.zoomTab, "Zooming Tool")  
+
+       
+
 
 
 

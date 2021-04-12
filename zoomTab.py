@@ -1,54 +1,55 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 # insert appropriate names here
-from zoomTabGui import Ui_MainWindow
+from zoomTabGui import Ui_Form
 #
 from picamera import PiCamera
 from time import sleep
 import sys
 import datetime
+import json
 
-class KeyboardSlider(QtWidgets.QSlider):
-    def __init__(self,parent):
-        super().__init__(parent)
-        
-    def keyPressEvent(self, event):
-        if event.key()==16777235:
-            #print('in key up')
-            self.setValue(self.value() +1) # uparrow
-            #print(self.value())
-        if event.key() == 16777237:
-            print('in key down')
-            self.setValue(self.value() -1) # down arrow
-            #print(self.value())
 
         
-class Code_MainWindow(QtWidgets.QMainWindow):
+class ZoomTab(QtWidgets.QWidget):
     
         
 
-    def __init__(self):
+    def __init__(self, camvals, camera):
         super().__init__()
         # Ui_Form is the main designer generated class. so instantiate one. Precede the variable name with
         # the word 'self'
-        
-        self.ui = Ui_MainWindow()
+        if camvals == None:
+            with open("settings.json", "r") as settings:
+                self.camvals = json.load(settings)
+        else:
+            self.camvals = camvals
+
+        if camera == None:
+            self.camera = PiCamera()
+        else:
+            self.camera = camera
+        self.ui = Ui_Form()
         # now pass the main window object to it so that the setupUi method can draw all
         # the widgets into the window
         self.ui.setupUi(self)
         self.show()
         #self.ui.getXOrigin.keyPressEvent(self,event)
-        # now instantiate a camera object. Again the variable name is preceded by the word 'self'
-        self.camera = PiCamera()
-        self.sensorWidth = 4056
-        self.sensorHeight = 3040
-        self.framerate = 25
+        # are these two values available from PiCamera
+        self.sensorWidth = self.camvals["sensorWidth"]
+        self.sensorHeight = self.camvals["sensorHeight"]
+        # this shouldn't be set here. is avalable as camval
+        self.framerate = self.camvals["framerate"]
+        ########################
+        # what to do with this?
+        ########################
         self.previewDivider = 3
+        # 
         self.pixelWidth  = 1/self.sensorWidth
         self.pixelHeight = 1/self.sensorHeight
         # rsolution width and height are set by the user
-        self.resolutionWidth = 1920 #self.sensorWidth
-        self.resolutionHeight = 1080 #self.sensorHeight
+        self.resolutionWidth = self.camvals["vidres"][0] 
+        self.resolutionHeight = self.camvals["vidres"][1]
         #self.zoomDimension = 0.5
         # set max value for ui items
         self.zoom = [0,0, self.resolutionWidth/self.sensorWidth, self.resolutionWidth/self.sensorWidth]
@@ -64,10 +65,7 @@ class Code_MainWindow(QtWidgets.QMainWindow):
         self.camera.zoom = self.zoom
         # now we can set the resolution on the camer itself
         self.camera.resolution = (self.resolutionWidth, self.resolutionHeight)
-        self.camera.start_preview(fullscreen = False, window = (0,0,
-                                                                int(self.resolutionWidth/self.previewDivider), int(self.resolutionHeight/self.previewDivider)))
-        #self.camera.start_preview(fullscreen = False, )
-        #self.camera.sensor_mode = 1
+        #self.camera.start_preview(fullscreen = False, window = (0,0, int(self.resolutionWidth/self.previewDivider), int(self.resolutionHeight/self.previewDivider)))
          
     def doSnap(self):
         self.camera.capture("twattock.jpeg")
@@ -235,7 +233,7 @@ if __name__ == "__main__":
     # instiantiate an app object from the QApplication class 
     app = QtWidgets.QApplication(sys.argv)
     # instantiate an object containing the logic code
-    mw = Code_MainWindow()
+    mw = ZoomTab(None, None)
     sys.exit(app.exec_())
 
 

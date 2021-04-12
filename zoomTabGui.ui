@@ -1,212 +1,160 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>612</width>
-    <height>615</height>
+    <width>537</width>
+    <height>617</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Form</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
-   <widget class="KeyboardSlider" name="getZoom">
-    <property name="geometry">
-     <rect>
-      <x>550</x>
-      <y>20</y>
-      <width>26</width>
-      <height>381</height>
-     </rect>
-    </property>
-    <property name="minimum">
-     <number>1920</number>
-    </property>
-    <property name="maximum">
-     <number>3470</number>
-    </property>
-    <property name="value">
-     <number>3470</number>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Vertical</enum>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>670</x>
-      <y>0</y>
-      <width>91</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>zoom</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="showPreview">
-    <property name="geometry">
-     <rect>
-      <x>190</x>
-      <y>530</y>
-      <width>161</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>show preview</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="doQuit">
-    <property name="geometry">
-     <rect>
-      <x>50</x>
-      <y>430</y>
-      <width>99</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>quit</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="snap">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>480</y>
-      <width>99</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>snap!</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="start">
-    <property name="geometry">
-     <rect>
-      <x>340</x>
-      <y>440</y>
-      <width>71</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>set start</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="end">
-    <property name="geometry">
-     <rect>
-      <x>340</x>
-      <y>480</y>
-      <width>71</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>set end</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="runZoom">
-    <property name="geometry">
-     <rect>
-      <x>330</x>
-      <y>520</y>
-      <width>99</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>run zoom</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="diag">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>520</y>
-      <width>99</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>diag</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="showStart">
-    <property name="geometry">
-     <rect>
-      <x>220</x>
-      <y>440</y>
-      <width>81</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>show start</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="showEnd">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>490</y>
-      <width>81</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>show end</string>
-    </property>
-   </widget>
-   <widget class="QFrame" name="frame">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>20</y>
-      <width>507</width>
-      <height>380</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-    <widget class="DragButton" name="adjustZoom">
-     <property name="geometry">
-      <rect>
-       <x>190</x>
-       <y>250</y>
-       <width>22</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>b</string>
-     </property>
-    </widget>
-   </widget>
+  <widget class="KeyboardSlider" name="getZoom">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>400</y>
+     <width>501</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <number>1920</number>
+   </property>
+   <property name="maximum">
+    <number>3470</number>
+   </property>
+   <property name="value">
+    <number>3470</number>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
   </widget>
-  <widget class="QMenuBar" name="menubar">
+  <widget class="QCheckBox" name="showPreview">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>580</y>
+     <width>161</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>show preview</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="start">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>490</y>
+     <width>71</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>set start</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="showStart">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>490</y>
+     <width>81</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>show start</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>670</x>
+     <y>30</y>
+     <width>91</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>zoom</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="end">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>530</y>
+     <width>71</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>set end</string>
+   </property>
+  </widget>
+  <widget class="QFrame" name="frame">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>612</width>
-     <height>28</height>
+     <width>507</width>
+     <height>380</height>
     </rect>
    </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="DragButton" name="adjustZoom">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>250</y>
+      <width>22</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>b</string>
+    </property>
+   </widget>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QPushButton" name="runZoom">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>570</y>
+     <width>99</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>run zoom</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="showEnd">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>540</y>
+     <width>81</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>show end</string>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
@@ -224,217 +172,165 @@
   <customwidget>
    <class>KeyboardSlider</class>
    <extends>QSlider</extends>
-   <header location="global">zoomTab</header>
+   <header location="global">keyboardslider</header>
   </customwidget>
  </customwidgets>
  <resources/>
  <connections>
   <connection>
-   <sender>getZoom</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>setZoom(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>735</x>
-     <y>263</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>571</x>
-     <y>233</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>doQuit</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>doQuit()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>155</x>
-     <y>577</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>438</x>
-     <y>293</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>showPreview</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>showPreview(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>644</x>
-     <y>624</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>463</x>
-     <y>142</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>snap</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>doSnap()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>136</x>
-     <y>627</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>570</x>
-     <y>461</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>start</sender>
    <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
+   <receiver>Form</receiver>
    <slot>doSetStart()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>377</x>
-     <y>587</y>
+     <x>227</x>
+     <y>509</y>
     </hint>
     <hint type="destinationlabel">
-     <x>365</x>
-     <y>606</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>end</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>doSetEnd()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>365</x>
-     <y>627</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>284</x>
-     <y>641</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>runZoom</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>doRunZoom()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>422</x>
-     <y>667</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>349</x>
-     <y>657</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>diag</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>printDiag()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>667</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>340</x>
-     <y>349</y>
+     <x>348</x>
+     <y>490</y>
     </hint>
    </hints>
   </connection>
   <connection>
    <sender>showStart</sender>
    <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
+   <receiver>Form</receiver>
    <slot>doShowStart()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>275</x>
-     <y>587</y>
+     <x>77</x>
+     <y>505</y>
     </hint>
     <hint type="destinationlabel">
-     <x>328</x>
-     <y>69</y>
+     <x>21</x>
+     <y>451</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>showPreview</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>Form</receiver>
+   <slot>showPreview(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>76</x>
+     <y>596</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>370</x>
+     <y>583</y>
     </hint>
    </hints>
   </connection>
   <connection>
    <sender>showEnd</sender>
    <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
+   <receiver>Form</receiver>
    <slot>doShowEnd()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>294</x>
-     <y>637</y>
+     <x>99</x>
+     <y>553</y>
     </hint>
     <hint type="destinationlabel">
-     <x>415</x>
-     <y>40</y>
+     <x>306</x>
+     <y>527</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>runZoom</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>doRunZoom()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>594</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>292</x>
+     <y>591</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>getZoom</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>Form</receiver>
+   <slot>setZoom(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>268</x>
+     <y>408</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>305</x>
+     <y>438</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>end</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>doSetEnd()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>207</x>
+     <y>533</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>164</x>
+     <y>434</y>
     </hint>
    </hints>
   </connection>
   <connection>
    <sender>adjustZoom</sender>
    <signal>posChanged(int,int)</signal>
-   <receiver>MainWindow</receiver>
+   <receiver>Form</receiver>
    <slot>setZoomWithButton(int,int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>344</x>
-     <y>279</y>
+     <x>202</x>
+     <y>255</y>
     </hint>
     <hint type="destinationlabel">
-     <x>686</x>
-     <y>299</y>
+     <x>487</x>
+     <y>457</y>
     </hint>
    </hints>
   </connection>
   <connection>
    <sender>adjustZoom</sender>
    <signal>released()</signal>
-   <receiver>MainWindow</receiver>
+   <receiver>Form</receiver>
    <slot>movePosition()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>357</x>
-     <y>279</y>
+     <x>196</x>
+     <y>259</y>
     </hint>
     <hint type="destinationlabel">
-     <x>689</x>
-     <y>373</y>
+     <x>472</x>
+     <y>510</y>
     </hint>
    </hints>
   </connection>
  </connections>
  <slots>
-  <slot>setXOrigin(int)</slot>
-  <slot>setYOrigin(int)</slot>
-  <slot>setZoom(int)</slot>
-  <slot>doQuit()</slot>
-  <slot>showPreview(bool)</slot>
-  <slot>doSnap()</slot>
   <slot>doSetStart()</slot>
-  <slot>doSetEnd()</slot>
-  <slot>doRunZoom()</slot>
-  <slot>printDiag()</slot>
   <slot>doShowStart()</slot>
+  <slot>showPreview(bool)</slot>
   <slot>doShowEnd()</slot>
+  <slot>doRunZoom()</slot>
+  <slot>setZoom(int)</slot>
+  <slot>doSetEnd()</slot>
+  <slot>printDiag()</slot>
   <slot>setZoomWithButton(int,int)</slot>
   <slot>movePosition()</slot>
  </slots>
