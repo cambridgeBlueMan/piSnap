@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'qualityTab.ui'
+# Form implementation generated from reading ui file 'qualityTabGui.ui'
 #
 # Created by: PyQt5 UI code generator 5.11.3
 #
@@ -14,7 +14,7 @@ class Ui_Form(object):
         Form.setEnabled(True)
         Form.resize(863, 661)
         self.groupBox = QtWidgets.QGroupBox(Form)
-        self.groupBox.setGeometry(QtCore.QRect(30, 30, 241, 171))
+        self.groupBox.setGeometry(QtCore.QRect(30, 30, 361, 171))
         self.groupBox.setObjectName("groupBox")
         self.formLayoutWidget = QtWidgets.QWidget(self.groupBox)
         self.formLayoutWidget.setGeometry(QtCore.QRect(10, 30, 251, 181))

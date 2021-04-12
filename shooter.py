@@ -155,6 +155,7 @@ class PSSnapper(qtw.QWidget):
         """ record a video stream to a file with automatically generated name """
         # do nothing if recording is in progress
         if self.camera.recording:
+            self.window().terminalWidget.appendPlainText("Camera is already recording!")
             print("Camera is already recording!")
         else:
             # start recording video, automatically generate file name
@@ -309,7 +310,7 @@ class PSSnapper(qtw.QWidget):
         self.ui.previewVisible.setChecked(True)
         self.camera.start_preview(fullscreen=False, window = (x*5, y*5,width,height))
         self.window().findChild(qtw.QCheckBox,"statusBarPreviewCheckBox" ).setChecked(True)
-        self.window().findChild(qtw.QAction,"vwvisible" ).setChecked(True)
+        self.window().findChild(qtw.QAction,"visibleAction" ).setChecked(True)
         
 
 
@@ -330,8 +331,8 @@ class PSSnapper(qtw.QWidget):
                 self.ui.previewVisible.setChecked(True)
             if self.sender().objectName != "statusBarPreviewCheckBox":
                 self.window().findChild(qtw.QCheckBox,"statusBarPreviewCheckBox" ).setChecked(True)
-            if self.sender().objectName != "vwvisible":
-                self.window().findChild(qtw.QAction, "vwvisible").setChecked(True)
+            if self.sender().objectName != "visibleAction":
+                self.window().findChild(qtw.QAction, "visibleAction").setChecked(True)
 
         else:
             self.camera.stop_preview()
@@ -339,8 +340,8 @@ class PSSnapper(qtw.QWidget):
                 self.ui.previewVisible.setChecked(False)
             if self.sender().objectName != "statusBarPreviewCheckBox":
                 self.window().findChild(qtw.QCheckBox,"statusBarPreviewCheckBox" ).setChecked(False)
-            if self.sender().objectName != "vwvisible":
-                self.window().findChild(qtw.QAction, "vwvisible").setChecked(False)
+            if self.sender().objectName != "visibleAction":
+                self.window().findChild(qtw.QAction, "visibleAction").setChecked(False)
 
            
 

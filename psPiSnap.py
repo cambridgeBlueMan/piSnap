@@ -37,20 +37,21 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         :return:
         """
         self.camera.stop_preview()
-        quit = qtw.QDialog()
+        
+        """ quit = qtw.QDialog(self)
         ui = Quit()
-        ui.setupUi(quit)
+        ui.setupUi(quit)                        
         quit.setModal(True)
-        quit.show()
-        #reply = qtw.QMessageBox.question(self, 'Window Close', 'Do you want to save the settings file?',
-                                     #qtw.QMessageBox.Yes | qtw.QMessageBox.No, qtw.QMessageBox.No)
+        quit.show() """
+        reply = qtw.QMessageBox.question(self, 'Window Close', 'Do you want to save the settings file?',
+                                     qtw.QMessageBox.Yes | qtw.QMessageBox.No, qtw.QMessageBox.Yes)
 
-        """ if reply == qtw.QMessageBox.Yes:
+        if reply == qtw.QMessageBox.Yes:
             x = json.dumps(self.camvals, indent=4)
             with open('settings.json', 'w') as f:
                 f.write(x)
-                f.close() """
-        #event.accept()
+                f.close() 
+        event.accept()
 
       
 
@@ -80,65 +81,65 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
 
     def makeMenu(self): #create menu
         #create actions for file menu
-        vwopen = qtw.QAction('&Open', self)
-        vwopen.setShortcut('Ctrl+O')
-        vwopen.triggered.connect(lambda:qtw.QFileDialog.getOpenFileName(self))
-        vwsave = qtw.QAction('&Save', self)
-        vwsave.setShortcut('Ctrl+S')
-        vwsave.triggered.connect(self.doSave)
-        vwsaveas = qtw.QAction('Save As', self)
-        vwsaveas.setShortcut('Ctrl+Shift+S')
-        vwsaveas.triggered.connect(self.doSaveAs)
-        exit_act = qtw.QAction('&Exit', self)
-        exit_act.setShortcut('Ctrl+Q')
-        exit_act.triggered.connect(self.close)
+        openAction = qtw.QAction('&Open', self)
+        openAction.setShortcut('Ctrl+O')
+        openAction.triggered.connect(lambda:qtw.QFileDialog.getOpenFileName(self))
+        saveAction = qtw.QAction('&Save', self)
+        saveAction.setShortcut('Ctrl+S')
+        saveAction.triggered.connect(self.doSave)
+        saveAsAction = qtw.QAction('Save As', self)
+        saveAsAction.setShortcut('Ctrl+Shift+S')
+        saveAsAction.triggered.connect(self.doSaveAs)
+        exitAction = qtw.QAction('&Exit', self)
+        exitAction.setShortcut('Ctrl+Q')
+        exitAction.triggered.connect(self.close)
 
         #create actions for edit menu
-        undo = qtw.QAction('&Undo',self)
-        preferences = qtw.QAction('Preferences', self)
+        undoAction = qtw.QAction('&Undo',self)
+        prefsAction = qtw.QAction('Preferences', self)
 
         #create menubar
-        menu_bar = self.menuBar()
-        menu_bar.setNativeMenuBar(False)
+        menuBar = self.menuBar()
+        menuBar.setNativeMenuBar(False)
 
         #create file menu and add actions
-        file_menu = menu_bar.addMenu('File')
-        file_menu.addAction(vwopen)
-        file_menu.addAction(vwsave)
-        file_menu.addAction(vwsaveas)
-        file_menu.addAction(exit_act)
+        fileMenu = menuBar.addMenu('&File')
+        fileMenu.addAction(openAction)
+        fileMenu.addAction(saveAction)
+        fileMenu.addAction(saveAsAction)
+        fileMenu.addAction(exitAction)
 
         #create edit menu and add actions
-        edit_menu = menu_bar.addMenu('Edit')
-        edit_menu.addAction(preferences)
-        edit_menu.addAction(undo)
-        undo.setShortcut('Ctrl+Z')
+        editMenu= menuBar.addMenu('&Edit')
+        editMenu.addAction(prefsAction)
+        editMenu.addAction(undoAction)
+        undoAction.setShortcut('Ctrl+Z')
 
         #create preview menu and add actions
-        preview_menu = menu_bar.addMenu('Preview')
-        self.vwvisible = qtw.QAction('&Visible',self)
-        self.vwvisible.setObjectName("vwvisible")
-        preview_menu.addAction(self.vwvisible)
-        self.vwvisible.setShortcut('Ctrl+P')
-        self.vwvisible.setCheckable(True)
-        #self.vwvisible.toggled.connect(self.mWidget.showPreview)
-        #vwvisible.triggered.connect(self.mWidget.showPreview)
-        vw255 = qtw.QAction('&255%', self)
-        preview_menu.addAction(vw255)
-        vw255.setShortcut('255')
-        vw255.triggered.connect(lambda:self.setPreviewAlpha(255))
-        vw75 = qtw.QAction('&75%', self)
-        preview_menu.addAction(vw75)
-        vw75.setShortcut('7')
-        vw75.triggered.connect(lambda:self.setPreviewAlpha(75))
-        vw50 = qtw.QAction('&50%', self)
-        preview_menu.addAction(vw50)
-        vw50.setShortcut('5')
-        vw50.triggered.connect(lambda:self.setPreviewAlpha(50))
-        vw25 = qtw.QAction('&25%', self)
-        preview_menu.addAction(vw25)
-        vw25.setShortcut('2')
-        vw25.triggered.connect(lambda:self.setPreviewAlpha(25))
+        previewMenu = menuBar.addMenu('&Preview')
+        self.visibleAction = qtw.QAction('&Visible',self)
+        self.visibleAction.setObjectName("visibleAction")
+        previewMenu.addAction(self.visibleAction)
+        self.visibleAction.setShortcut('Ctrl+P')
+        self.visibleAction.setCheckable(True)
+        #self.visibleAction.toggled.connect(self.mWidget.showPreview)
+        #visibleAction.triggered.connect(self.mWidget.showPreview)
+        alpha255Action = qtw.QAction('&255%', self)
+        previewMenu.addAction(alpha255Action)
+        alpha255Action.setShortcut('255')
+        alpha255Action.triggered.connect(lambda:self.setPreviewAlpha(255))
+        alpha75Action = qtw.QAction('&75%', self)
+        previewMenu.addAction(alpha75Action)
+        alpha75Action.setShortcut('7')
+        alpha75Action.triggered.connect(lambda:self.setPreviewAlpha(75))
+        alpha50Action = qtw.QAction('&50%', self)
+        previewMenu.addAction(alpha50Action)
+        alpha50Action.setShortcut('5')
+        alpha50Action.triggered.connect(lambda:self.setPreviewAlpha(50))
+        alpha25Action = qtw.QAction('&25%', self)
+        previewMenu.addAction(alpha25Action)
+        alpha25Action.setShortcut('2')
+        alpha25Action.triggered.connect(lambda:self.setPreviewAlpha(25))
         
 
     def doSave(self):
@@ -189,7 +190,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.mWidget = PSSnapper(self.settings.camvals, self.camera)
         self.mWidget.setObjectName("mWidget")
         self.statusBarPreviewCheckBox.clicked.connect(self.mWidget.showPreview)
-        self.vwvisible.toggled.connect(self.mWidget.showPreview)
+        self.visibleAction.toggled.connect(self.mWidget.showPreview)
         #print(self.mWidget)
         self.hlayout.addWidget(self.mWidget)
         # add it to the settings registry
@@ -206,7 +207,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
 
         # now make and add ththe terminal window
         self.terminalWidget = qtw.QPlainTextEdit()
-        self.terminalWidget.setStyleSheet("background-color:black;color:SpringGreen;")
+        self.terminalWidget.setStyleSheet("background-color:#252526;color:SpringGreen;")
         self.vlayout.addWidget(self.settingsWidget)
         self.vlayout.addWidget(self.terminalWidget)
 
@@ -242,7 +243,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
 
     def setWidgetSizes(self):
         self.settingsWidget.setMinimumHeight(700)
-        self.settingsWidget.setMinimumWidth(400)
+        self.settingsWidget.setMinimumWidth(510)
         self.mWidget.setMinimumWidth(1300)
         self.terminalWidget.setMinimumHeight(200)
     
