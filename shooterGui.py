@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'shooter.ui'
+# Form implementation generated from reading ui file 'shooterGui.ui'
 #
 # Created by: PyQt5 UI code generator 5.11.3
 #
@@ -11,9 +11,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(1163, 804)
+        Form.resize(1163, 889)
         self.captureTab = QtWidgets.QTabWidget(Form)
-        self.captureTab.setGeometry(QtCore.QRect(240, 650, 801, 111))
+        self.captureTab.setGeometry(QtCore.QRect(240, 650, 801, 221))
         self.captureTab.setObjectName("captureTab")
         self.still = QtWidgets.QWidget()
         self.still.setObjectName("still")
@@ -84,6 +84,18 @@ class Ui_Form(object):
         self.pauseVid.setIcon(icon3)
         self.pauseVid.setObjectName("pauseVid")
         self.horizontalLayout_2.addWidget(self.pauseVid)
+        self.useZoomOnRecord = QtWidgets.QCheckBox(self.video)
+        self.useZoomOnRecord.setGeometry(QtCore.QRect(10, 90, 181, 27))
+        self.useZoomOnRecord.setObjectName("useZoomOnRecord")
+        self.videoStabilization = QtWidgets.QCheckBox(self.video)
+        self.videoStabilization.setGeometry(QtCore.QRect(10, 130, 171, 27))
+        self.videoStabilization.setObjectName("videoStabilization")
+        self.frameRate = QtWidgets.QComboBox(self.video)
+        self.frameRate.setGeometry(QtCore.QRect(340, 90, 83, 32))
+        self.frameRate.setObjectName("frameRate")
+        self.frameRateLabel = QtWidgets.QLabel(self.video)
+        self.frameRateLabel.setGeometry(QtCore.QRect(240, 90, 91, 22))
+        self.frameRateLabel.setObjectName("frameRateLabel")
         self.captureTab.addTab(self.video, "")
         self.thumbnails = QtWidgets.QListWidget(Form)
         self.thumbnails.setGeometry(QtCore.QRect(20, 10, 140, 601))
@@ -134,6 +146,9 @@ class Ui_Form(object):
         self.captureTab.currentChanged['int'].connect(Form.setCaptureMode)
         self.previewButton.released.connect(Form.movePreview)
         self.previewButton.posChanged['int','int'].connect(Form.previewPos)
+        self.useZoomOnRecord.clicked['bool'].connect(Form.doRecordZoom)
+        self.videoStabilization.clicked['bool'].connect(Form.doVideoStabilization)
+        self.frameRate.currentIndexChanged['QString'].connect(Form.setCamValFromCombo)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -146,6 +161,9 @@ class Ui_Form(object):
         self.label_15.setText(_translate("Form", "File root"))
         self.fileRoot.setText(_translate("Form", "img_"))
         self.captureTab.setTabText(self.captureTab.indexOf(self.still), _translate("Form", "Still"))
+        self.useZoomOnRecord.setText(_translate("Form", "Use Zoom on Record"))
+        self.videoStabilization.setText(_translate("Form", "Video Stabilization"))
+        self.frameRateLabel.setText(_translate("Form", "Frame Rate"))
         self.captureTab.setTabText(self.captureTab.indexOf(self.video), _translate("Form", "Video"))
         self.previewVisible.setText(_translate("Form", "Preview"))
         self.previewButton.setText(_translate("Form", "b"))

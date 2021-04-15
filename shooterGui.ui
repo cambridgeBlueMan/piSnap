@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1163</width>
-    <height>804</height>
+    <height>889</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <x>240</x>
      <y>650</y>
      <width>801</width>
-     <height>111</height>
+     <height>221</height>
     </rect>
    </property>
    <property name="currentIndex">
@@ -186,6 +186,55 @@
        </widget>
       </item>
      </layout>
+    </widget>
+    <widget class="QCheckBox" name="useZoomOnRecord">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>90</y>
+       <width>181</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Use Zoom on Record</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="videoStabilization">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>130</y>
+       <width>171</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Video Stabilization</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="frameRate">
+     <property name="geometry">
+      <rect>
+       <x>340</x>
+       <y>90</y>
+       <width>83</width>
+       <height>32</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="frameRateLabel">
+     <property name="geometry">
+      <rect>
+       <x>240</x>
+       <y>90</y>
+       <width>91</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Frame Rate</string>
+     </property>
     </widget>
    </widget>
   </widget>
@@ -563,6 +612,54 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>useZoomOnRecord</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>Form</receiver>
+   <slot>doRecordZoom(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>306</x>
+     <y>791</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>119</x>
+     <y>814</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>videoStabilization</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>Form</receiver>
+   <slot>doVideoStabilization(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>337</x>
+     <y>824</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>178</x>
+     <y>832</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>frameRate</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>Form</receiver>
+   <slot>setCamValFromCombo(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>607</x>
+     <y>795</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>203</x>
+     <y>853</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>signal1()</signal>
@@ -585,5 +682,8 @@
   <slot>previewPos(int,int)</slot>
   <slot>slot1()</slot>
   <slot>slot2()</slot>
+  <slot>doRecordZoom(bool)</slot>
+  <slot>doVideoStabilization(bool)</slot>
+  <slot>setCamValFromCombo(QString)</slot>
  </slots>
 </ui>

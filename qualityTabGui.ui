@@ -102,17 +102,10 @@
       <x>20</x>
       <y>30</y>
       <width>221</width>
-      <height>148</height>
+      <height>176</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout_2">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>bit rate</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <widget class="QComboBox" name="videoBitRate"/>
      </item>
@@ -126,12 +119,6 @@
      <item row="1" column="1">
       <widget class="QComboBox" name="videoQuality"/>
      </item>
-     <item row="2" column="1">
-      <widget class="QComboBox" name="videoProfile"/>
-     </item>
-     <item row="3" column="1">
-      <widget class="QComboBox" name="videoLevel"/>
-     </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_6">
        <property name="text">
@@ -139,10 +126,23 @@
        </property>
       </widget>
      </item>
+     <item row="2" column="1">
+      <widget class="QComboBox" name="videoProfile"/>
+     </item>
      <item row="3" column="0">
       <widget class="QLabel" name="label_7">
        <property name="text">
         <string>Levels</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QComboBox" name="videoLevel"/>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>bit rate</string>
        </property>
       </widget>
      </item>
@@ -161,6 +161,41 @@
    <property name="text">
     <string>audio is active</string>
    </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_3">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>450</y>
+     <width>281</width>
+     <height>191</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>General</string>
+   </property>
+   <widget class="QWidget" name="formLayoutWidget_3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>221</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <layout class="QFormLayout" name="formLayout_3">
+     <item row="0" column="1">
+      <widget class="QComboBox" name="iSO"/>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>ISO</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
  </widget>
  <resources/>
@@ -306,6 +341,22 @@
     <hint type="destinationlabel">
      <x>479</x>
      <y>228</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>iSO</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>Form</receiver>
+   <slot>setCamValFromCombo(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>109</x>
+     <y>489</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>587</x>
+     <y>467</y>
     </hint>
    </hints>
   </connection>
