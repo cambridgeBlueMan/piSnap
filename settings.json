@@ -37,7 +37,7 @@
     "image_denoise": true,
     "image_effect": "none",
     "image_effect_params": null,
-    "iso": 0,
+    "iso": 640,
     "meter_mode": "backlit",
     "mux": "false",
     "overlays": [],
@@ -67,7 +67,7 @@
     "videoLevel": "4",
     "videoProfile": "high",
     "videoQuality": "10",
-    "video_stabilization": false,
+    "video_stabilization": "True",
     "zoom": [
         0.0,
         0.0,
@@ -98,5 +98,6 @@
     "zoomX": 0,
     "zoomY": 0,
     "zoomWidth": 0,
-    "zoomHeight": 0
+    "zoomHeight": 0,
+    "iSO": "100"
 }

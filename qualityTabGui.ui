@@ -185,7 +185,7 @@
     </property>
     <layout class="QFormLayout" name="formLayout_3">
      <item row="0" column="1">
-      <widget class="QComboBox" name="iSO"/>
+      <widget class="QComboBox" name="iso"/>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_8">
@@ -345,10 +345,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>iSO</sender>
+   <sender>iso</sender>
    <signal>currentIndexChanged(QString)</signal>
    <receiver>Form</receiver>
-   <slot>setCamValFromCombo(QString)</slot>
+   <slot>setIso(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>109</x>
@@ -373,5 +373,6 @@
   <slot>setVideoLevel(int)</slot>
   <slot>slot1()</slot>
   <slot>setCamValFromCombo(QString)</slot>
+  <slot>setIso(QString)</slot>
  </slots>
 </ui>

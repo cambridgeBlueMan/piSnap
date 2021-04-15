@@ -146,7 +146,7 @@ class Ui_Form(object):
         self.captureTab.currentChanged['int'].connect(Form.setCaptureMode)
         self.previewButton.released.connect(Form.movePreview)
         self.previewButton.posChanged['int','int'].connect(Form.previewPos)
-        self.useZoomOnRecord.clicked['bool'].connect(Form.doRecordZoom)
+        self.useZoomOnRecord.clicked['bool'].connect(Form.setRecordZoomFlag)
         self.videoStabilization.clicked['bool'].connect(Form.doVideoStabilization)
         self.frameRate.currentIndexChanged['QString'].connect(Form.setCamValFromCombo)
         QtCore.QMetaObject.connectSlotsByName(Form)

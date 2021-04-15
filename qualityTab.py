@@ -45,6 +45,7 @@ class QualityTab(qtw.QWidget):
         args[0].ui.videoQuality.addItems(["10", "20", "25", "30", "35", "40"])
         args[0].ui.videoProfile.addItems(["baseline", "main", "extended", "high", "constrained"])
         args[0].ui.videoLevel.addItems(["4","4.1", "4.2"])
+        args[0].ui.iso.addItems(["0", "100", "200", "320", "400", "500", "640", "800"])
         return True
 
     def applySettings(self):
@@ -60,12 +61,17 @@ class QualityTab(qtw.QWidget):
         self.ui.audioActive.setChecked(bool(self.camvals["audioActive"]))
         self.ui.videoProfile.setCurrentText(str(self.camvals["videoProfile"]))
         self.ui.videoLevel.setCurrentText(str(self.camvals["videoLevel"]))
+        self.ui.iso.setCurrentText(str(self.camvals["iso"]))
 
 
     def setCamValFromCombo(self, str):
         if self.comboItemsAdded == True:
             self.camvals[self.sender().objectName()] = str
             setattr(self.camera,self.sender().objectName(),str)
+    def setIso(self,str):
+        if self.comboItemsAdded == True:
+            self.camvals["iso"] = int(str)
+            self.camera.iso = int(str)
         
 
     def doMux(self, state):

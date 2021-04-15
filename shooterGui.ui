@@ -555,8 +555,8 @@
    <slot>setFileRoot(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>624</x>
-     <y>719</y>
+     <x>611</x>
+     <y>735</y>
     </hint>
     <hint type="destinationlabel">
      <x>154</x>
@@ -616,7 +616,7 @@
    <sender>useZoomOnRecord</sender>
    <signal>clicked(bool)</signal>
    <receiver>Form</receiver>
-   <slot>doRecordZoom(bool)</slot>
+   <slot>setRecordZoomFlag(bool)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>306</x>
@@ -682,7 +682,7 @@
   <slot>previewPos(int,int)</slot>
   <slot>slot1()</slot>
   <slot>slot2()</slot>
-  <slot>doRecordZoom(bool)</slot>
+  <slot>setRecordZoomFlag(bool)</slot>
   <slot>doVideoStabilization(bool)</slot>
   <slot>setCamValFromCombo(QString)</slot>
  </slots>

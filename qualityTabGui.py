@@ -90,9 +90,9 @@ class Ui_Form(object):
         self.formLayout_3 = QtWidgets.QFormLayout(self.formLayoutWidget_3)
         self.formLayout_3.setContentsMargins(0, 0, 0, 0)
         self.formLayout_3.setObjectName("formLayout_3")
-        self.iSO = QtWidgets.QComboBox(self.formLayoutWidget_3)
-        self.iSO.setObjectName("iSO")
-        self.formLayout_3.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.iSO)
+        self.iso = QtWidgets.QComboBox(self.formLayoutWidget_3)
+        self.iso.setObjectName("iso")
+        self.formLayout_3.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.iso)
         self.label_8 = QtWidgets.QLabel(self.formLayoutWidget_3)
         self.label_8.setObjectName("label_8")
         self.formLayout_3.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_8)
@@ -107,7 +107,7 @@ class Ui_Form(object):
         self.videoProfile.currentIndexChanged['QString'].connect(Form.setCamValFromCombo)
         self.videoLevel.currentIndexChanged['QString'].connect(Form.setCamValFromCombo)
         self.mux.clicked['bool'].connect(Form.doMux)
-        self.iSO.currentIndexChanged['QString'].connect(Form.setCamValFromCombo)
+        self.iso.currentIndexChanged['QString'].connect(Form.setIso)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):

@@ -46,6 +46,8 @@ class PSSnapper(qtw.QWidget):
         self.camera = camera
         # do we want to capture audio?
         self.getAudio = False
+        # do we want to record zoom?
+        self.recordZoom = False
         # set text to medium bullet
         self.ui.previewButton.setText(u"\u26AB")
         self.setupVideoCapture()   
@@ -150,6 +152,15 @@ class PSSnapper(qtw.QWidget):
     #                                      start of video stuff
     #
     #################################################################################################
+    def setRecordZoomFlag(self,bool):
+        self.recordZoom=bool
+    def doVideoStabilization(self,bool):
+        self.camera.video_stabilization=bool
+        self.camvals["video_stabilization"] = str(bool)
+
+    def setCamValFromCombo(self):
+        pass
+        
 
     def doRecordVid(self, test):
         """ record a video stream to a file with automatically generated name """
@@ -172,7 +183,7 @@ class PSSnapper(qtw.QWidget):
                 self.proc = subprocess.Popen(["rec", (self.vidRoot + "wav"),]) ## Run program
             # you could capture here a small still
             # do you want too incude a zoom in the reocrding
-            self.recordZoom = True
+            #self.recordZoom = True
             self.camera.start_recording(filename, bitrate=int(self.camvals["videoBitRate"]))
             sleep(1)
             if self.recordZoom == True:
