@@ -174,6 +174,7 @@ class PSSnapper(qtw.QWidget):
             # do you want too incude a zoom in the reocrding
             self.recordZoom = True
             self.camera.start_recording(filename, bitrate=int(self.camvals["videoBitRate"]))
+            sleep(1)
             if self.recordZoom == True:
                 #print(self.window().zoomTab)
                 self.window().zoomTab.doRunZoom(self.window().zoomTab)
