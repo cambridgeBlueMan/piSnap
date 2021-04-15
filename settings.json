@@ -62,7 +62,7 @@
     "shutter_speed": 0,
     "still_stats": false,
     "vflip": false,
-    "videoBitRate": "0",
+    "videoBitRate": "4000000",
     "video_denoise": true,
     "videoLevel": "4",
     "videoProfile": "high",

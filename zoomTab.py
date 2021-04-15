@@ -33,7 +33,7 @@ class ZoomTab(QtWidgets.QWidget):
         # now pass the main window object to it so that the setupUi method can draw all
         # the widgets into the window
         self.ui.setupUi(self)
-        self.show()
+        #self.show()
         #self.ui.getXOrigin.keyPressEvent(self,event)
         # are these two values available from PiCamera
         self.sensorWidth = self.camvals["sensorWidth"]
@@ -133,10 +133,12 @@ class ZoomTab(QtWidgets.QWidget):
         #print(args)
         self.startZoom = self.zoom[:]
         #print ("start zoom: ", self.zoom)
+        #self.printDiag(self)
 
     def doSetEnd(self,bool):
         self.endZoom = self.zoom[:]
         #print("end zoom: ", self.zoom)
+        #self.printDiag(self)
 
     def doRunZoom(self, bool):
         # number of steps to complete the zoom
@@ -206,6 +208,7 @@ class ZoomTab(QtWidgets.QWidget):
 
 
             self.camera.zoom = self.zoom[:]
+            print("iter")
 
     def doShowStart(self, bool):
         self.camera.zoom = self.startZoom[:]

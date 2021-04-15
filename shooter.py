@@ -171,7 +171,12 @@ class PSSnapper(qtw.QWidget):
             if self.getAudio == True:
                 self.proc = subprocess.Popen(["rec", (self.vidRoot + "wav"),]) ## Run program
             # you could capture here a small still
+            # do you want too incude a zoom in the reocrding
+            self.recordZoom = True
             self.camera.start_recording(filename, bitrate=int(self.camvals["videoBitRate"]))
+            if self.recordZoom == True:
+                #print(self.window().zoomTab)
+                self.window().zoomTab.doRunZoom(self.window().zoomTab)
 
 
     def doStopVid(self, what):
@@ -324,8 +329,8 @@ class PSSnapper(qtw.QWidget):
             width = int(self.camera.resolution[0]/2)
             height = int(self.camera.resolution[1]/2) 
             self.geometry().x()
-            x = self.ui.imgContainer.geometry().x() + self.geometry().x()
-            y = self.ui.imgContainer.geometry().y() + self.geometry().y()
+            x = self.ui.imgContainer.geometry().x() + self.geometry().x() + self.window().geometry().x()
+            y = self.ui.imgContainer.geometry().y() + self.geometry().y() + self.window().geometry().y() + 27
             self.camera.start_preview(fullscreen=False, window = (x, y,width,height))
             if self.ui.previewVisible.isChecked() != True:
                 self.ui.previewVisible.setChecked(True)
