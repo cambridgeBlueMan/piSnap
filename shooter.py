@@ -172,7 +172,7 @@ class PSSnapper(qtw.QWidget):
             # start recording video, automatically generate file name
             # this means has to have time stamp
             # various settings for video
-            self.camera.framerate = self.camvals["framerate"]
+            self.camera.framerate = 30 #self.camvals["framerate"]
             self.vidRoot = self.camvals["vidFileRoot"] + str(datetime.datetime.now()).replace(':','_') + '.'
             filename = self.vidRoot + self.camvals["videoFormat"]
             #self.media = self.vlcObj.media_new(filename)
@@ -332,33 +332,55 @@ class PSSnapper(qtw.QWidget):
 
 
     def showPreview(self, state, xPos=0, yPos=0):
+        print("hello")
+
+        """ on/off toggle for preview. 'state' is boolean on/off value. Typically passed from one of 
+        several tick boxes around the place
+
+        """
         #print("self", self.objectName())
         #print("parent", self.parent().objectName()) # parent is central widget
         #print("parentWidget", self.parentWidget().objectName())
         #print("sender", self.sender().objectName())
         #print("window", self.window().findChild(qtw.QCheckBox,"statusBarPreviewCheckBox" ))
+        print(state)
         if state == True:
+
+            """
+            divider is currently hard coded at 2. This should be settable via a preview
+            size gui control
+
+            """
             width = int(self.camera.resolution[0]/2)
             height = int(self.camera.resolution[1]/2) 
             self.geometry().x()
+            # calculate x and y position for preview
             x = self.ui.imgContainer.geometry().x() + self.geometry().x() + self.window().geometry().x()
             y = self.ui.imgContainer.geometry().y() + self.geometry().y() + self.window().geometry().y() + 27
+            # show the preview
             self.camera.start_preview(fullscreen=False, window = (x, y,width,height))
-            if self.ui.previewVisible.isChecked() != True:
-                self.ui.previewVisible.setChecked(True)
-            if self.sender().objectName != "statusBarPreviewCheckBox":
-                self.window().findChild(qtw.QCheckBox,"statusBarPreviewCheckBox" ).setChecked(True)
-            if self.sender().objectName != "visibleAction":
-                self.window().findChild(qtw.QAction, "visibleAction").setChecked(True)
+            #update all the various tick boxes around the place
+            if self.sender() == None:
+                pass
+            else:
+                if self.ui.previewVisible.isChecked() != True:
+                    self.ui.previewVisible.setChecked(True)
+                if self.sender().objectName != "statusBarPreviewCheckBox":
+                    self.window().findChild(qtw.QCheckBox,"statusBarPreviewCheckBox" ).setChecked(True)
+                if self.sender().objectName != "visibleAction":
+                    self.window().findChild(qtw.QAction, "visibleAction").setChecked(True)
 
         else:
             self.camera.stop_preview()
-            if self.ui.previewVisible.isChecked():
-                self.ui.previewVisible.setChecked(False)
-            if self.sender().objectName != "statusBarPreviewCheckBox":
-                self.window().findChild(qtw.QCheckBox,"statusBarPreviewCheckBox" ).setChecked(False)
-            if self.sender().objectName != "visibleAction":
-                self.window().findChild(qtw.QAction, "visibleAction").setChecked(False)
+            if self.sender() == None:
+                pass
+            else:
+                if self.ui.previewVisible.isChecked():
+                    self.ui.previewVisible.setChecked(False)
+                if self.sender().objectName != "statusBarPreviewCheckBox":
+                    self.window().findChild(qtw.QCheckBox,"statusBarPreviewCheckBox" ).setChecked(False)
+                if self.sender().objectName != "visibleAction":
+                    self.window().findChild(qtw.QAction, "visibleAction").setChecked(False)
 
            
 

@@ -142,7 +142,7 @@ class ZoomTab(QtWidgets.QWidget):
 
     def doRunZoom(self, bool):
         # number of steps to complete the zoom
-        loopSize = 100  
+        loopSize = 300  
         # increment for each staep
         deltaX = 0
         deltaY = 0
