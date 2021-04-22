@@ -45,6 +45,7 @@ class ZoomTab(QtWidgets.QWidget):
         ########################
         self.previewDivider = 3
         # 
+        self.ui.getZoom.setInvertedAppearance(True)
         self.pixelWidth  = 1/self.sensorWidth
         self.pixelHeight = 1/self.sensorHeight
         # rsolution width and height are set by the user
@@ -58,7 +59,7 @@ class ZoomTab(QtWidgets.QWidget):
         #self.ui.getYOrigin.setMaximum((1-self.resolutionWidth/self.sensorWidth)*self.sensorWidth)
         #self.ui.getXOrigin.setMaximum((1-self.resolutionWidth/self.sensorWidth)*self.sensorWidth)
         self.ui.getZoom.setMinimum(self.resolutionWidth)
-        self.ui.getZoom.setValue(self.resolutionWidth)
+        #self.ui.getZoom.setValue(self.resolutionWidth)
         #
         self.ui.adjustZoom.setDragButtonSize(self.resolutionWidth/8, self.resolutionHeight/8)
 
@@ -129,6 +130,9 @@ class ZoomTab(QtWidgets.QWidget):
         self.camera.zoom = self.zoom 
         # we need also to reset the ranges of the getYOrigin and getXOrigin sliders
         
+    def setSpeed(self,val):
+        print(val)
+
     def doSetStart(self,bool):
         #print(args)
         self.startZoom = self.zoom[:]
