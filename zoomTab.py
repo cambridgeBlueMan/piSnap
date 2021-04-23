@@ -59,7 +59,7 @@ class ZoomTab(QtWidgets.QWidget):
         #self.ui.getYOrigin.setMaximum((1-self.resolutionWidth/self.sensorWidth)*self.sensorWidth)
         #self.ui.getXOrigin.setMaximum((1-self.resolutionWidth/self.sensorWidth)*self.sensorWidth)
         self.ui.getZoom.setMinimum(self.resolutionWidth)
-        #self.ui.getZoom.setValue(self.resolutionWidth)
+        self.ui.getZoom.setValue(self.resolutionWidth)
         #
         self.ui.adjustZoom.setDragButtonSize(self.resolutionWidth/8, self.resolutionHeight/8)
 

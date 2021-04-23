@@ -32,7 +32,7 @@
     <number>1</number>
    </property>
    <property name="value">
-    <number>1920</number>
+    <number>3470</number>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
@@ -121,8 +121,8 @@
    <widget class="DragButton" name="adjustZoom">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>250</y>
+      <x>0</x>
+      <y>0</y>
       <width>22</width>
       <height>22</height>
      </rect>
