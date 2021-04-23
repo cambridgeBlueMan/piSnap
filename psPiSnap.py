@@ -7,6 +7,7 @@ from PyQt5 import QtCore as qtc
 
 from qualityTab import QualityTab
 from adjustmentsTab import Adjustments
+from resolutionsTab import ResolutionsTab
 from shooter import PSSnapper
 from adjustmentsTab import Adjustments
 from zoomTab import ZoomTab
@@ -237,6 +238,15 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.settings.registerWidget(self.qualityTab)
         # now add it to the tab
         self.settingsWidget.addTab(self.qualityTab,"Quality")
+
+        # #################################################################
+        # make a resolutions tab widget, and pass the settings dictionary to it
+        self.resolutionsTab = ResolutionsTab(self.settings.camvals, self.camera)
+        # now register it to the settings class
+        self.settings.registerWidget(self.resolutionsTab)
+        # now add it to the tab
+        self.settingsWidget.addTab(self.resolutionsTab,"Resolutions")
+
 
         # ##################################################################
         # make a brightness object and do the same 
