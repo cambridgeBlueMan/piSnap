@@ -28,11 +28,12 @@ class ResolutionsTab(qtw.QWidget):
         self.ui = Ui_Form() # makes the actual gui
         self.ui.setupUi(self)
         # add combo box items
-        self.comboItemsAdded = self.addItemsToCombos(self)
+        self.makeDataStructures()
+        self.comboItemsAdded = self.addItemsToCombos()
         
         self.applySettings()
 
-    def makedatastructures(self):
+    def makeDataStructures(self):
         resolutions = [
                     ('CGA', (320,200)),         ('QVGA', (320,240)),
                     ('VGA', (640,480)),         ('PAL', (768,576)),
@@ -50,24 +51,28 @@ class ResolutionsTab(qtw.QWidget):
         self.resAsString = []
         self.resAsTuple = []
         for item in resolutions:
-            self.resAsString.sppend((item[0])+" "+str(item[1]))
-            self.resAsTuple(item[1])
+            self.resAsString.append((item[0])+" "+str(item[1]))
+            self.resAsTuple.append(item[1])
             #newresolutions.append(((item[0])+" "+str(item[1]),item[1]))
         #print(item)
-        print(newresolutions)
+        print(self.resAsString)
 
-
+    def setVideoRes(self,int):
+        print(int)
+    def setStillRes(self,int):
+        print(int)
 
     def addItemsToCombos(self): #method
-        self.ui.videoResolutions.addItems.(self.resAsString()) 
-        self.ui.imageResolutions.addItems.(self.resAsString())
+        self.ui.vidres.addItems(self.resAsString) 
+        self.ui.imgres.addItems(self.resAsString)
         return True
 
     def applySettings(self): #set the resolutions comboboxes to the value saved in camvals
         #if self.comboItemsAdded == True:
         #print (self.camvals["audioBitRate"])
         #for each key in the settings dictionery 
-        self.ui.videoResolutions.setCurrentText(self.camvals["vidres"])
+        ix=self.resAsTuple.index(tuple(self.camvals["vidres"]))
+        self.ui.vidres.setCurrentText(self.resAsString[ix])
 
     def setCamValFromCombo(self, str):
         if self.comboItemsAdded == True:
