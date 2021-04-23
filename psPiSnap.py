@@ -30,6 +30,21 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.setObjectName("pisnapApp")
         ####################################
         self.initUI()
+
+    def moveEvent(self, e):
+        # if the preview is currently visibe
+        print("is checked?", self.statusBarPreviewCheckBox.isChecked())
+        if self.statusBarPreviewCheckBox.isChecked():
+            # stop it!
+            self.camera.stop_preview
+            # then call showPreview so pos can update
+            self.mWidget.showPreview(True)
+
+        print(self.pos())
+        super(PiSnap, self).moveEvent(e)
+
+
+
     def closeEvent(self, event):
         """
         overrides closEvent of QWidget, so we can save the
@@ -264,6 +279,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
 if __name__=='__main__':
     app = qtw.QApplication(sys.argv)
     window = PiSnap()
+    #window.setObjectName("window")
     print("main window", window)
     sys.exit(app.exec_())
 

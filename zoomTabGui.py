@@ -13,10 +13,11 @@ class Ui_Form(object):
         Form.setObjectName("Form")
         Form.resize(537, 617)
         self.getZoom = KeyboardSlider(Form)
-        self.getZoom.setGeometry(QtCore.QRect(0, 400, 501, 21))
+        self.getZoom.setGeometry(QtCore.QRect(10, 420, 501, 21))
         self.getZoom.setMinimum(1920)
         self.getZoom.setMaximum(3470)
-        self.getZoom.setProperty("value", 3470)
+        self.getZoom.setSingleStep(1)
+        self.getZoom.setProperty("value", 1920)
         self.getZoom.setOrientation(QtCore.Qt.Horizontal)
         self.getZoom.setObjectName("getZoom")
         self.showPreview = QtWidgets.QCheckBox(Form)
@@ -48,6 +49,17 @@ class Ui_Form(object):
         self.showEnd = QtWidgets.QPushButton(Form)
         self.showEnd.setGeometry(QtCore.QRect(30, 540, 81, 30))
         self.showEnd.setObjectName("showEnd")
+        self.label = QtWidgets.QLabel(Form)
+        self.label.setGeometry(QtCore.QRect(10, 390, 68, 22))
+        self.label.setObjectName("label")
+        self.label_2 = QtWidgets.QLabel(Form)
+        self.label_2.setGeometry(QtCore.QRect(280, 450, 68, 22))
+        self.label_2.setObjectName("label_2")
+        self.getSpeed = QtWidgets.QSlider(Form)
+        self.getSpeed.setGeometry(QtCore.QRect(280, 490, 221, 26))
+        self.getSpeed.setProperty("value", 49)
+        self.getSpeed.setOrientation(QtCore.Qt.Horizontal)
+        self.getSpeed.setObjectName("getSpeed")
 
         self.retranslateUi(Form)
         self.start.clicked.connect(Form.doSetStart)
@@ -59,6 +71,7 @@ class Ui_Form(object):
         self.end.clicked.connect(Form.doSetEnd)
         self.adjustZoom.posChanged['int','int'].connect(Form.setZoomWithButton)
         self.adjustZoom.released.connect(Form.movePosition)
+        self.getSpeed.sliderMoved['int'].connect(Form.setSpeed)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -72,6 +85,8 @@ class Ui_Form(object):
         self.adjustZoom.setText(_translate("Form", "b"))
         self.runZoom.setText(_translate("Form", "run zoom"))
         self.showEnd.setText(_translate("Form", "show end"))
+        self.label.setText(_translate("Form", "set Zoom"))
+        self.label_2.setText(_translate("Form", "set Speed"))
 
 from dragbutton import DragButton
 from keyboardslider import KeyboardSlider

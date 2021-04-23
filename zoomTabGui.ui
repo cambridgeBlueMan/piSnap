@@ -16,8 +16,8 @@
   <widget class="KeyboardSlider" name="getZoom">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>400</y>
+     <x>10</x>
+     <y>420</y>
      <width>501</width>
      <height>21</height>
     </rect>
@@ -28,8 +28,11 @@
    <property name="maximum">
     <number>3470</number>
    </property>
+   <property name="singleStep">
+    <number>1</number>
+   </property>
    <property name="value">
-    <number>3470</number>
+    <number>1920</number>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
@@ -155,6 +158,48 @@
     <string>show end</string>
    </property>
   </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>390</y>
+     <width>68</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>set Zoom</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>450</y>
+     <width>68</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>set Speed</string>
+   </property>
+  </widget>
+  <widget class="QSlider" name="getSpeed">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>490</y>
+     <width>221</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="value">
+    <number>49</number>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
@@ -264,8 +309,8 @@
    <slot>setZoom(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>268</x>
-     <y>408</y>
+     <x>278</x>
+     <y>428</y>
     </hint>
     <hint type="destinationlabel">
      <x>305</x>
@@ -321,6 +366,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>getSpeed</sender>
+   <signal>sliderMoved(int)</signal>
+   <receiver>Form</receiver>
+   <slot>setSpeed(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>329</x>
+     <y>497</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>463</x>
+     <y>547</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>doSetStart()</slot>
@@ -333,5 +394,6 @@
   <slot>printDiag()</slot>
   <slot>setZoomWithButton(int,int)</slot>
   <slot>movePosition()</slot>
+  <slot>setSpeed(int)</slot>
  </slots>
 </ui>

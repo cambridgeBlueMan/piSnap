@@ -37,7 +37,7 @@
     "image_denoise": true,
     "image_effect": "none",
     "image_effect_params": null,
-    "iso": 640,
+    "iso": 0,
     "meter_mode": "backlit",
     "mux": "false",
     "overlays": [],
