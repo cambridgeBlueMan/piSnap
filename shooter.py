@@ -76,23 +76,23 @@ class PSSnapper(qtw.QWidget):
             stream = BytesIO()
             self.camera.capture(stream, 'jpeg')
             # now find out what to do with it
-            msgBox = QMessageBox()
+            msgBox = qtw.QMessageBox()
             msgBox.setWindowTitle("FileExists")
-            msgBox.setIcon(QMessageBox.Warning)
+            msgBox.setIcon(qtw.QMessageBox.Warning)
             msgBox.setText("This file exists, do you want to overwrite it?")
-            msgBox.setStandardButtons(QMessageBox.Save|QMessageBox.Cancel)
-            appendButton = QPushButton( "append timestamp")
-            msgBox.addButton(appendButton, QMessageBox.YesRole)
+            msgBox.setStandardButtons(qtw.QMessageBox.Save|qtw.QMessageBox.Cancel)
+            appendButton = qtw.QPushButton( "append timestamp")
+            msgBox.addButton(appendButton, qtw.QMessageBox.YesRole)
             msgBox.setDefaultButton(appendButton)
             
             ret = msgBox.exec_()
-            if ret == QMessageBox.Save:
+            if ret == qtw.QMessageBox.Save:
                 # if save then overwite existing file
                 with open (filename, 'wb') as f:
                     #print(stream)
                     f.write(stream.getbuffer())
                     self.showImage(filename)
-            if ret == QMessageBox.Cancel:
+            if ret == qtw.QMessageBox.Cancel:
                 # if cancel then get rid of the buffer
                 stream.close()
                 pass
@@ -154,6 +154,7 @@ class PSSnapper(qtw.QWidget):
     #################################################################################################
     def setRecordZoomFlag(self,bool):
         self.recordZoom=bool
+        
     def doVideoStabilization(self,bool):
         self.camera.video_stabilization=bool
         self.camvals["video_stabilization"] = str(bool)

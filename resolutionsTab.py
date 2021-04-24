@@ -12,8 +12,6 @@ import datetime
 import json
 
 class ResolutionsTab(qtw.QWidget):
-
-
     def __init__(self, camvals, camera):
         super().__init__()
         self.comboItemsAdded = False
@@ -24,13 +22,13 @@ class ResolutionsTab(qtw.QWidget):
                 self.camvals = json.load(settings)
         else:
             self.camvals = camvals
+        print(self.camvals["vidres"])
         self.camera = camera
         self.ui = Ui_Form() # makes the actual gui
         self.ui.setupUi(self)
         # add combo box items
         self.makeDataStructures()
         self.comboItemsAdded = self.addItemsToCombos()
-        
         self.applySettings()
 
     def makeDataStructures(self):
@@ -46,40 +44,36 @@ class ResolutionsTab(qtw.QWidget):
                     ('UXGA', (1600,1200)),      ('WSXGA+', (1680,1050)),
                     ('HD 1080', (1920,1080)),   ('WUXGA', (1920,1200)),
                     ('2K', (2048,1080))
-
                     ]
         self.resAsString = []
         self.resAsTuple = []
         for item in resolutions:
             self.resAsString.append((item[0])+" "+str(item[1]))
             self.resAsTuple.append(item[1])
-            #newresolutions.append(((item[0])+" "+str(item[1]),item[1]))
-        #print(item)
-        print(self.resAsString)
 
     def setVideoRes(self,int):
-        print(int)
-    def setStillRes(self,int):
-        print(int)
+        if self.comboItemsAdded == True:
+            # set new camvals value
+            self.camvals["vidres"] = self.resAsTuple[int]        
+            # set new camera value
+            # set values in zoom page
 
-    def addItemsToCombos(self): #method
+    def setStillRes(self,int):
+        if self.comboItemsAdded == True:
+            self.camvals["imgres"] = self.resAsTuple[int]        
+
+    def addItemsToCombos(self): 
         self.ui.vidres.addItems(self.resAsString) 
         self.ui.imgres.addItems(self.resAsString)
         return True
 
     def applySettings(self): #set the resolutions comboboxes to the value saved in camvals
-        #if self.comboItemsAdded == True:
-        #print (self.camvals["audioBitRate"])
-        #for each key in the settings dictionery 
-        ix=self.resAsTuple.index(tuple(self.camvals["vidres"]))
-        self.ui.vidres.setCurrentText(self.resAsString[ix])
-
-    def setCamValFromCombo(self, str):
         if self.comboItemsAdded == True:
-            self.camvals[self.sender().objectName()] = str
-            setattr(self.camera,self.sender().objectName(),str)
-    
-
+            ix=self.resAsTuple.index(tuple(self.camvals["vidres"]))
+            self.ui.vidres.setCurrentText(self.resAsString[ix])
+            ix=self.resAsTuple.index(tuple(self.camvals["imgres"]))
+            self.ui.imgres.setCurrentText(self.resAsString[ix])
+            
 #######################################################################################
     #                           END OF CLASS
 #######################################################################################
