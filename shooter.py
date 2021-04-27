@@ -46,13 +46,16 @@ class Shooter(qtw.QWidget):
         # do we want to capture audio?
         if self.camvals["audioActive"] == "false":
             self.getAudio = False
-        else: self.getAudio = True
+        else: 
+            self.getAudio = True
 
         # do we want to record zoom?
         self.recordZoom = False
 
         # set text to medium bullet
         self.ui.previewButton.setText(u"\u26AB")
+
+        self.resDivider = 2
         
         # next line assumes that video is the chosen default in the designer class
         self.setupVideoCapture()   
@@ -277,6 +280,9 @@ class Shooter(qtw.QWidget):
         else:
             # clean it all up, still to write
             self.setupStillCapture()
+        state = self.ui.previewVisible.isChecked()   # previewVisible.isChecked()
+        print(state)
+        self.showPreview(self, state)
 
     def updateUi(self):
         """
@@ -328,11 +334,21 @@ class Shooter(qtw.QWidget):
         pass
   
     def previewPos(self, x,y):
+        """ 
+        previewPos is a slot which is called whenever the bullet point
+        moves. it receives two integers which are x and y values.
+         """
+        # stops the preview
         self.camera.stop_preview
         #print("in pos", x, y, self.camera.resolution)
-        width = int(self.camera.resolution[0]/2)
-        height = int(self.camera.resolution[1]/2) 
+        # sets the width and height for the preview
+        # 
+        # note that width and height are here being derivded form the camers's
+        # resolution settings and not from camvals
+        width = int(self.camera.resolution[0]/self.resDivider)
+        height = int(self.camera.resolution[1]/self.resDivider) 
         self.ui.previewVisible.setChecked(True)
+        # I believe that the size of the bulletpoint container is 1/10 of the size of current resolution
         self.camera.start_preview(fullscreen=False, window = (x*5, y*5,width,height))
         self.window().findChild(qtw.QCheckBox,"statusBarPreviewCheckBox" ).setChecked(True)
         self.window().findChild(qtw.QAction,"visibleAction" ).setChecked(True)
@@ -348,13 +364,17 @@ class Shooter(qtw.QWidget):
         """
         if state == True:
 
+
             """
             divider is currently hard coded at 2. This should be settable via a preview
             size gui control
 
             """
-            width = int(self.camera.resolution[0]/2)
-            height = int(self.camera.resolution[1]/2) 
+            print(state)
+            # note that width and height are here being derivded form the camers's
+            # resolution settings and not from camvals
+            width = int(self.camera.resolution[0]/self.resDivider)
+            height = int(self.camera.resolution[1]/self.resDivider) 
             self.geometry().x()
             # calculate x and y position for preview
             x = self.ui.imgContainer.geometry().x() + self.geometry().x() + self.window().geometry().x()
@@ -373,6 +393,7 @@ class Shooter(qtw.QWidget):
                     self.window().findChild(qtw.QAction, "visibleAction").setChecked(True)
 
         else:
+            print(state)
             self.camera.stop_preview()
             if self.sender() == None:
                 pass
@@ -412,46 +433,24 @@ class Shooter(qtw.QWidget):
         # then add it to the widget
 
     def setupVideoCapture(self):
-        """ make all relevant settings appropriate for video capture """
-        # make vlc media player
-        """ self.vlcObj = vlc.Instance()
-        self.media = None
-        self.mediaplayer = self.vlcObj.media_player_new()
-        self.is_paused = False """
+        """ make all relevant settings appropriate for video capture """   
         self.ui.frameRate.setCurrentText(str(self.camvals["framerate"]))
         self.camera.frameRate=(self.camvals["framerate"])
         # set camera.resolution for video
         self.camera.resolution = tuple(self.camvals["vidres"])
         self.resetResolutionStuff()
-        # adjust display area for video
-        ##issue##
-        """ self.ui.imgContainer.resize(self.camera.resolution[0]/2, self.camera.resolution[1]/2)
-        self.ui.previewFrame.resize(((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
-        self.ui.previewButton.setContainerSize(((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
-        self.ui.previewButton.moveButtonToOrigin() """
+        
 
     def setupStillCapture(self):
-        self.resetResolutionStuff()
         #print(self)
         """ make all relevant settings for still capture """
         # set camera.resolution for still
         self.camera.resolution = tuple(self.camvals["imgres"])
         # adjust display area for video
-        ##issue##
-        """ self.ui.imgContainer.resize(self.camera.resolution[0]/2, self.camera.resolution[1]/2)
-        self.ui.previewFrame.resize(((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
-        self.ui.previewButton.setContainerSize(((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
-        self.ui.previewButton.moveButtonToOrigin()
- """
-        #print("**********************", ((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
-
-        """ self.vlcObj = vlc.Instance()
-        self.media = None
-        self.mediaplayer = self.vlcObj.media_player_new()
-        self.is_paused = False """
+        self.resetResolutionStuff()
 
     def resetResolutionStuff(self):
-        self.ui.imgContainer.resize(self.camera.resolution[0]/2, self.camera.resolution[1]/2)
+        self.ui.imgContainer.resize(self.camera.resolution[0]/self.resDivider, self.camera.resolution[1]/self.resDivider)
         self.ui.previewFrame.resize(((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
         self.ui.previewButton.setContainerSize(((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
         self.ui.previewButton.moveButtonToOrigin()

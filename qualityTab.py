@@ -68,6 +68,7 @@ class QualityTab(qtw.QWidget):
         if self.comboItemsAdded == True:
             self.camvals[self.sender().objectName()] = str
             setattr(self.camera,self.sender().objectName(),str)
+
     def setIso(self,str):
         if self.comboItemsAdded == True:
             self.camvals["iso"] = int(str)
@@ -75,7 +76,7 @@ class QualityTab(qtw.QWidget):
         
 
     def doMux(self, state):
-        #print ("The value of state is: ", state)
+        print ("The value of state is: ", state)
         if state == True:
             self.camvals["mux"] = "true"
         else:
@@ -83,7 +84,7 @@ class QualityTab(qtw.QWidget):
         
 
     def isAudioActive(self, state):
-        #print ("The value of state is: ", state)
+        print ("The value of state is: ", state)
         if state == True:
             self.camvals["audioActive"] = "true"
         else:
