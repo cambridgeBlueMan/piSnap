@@ -9,6 +9,6 @@ class KeyboardSlider(qtw.QSlider):
             self.setValue(self.value() +1) # uparrow
             #print(self.value())
         if event.key() == 16777237:
-            print('in key down')
+            #print('in key down')
             self.setValue(self.value() -1) # down arrow
             #print(self.value())

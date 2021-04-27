@@ -115,7 +115,7 @@ class ZoomTab(QtWidgets.QWidget):
         print("endZoom: ", self.endZoom)
 
     def setZoom(self, val):
-        print(val)
+        #print(val)
         self.zoom[2] = val/self.sensorWidth
         self.zoom[3] = val/self.sensorWidth
         #self.ui.getYOrigin.setMaximum((1-val/self.sensorWidth)*self.sensorWidth)
@@ -131,7 +131,8 @@ class ZoomTab(QtWidgets.QWidget):
         # we need also to reset the ranges of the getYOrigin and getXOrigin sliders
         
     def setSpeed(self,val):
-        print(val)
+        pass
+        #print(val)
 
     def doSetStart(self,bool):
         #print(args)
@@ -212,7 +213,7 @@ class ZoomTab(QtWidgets.QWidget):
 
 
             self.camera.zoom = self.zoom[:]
-            print("iter")
+            #print("iter")
 
     def doShowStart(self, bool):
         self.camera.zoom = self.startZoom[:]
@@ -232,6 +233,25 @@ class ZoomTab(QtWidgets.QWidget):
         else:
             self.camera.stop_preview()
         pass
+
+    def twattock(self):
+        print("hello everybody!!!")
+
+    def resetZoomStuff(self):
+        self.zoom = [0,0, self.resolutionWidth/self.sensorWidth, self.resolutionWidth/self.sensorWidth]
+        self.startZoom = self.zoom[:]
+        self.endZoom = self.zoom[:]
+        self.ui.getZoom.setMinimum(self.resolutionWidth)
+        self.ui.getZoom.setValue(self.resolutionWidth)
+        #
+        self.ui.adjustZoom.setDragButtonSize(self.resolutionWidth/8, self.resolutionHeight/8)
+
+        self.camera.zoom = self.zoom
+        # now we can set the resolution on the camer itself
+        self.camera.resolution = (self.resolutionWidth, self.resolutionHeight)
+
+
+
 #######################################################################################
     #                           END OF CLASS
 #######################################################################################

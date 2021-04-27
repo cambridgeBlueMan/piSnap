@@ -20,22 +20,19 @@ import vlc
 #from settings import camvals
 #print(camvals)
 
-class PSSnapper(qtw.QWidget):
+class Shooter(qtw.QWidget):
 
     def __init__(self, camvals, camera):
         super().__init__()
-
-        # instantiate a camera from the extended camera class
-        #self.camera = MyCamera(self)
-
-        # instantiate the QtDesigner class
+        # instantiate the QtDesigner generated class
         self.ui = Ui_Form()
         # use its setupUi method to draw the widgets into the main window
         self.ui.setupUi(self)
-        # now show the main window with its widgets
+
+        # now show the main window with its widgets (only necessary if this class is stand alone)
         #self.show()
 
-       # camvals = None means we are running the code as stand alone
+        # camvals = None means we are running the code as stand alone
         # so we need to load the settings file
         if camvals == None:
             with open("settings.json", "r") as settings:
@@ -43,17 +40,25 @@ class PSSnapper(qtw.QWidget):
         else:
             self.camvals = camvals
 
+        # camera passed in on initialisation
         self.camera = camera
+
         # do we want to capture audio?
         self.getAudio = False
+
         # do we want to record zoom?
         self.recordZoom = False
+
         # set text to medium bullet
         self.ui.previewButton.setText(u"\u26AB")
+        
+        # next line assumes that video is the chosen default in the designer class
         self.setupVideoCapture()   
+
         self.setupVLCPlayer()
 
     def setupVLCPlayer(self):
+        
         self.timer = qtc.QTimer(self)
         self.timer.setInterval(100)
         self.timer.timeout.connect(self.updateUi)
@@ -62,7 +67,7 @@ class PSSnapper(qtw.QWidget):
         self.vlcObj = vlc.Instance()
         self.media = None
         self.mediaplayer = self.vlcObj.media_player_new()
-        self.is_paused = False 
+        #self.is_paused = False 
 
     
     def snapAndSave(self):  
@@ -168,7 +173,6 @@ class PSSnapper(qtw.QWidget):
         # do nothing if recording is in progress
         if self.camera.recording:
             self.window().terminalWidget.appendPlainText("Camera is already recording!")
-            print("Camera is already recording!")
         else:
             # start recording video, automatically generate file name
             # this means has to have time stamp
@@ -333,18 +337,12 @@ class PSSnapper(qtw.QWidget):
 
 
     def showPreview(self, state, xPos=0, yPos=0):
-        print("hello")
+        #print("hello")
 
         """ on/off toggle for preview. 'state' is boolean on/off value. Typically passed from one of 
         several tick boxes around the place
 
         """
-        #print("self", self.objectName())
-        #print("parent", self.parent().objectName()) # parent is central widget
-        #print("parentWidget", self.parentWidget().objectName())
-        #print("sender", self.sender().objectName())
-        #print("window", self.window().findChild(qtw.QCheckBox,"statusBarPreviewCheckBox" ))
-        print(state)
         if state == True:
 
             """
@@ -411,41 +409,47 @@ class PSSnapper(qtw.QWidget):
         # then add it to the widget
 
     def setupVideoCapture(self):
-        #print ("++++++++++++++++++++++++++++++++++++++++++" ,  dir(self))
         """ make all relevant settings appropriate for video capture """
         # make vlc media player
-        self.vlcObj = vlc.Instance()
+        """ self.vlcObj = vlc.Instance()
         self.media = None
         self.mediaplayer = self.vlcObj.media_player_new()
-        self.is_paused = False
+        self.is_paused = False """
         # set camera.resolution for video
         self.camera.resolution = tuple(self.camvals["vidres"])
+        self.resetResolutionStuff()
         # adjust display area for video
         ##issue##
-        self.ui.imgContainer.resize(self.camera.resolution[0]/2, self.camera.resolution[1]/2)
+        """ self.ui.imgContainer.resize(self.camera.resolution[0]/2, self.camera.resolution[1]/2)
         self.ui.previewFrame.resize(((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
         self.ui.previewButton.setContainerSize(((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
-        self.ui.previewButton.moveButtonToOrigin()
-        #print("££££££££££££££££££££££££3", self.camera.resolution)
-        #print("**********************", ((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
+        self.ui.previewButton.moveButtonToOrigin() """
 
     def setupStillCapture(self):
+        self.resetResolutionStuff()
         #print(self)
         """ make all relevant settings for still capture """
         # set camera.resolution for still
         self.camera.resolution = tuple(self.camvals["imgres"])
         # adjust display area for video
         ##issue##
+        """ self.ui.imgContainer.resize(self.camera.resolution[0]/2, self.camera.resolution[1]/2)
+        self.ui.previewFrame.resize(((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
+        self.ui.previewButton.setContainerSize(((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
+        self.ui.previewButton.moveButtonToOrigin()
+ """
+        #print("**********************", ((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
+
+        """ self.vlcObj = vlc.Instance()
+        self.media = None
+        self.mediaplayer = self.vlcObj.media_player_new()
+        self.is_paused = False """
+
+    def resetResolutionStuff(self):
         self.ui.imgContainer.resize(self.camera.resolution[0]/2, self.camera.resolution[1]/2)
         self.ui.previewFrame.resize(((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
         self.ui.previewButton.setContainerSize(((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
         self.ui.previewButton.moveButtonToOrigin()
-
-        #print("**********************", ((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
-
-
-
-
         
 
 if __name__ == "__main__":
@@ -454,5 +458,5 @@ if __name__ == "__main__":
     # instiantiate an app object from the QApplication class 
     app = qtw.QApplication(sys.argv)
     # instantiate an object containing the logic code
-    mw = PSSnapper(None)
+    mw = Shooter(None)
     sys.exit(app.exec_())

@@ -4,7 +4,7 @@ from PyQt5 import QtWidgets as qtw
 
 from resolutionsTabGui import Ui_Form
 from psSettings import PSSettings
-
+from zoomTab import ZoomTab
 from picamera import PiCamera
 from time import sleep
 import sys
@@ -12,9 +12,10 @@ import datetime
 import json
 
 class ResolutionsTab(qtw.QWidget):
-    def __init__(self, camvals, camera):
+    def __init__(self, camvals, camera, centralWidget):
         super().__init__()
         self.comboItemsAdded = False
+        self.cw = centralWidget
         # camvals = None means we are running the code as stand alone
         # so we need to load the settings file
         if camvals == None:
@@ -22,7 +23,7 @@ class ResolutionsTab(qtw.QWidget):
                 self.camvals = json.load(settings)
         else:
             self.camvals = camvals
-        print(self.camvals["vidres"])
+        #print(self.camvals["vidres"])
         self.camera = camera
         self.ui = Ui_Form() # makes the actual gui
         self.ui.setupUi(self)
@@ -54,13 +55,23 @@ class ResolutionsTab(qtw.QWidget):
     def setVideoRes(self,int):
         if self.comboItemsAdded == True:
             # set new camvals value
-            self.camvals["vidres"] = self.resAsTuple[int]        
-            # set new camera value
-            # set values in zoom page
-
+            self.camvals["vidres"] = self.resAsTuple[int] 
+            self.cw.findChild(qtw.QWidget, "mWidget").resetResolutionStuff()
+            x = self.window().findChild(ZoomTab, "zoomTab") #.resetZoomStuff()
+            if x:
+                print("got one!")
+                x.resetZoomStuff()
+            
     def setStillRes(self,int):
         if self.comboItemsAdded == True:
-            self.camvals["imgres"] = self.resAsTuple[int]        
+            self.camvals["imgres"] = self.resAsTuple[int]     
+            self.cw.findChild(qtw.QWidget, "mWidget").resetResolutionStuff()   
+            x = self.window().findChild(ZoomTab, "zoomTab") #.resetZoomStuff()
+            if x:
+                print("got one!")
+                x.resetZoomStuff()
+            #x.resetZoomStuff()
+            #print (self.window().findChild(ZoomTab, "zoomTab").resetZoomStuff) #.resetZoomStuff()
 
     def addItemsToCombos(self): 
         self.ui.vidres.addItems(self.resAsString) 

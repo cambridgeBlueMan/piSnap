@@ -8,7 +8,7 @@ from PyQt5 import QtCore as qtc
 from qualityTab import QualityTab
 from adjustmentsTab import Adjustments
 from resolutionsTab import ResolutionsTab
-from shooter import PSSnapper
+from shooter import Shooter
 from adjustmentsTab import Adjustments
 from zoomTab import ZoomTab
 from keyboardslider import KeyboardSlider
@@ -33,14 +33,14 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
 
     def moveEvent(self, e):
         # if the preview is currently visibe
-        print("is checked?", self.statusBarPreviewCheckBox.isChecked())
+        #print("is checked?", self.statusBarPreviewCheckBox.isChecked())
         if self.statusBarPreviewCheckBox.isChecked():
             # stop it!
             self.camera.stop_preview
             # then call showPreview so pos can update
             self.mWidget.showPreview(True)
 
-        print(self.pos())
+        #print(self.pos())
         super(PiSnap, self).moveEvent(e)
 
 
@@ -178,7 +178,6 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         # set a central widget
         self.centralWidget = qtw.QWidget()
         self.centralWidget.setObjectName("centralWidget")
-        print("central widget", self.centralWidget)
         self.setCentralWidget(self.centralWidget)
         # define some layouts
         self.hlayout = qtw.QHBoxLayout()
@@ -203,7 +202,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.hlayout.addWidget(self.dummy) """
         
         #print(self.hlayout)
-        self.mWidget = PSSnapper(self.settings.camvals, self.camera)
+        self.mWidget = Shooter(self.settings.camvals, self.camera)
         self.mWidget.setObjectName("mWidget")
         self.statusBarPreviewCheckBox.clicked.connect(self.mWidget.showPreview)
         self.visibleAction.toggled.connect(self.mWidget.showPreview)
@@ -241,7 +240,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
 
         # #################################################################
         # make a resolutions tab widget, and pass the settings dictionary to it
-        self.resolutionsTab = ResolutionsTab(self.settings.camvals, self.camera)
+        self.resolutionsTab = ResolutionsTab(self.settings.camvals, self.camera, self.centralWidget)
         # now register it to the settings class
         self.settings.registerWidget(self.resolutionsTab)
         # now add it to the tab
@@ -249,7 +248,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
 
 
         # ##################################################################
-        # make a brightness object and do the same 
+        # make a brightness object and domWidget" the same 
         self.adjustmentsTab = Adjustments(self.settings.camvals, self.camera)
         self.settings.registerWidget(self.adjustmentsTab)
         self.settingsWidget.addTab(self.adjustmentsTab, "Adjustments")  
@@ -257,6 +256,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         # ##################################################################
         # make a zoomer object
         self.zoomTab = ZoomTab(self.settings.camvals, self.camera)
+        self.zoomTab.setObjectName("zoomTab")
         self.settings.registerWidget(self.zoomTab)
         self.settingsWidget.addTab(self.zoomTab, "Zooming Tool")  
 
@@ -279,7 +279,5 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
 if __name__=='__main__':
     app = qtw.QApplication(sys.argv)
     window = PiSnap()
-    #window.setObjectName("window")
-    print("main window", window)
     sys.exit(app.exec_())
 
