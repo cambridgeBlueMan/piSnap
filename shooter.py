@@ -44,7 +44,9 @@ class Shooter(qtw.QWidget):
         self.camera = camera
 
         # do we want to capture audio?
-        self.getAudio = False
+        if self.camvals["audioActive"] == "false":
+            self.getAudio = False
+        else: self.getAudio = True
 
         # do we want to record zoom?
         self.recordZoom = False
@@ -164,8 +166,9 @@ class Shooter(qtw.QWidget):
         self.camera.video_stabilization=bool
         self.camvals["video_stabilization"] = str(bool)
 
-    def setCamValFromCombo(self):
-        pass
+    def setFrameRate(self,myvar):
+        self.camera.framerate = int(myvar)
+        self.camvals["framerate"] = int(myvar)
         
 
     def doRecordVid(self, test):
@@ -415,6 +418,8 @@ class Shooter(qtw.QWidget):
         self.media = None
         self.mediaplayer = self.vlcObj.media_player_new()
         self.is_paused = False """
+        self.ui.frameRate.setCurrentText(str(self.camvals["framerate"]))
+        self.camera.frameRate=(self.camvals["framerate"])
         # set camera.resolution for video
         self.camera.resolution = tuple(self.camvals["vidres"])
         self.resetResolutionStuff()

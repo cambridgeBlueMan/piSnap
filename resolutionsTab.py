@@ -49,7 +49,7 @@ class ResolutionsTab(qtw.QWidget):
         self.resAsString = []
         self.resAsTuple = []
         for item in resolutions:
-            self.resAsString.append((item[0])+" "+str(item[1]))
+            self.resAsString.append((item[0])+", "+str(item[1]))
             self.resAsTuple.append(item[1])
 
     def setVideoRes(self,int):

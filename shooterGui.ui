@@ -222,6 +222,26 @@
        <height>32</height>
       </rect>
      </property>
+     <item>
+      <property name="text">
+       <string>25</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>30</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>35</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>40</string>
+      </property>
+     </item>
     </widget>
     <widget class="QLabel" name="frameRateLabel">
      <property name="geometry">
@@ -648,7 +668,7 @@
    <sender>frameRate</sender>
    <signal>currentIndexChanged(QString)</signal>
    <receiver>Form</receiver>
-   <slot>setCamValFromCombo(QString)</slot>
+   <slot>setFrameRate(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>607</x>
@@ -684,6 +704,6 @@
   <slot>slot2()</slot>
   <slot>setRecordZoomFlag(bool)</slot>
   <slot>doVideoStabilization(bool)</slot>
-  <slot>setCamValFromCombo(QString)</slot>
+  <slot>setFrameRate(QString)</slot>
  </slots>
 </ui>

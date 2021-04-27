@@ -32,7 +32,7 @@
     "exposure_mode": "auto",
     "exposure_speed": 0,
     "flash_mode": "redeye",
-    "framerate": 25,
+    "framerate": 35,
     "hflip": false,
     "image_denoise": true,
     "image_effect": "none",
@@ -80,8 +80,8 @@
     "videoFormat": "h264",
     "fileCounter": 61,
     "vidres": [
-        720,
-        480
+        1920,
+        1080
     ],
     "imgres": [
         1920,
