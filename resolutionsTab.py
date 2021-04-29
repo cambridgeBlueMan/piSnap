@@ -56,23 +56,28 @@ class ResolutionsTab(qtw.QWidget):
         if self.comboItemsAdded == True:
             # set new camvals value
             self.camvals["vidres"] = self.resAsTuple[int] 
-            x = self.cw.findChild(qtw.QWidget, "mWidget")
-            if x:
-                print(x)
-                x.resetResolutionStuff()
-                print("resetResolution Stuff")
-            x = self.window().findChild(ZoomTab, "zoomTab") #.resetZoomStuff()
-            if x:
-                print("got one!")
-                x.resetZoomStuff()
+            #self.camera.resolution = tuple(self.camvals["vidres"])
+            self.aShooter = self.cw.findChild(qtw.QWidget, "mWidget")
+            if self.aShooter:
+                #print(dir(x))
+                # want to set up vid capture here
+                print(self.aShooter.setupVideoCapture())
+                #print("resetResolution Stuff")
+            self.aZoomTab = self.window().findChild(ZoomTab, "zoomTab") #.resetZoomStuff()
+            if self.aZoomTab:
+                #print("got one!")
+                self.aZoomTab.resetZoomStuff()
             
     def setStillRes(self,int):
         if self.comboItemsAdded == True:
-            self.camvals["imgres"] = self.resAsTuple[int]     
-            self.cw.findChild(qtw.QWidget, "mWidget").resetResolutionStuff()   
+            
+            self.camvals["imgres"] = self.resAsTuple[int]   
+            #self.camera.resolution = tuple(self.camvals["imgres"])
+  
+            self.cw.findChild(qtw.QWidget, "mWidget").setupStillCapture()   
             x = self.window().findChild(ZoomTab, "zoomTab") #.resetZoomStuff()
             if x:
-                print("got one!")
+                #print("got one!")
                 x.resetZoomStuff()
             #x.resetZoomStuff()
             #print (self.window().findChild(ZoomTab, "zoomTab").resetZoomStuff) #.resetZoomStuff()

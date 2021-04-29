@@ -308,8 +308,7 @@ class Shooter(qtw.QWidget):
 
         #print(args[1].text())
 
-    def resetResolutionStuff(self):
-        print("in resetResolutionsStuff")
+
         
     def setFileRoot(*args):
         pass
@@ -448,7 +447,8 @@ class Shooter(qtw.QWidget):
         
 
     def setupStillCapture(self):
-        #print(self)
+        print(self.sender())
+        print("in still capture")
         """ make all relevant settings for still capture """
         # set camera.resolution for still
         self.camera.resolution = tuple(self.camvals["imgres"])
@@ -456,6 +456,8 @@ class Shooter(qtw.QWidget):
         self.resetResolutionStuff()
 
     def resetResolutionStuff(self):
+        print("in resetResolutionsStuff")
+        print("res is: ",self.camera.resolution)
         self.ui.imgContainer.resize(self.camera.resolution[0]/self.resDivider, self.camera.resolution[1]/self.resDivider)
         # get the size of the monitor
         sizeObject = qtw.QDesktopWidget().screenGeometry(-1)
@@ -463,8 +465,9 @@ class Shooter(qtw.QWidget):
         self.ui.previewFrame.resize(((sizeObject.width()/10) + 22), ((sizeObject.height()/10) + 22))
         self.ui.previewButton.setContainerSize((sizeObject.width()/10) + 22,  (sizeObject.height()/10) + 22) 
         self.ui.previewButton.setDragButtonSize(self.camera.resolution[0]/20 +22, self.camera.resolution[1]/20 + 22)
-        print("button size: ", (self.camera.resolution[0]/20)) # + 22)
+        #print("button size: ", (self.camera.resolution[0]/20)) # + 22)
         self.ui.previewButton.moveButtonToOrigin()
+        return "hello everybody"
         
 
 if __name__ == "__main__":
