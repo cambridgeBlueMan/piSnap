@@ -56,7 +56,11 @@ class ResolutionsTab(qtw.QWidget):
         if self.comboItemsAdded == True:
             # set new camvals value
             self.camvals["vidres"] = self.resAsTuple[int] 
-            self.cw.findChild(qtw.QWidget, "mWidget").resetResolutionStuff()
+            x = self.cw.findChild(qtw.QWidget, "mWidget")
+            if x:
+                print(x)
+                x.resetResolutionStuff()
+                print("resetResolution Stuff")
             x = self.window().findChild(ZoomTab, "zoomTab") #.resetZoomStuff()
             if x:
                 print("got one!")

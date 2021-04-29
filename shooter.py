@@ -268,22 +268,7 @@ class Shooter(qtw.QWidget):
         self.mediaplayer.set_position(pos / 1000.0)
         self.timer.start()
 
-    def setCaptureMode(self, ix):
-        """
-        slot called from the still/video tab selector currentChanged signal
-        """
-        #print(self, ix)
-        # if video is selected then instantiate the vlc stuff
-        if ix == 1:
-            self.setupVideoCapture()
-            
-        else:
-            # clean it all up, still to write
-            self.setupStillCapture()
-        state = self.ui.previewVisible.isChecked()   # previewVisible.isChecked()
-        print(state)
-        self.showPreview(self, state)
-
+    
     def updateUi(self):
         """
         Updates the user interface
@@ -322,6 +307,9 @@ class Shooter(qtw.QWidget):
         # play the current video
 
         #print(args[1].text())
+
+    def resetResolutionStuff(self):
+        print("in resetResolutionsStuff")
         
     def setFileRoot(*args):
         pass
@@ -333,7 +321,7 @@ class Shooter(qtw.QWidget):
     def movePreview(self):
         pass
   
-    def previewPos(self, x,y):
+    def movePreviewOrigin(self, x,y):
         """ 
         previewPos is a slot which is called whenever the bullet point
         moves. it receives two integers which are x and y values.
@@ -349,7 +337,7 @@ class Shooter(qtw.QWidget):
         height = int(self.camera.resolution[1]/self.resDivider) 
         self.ui.previewVisible.setChecked(True)
         # I believe that the size of the bulletpoint container is 1/10 of the size of current resolution
-        self.camera.start_preview(fullscreen=False, window = (x*5, y*5,width,height))
+        self.camera.start_preview(fullscreen=False, window = (x*10, y*10,width,height))
         self.window().findChild(qtw.QCheckBox,"statusBarPreviewCheckBox" ).setChecked(True)
         self.window().findChild(qtw.QAction,"visibleAction" ).setChecked(True)
         
@@ -432,6 +420,24 @@ class Shooter(qtw.QWidget):
         self.myItem = qtw.QListWidgetItem(self.myIcon, self.vidRoot + self.camvals["videoFormat"], self.ui.thumbnails)        
         # then add it to the widget
 
+
+    def setCaptureMode(self, ix):
+        """
+        slot called from the still/video tab selector currentChanged signal
+        """
+        #print(self, ix)
+        # if video is selected then instantiate the vlc stuff
+        if ix == 1:
+            self.setupVideoCapture()
+            
+        else:
+            # clean it all up, still to write
+            self.setupStillCapture()
+        state = self.ui.previewVisible.isChecked()   # previewVisible.isChecked()
+        print(state)
+        self.showPreview(state)
+
+
     def setupVideoCapture(self):
         """ make all relevant settings appropriate for video capture """   
         self.ui.frameRate.setCurrentText(str(self.camvals["framerate"]))
@@ -451,8 +457,13 @@ class Shooter(qtw.QWidget):
 
     def resetResolutionStuff(self):
         self.ui.imgContainer.resize(self.camera.resolution[0]/self.resDivider, self.camera.resolution[1]/self.resDivider)
-        self.ui.previewFrame.resize(((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
-        self.ui.previewButton.setContainerSize(((self.camera.resolution[0]/10) + 22), ((self.camera.resolution[1]/10) + 22))
+        # get the size of the monitor
+        sizeObject = qtw.QDesktopWidget().screenGeometry(-1)
+
+        self.ui.previewFrame.resize(((sizeObject.width()/10) + 22), ((sizeObject.height()/10) + 22))
+        self.ui.previewButton.setContainerSize((sizeObject.width()/10) + 22,  (sizeObject.height()/10) + 22) 
+        self.ui.previewButton.setDragButtonSize(self.camera.resolution[0]/20 +22, self.camera.resolution[1]/20 + 22)
+        print("button size: ", (self.camera.resolution[0]/20)) # + 22)
         self.ui.previewButton.moveButtonToOrigin()
         
 

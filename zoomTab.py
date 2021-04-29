@@ -238,6 +238,7 @@ class ZoomTab(QtWidgets.QWidget):
         print("hello everybody!!!")
 
     def resetZoomStuff(self):
+        print("in reset zoom stuff")
         self.zoom = [0,0, self.resolutionWidth/self.sensorWidth, self.resolutionWidth/self.sensorWidth]
         self.startZoom = self.zoom[:]
         self.endZoom = self.zoom[:]

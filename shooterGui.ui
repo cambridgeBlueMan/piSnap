@@ -346,8 +346,8 @@
    <widget class="DragButton" name="previewButton">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>20</y>
+      <x>0</x>
+      <y>0</y>
       <width>31</width>
       <height>30</height>
      </rect>
@@ -607,8 +607,8 @@
    <slot>movePreview()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>115</x>
-     <y>672</y>
+     <x>165</x>
+     <y>662</y>
     </hint>
     <hint type="destinationlabel">
      <x>178</x>
@@ -620,11 +620,11 @@
    <sender>previewButton</sender>
    <signal>posChanged(int,int)</signal>
    <receiver>Form</receiver>
-   <slot>previewPos(int,int)</slot>
+   <slot>movePreviewOrigin(int,int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>101</x>
-     <y>693</y>
+     <x>151</x>
+     <y>683</y>
     </hint>
     <hint type="destinationlabel">
      <x>536</x>
@@ -699,7 +699,7 @@
   <slot>setCaptureMode(int)</slot>
   <slot>previewXPos(int)</slot>
   <slot>previewYPos(int)</slot>
-  <slot>previewPos(int,int)</slot>
+  <slot>movePreviewOrigin(int,int)</slot>
   <slot>slot1()</slot>
   <slot>slot2()</slot>
   <slot>setRecordZoomFlag(bool)</slot>

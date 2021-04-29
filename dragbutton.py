@@ -6,6 +6,8 @@ class DragButton(qtw.QPushButton):
     posChanged = qtc.pyqtSignal(int,int)
     global newPos
     def __init__(self, win, bWidth = 22, bHeight = 22):
+        # win is the containing window
+        # bullet width and height
         self.bWidth = bWidth
         self.bHeight = bHeight
         # win is the containing frame or widget
@@ -23,7 +25,7 @@ class DragButton(qtw.QPushButton):
         self.containerHeight = y
 
     def setDragButtonSize(self,w,h):
-        self.setFixedSize(w,h)
+        #self.setFixedSize(w,h)
         self.bWidth = w
         self.bHeight = h
 
@@ -62,6 +64,7 @@ class DragButton(qtw.QPushButton):
                 y = 0
             else:
                 y = newPos.y()
+            print(x,y)
             self.sendPos((x,y))
 
             self.move(x,y)

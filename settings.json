@@ -80,12 +80,12 @@
     "videoFormat": "h264",
     "fileCounter": 61,
     "vidres": [
-        1920,
-        1080
+        1024,
+        600
     ],
     "imgres": [
-        1920,
-        1200
+        800,
+        600
     ],
     "zStartX": 25,
     "zStartY": 36,

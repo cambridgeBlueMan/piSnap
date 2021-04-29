@@ -129,7 +129,7 @@ class Ui_Form(object):
         self.previewFrame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.previewFrame.setObjectName("previewFrame")
         self.previewButton = DragButton(self.previewFrame)
-        self.previewButton.setGeometry(QtCore.QRect(70, 20, 31, 30))
+        self.previewButton.setGeometry(QtCore.QRect(0, 0, 31, 30))
         self.previewButton.setObjectName("previewButton")
 
         self.retranslateUi(Form)
@@ -149,7 +149,7 @@ class Ui_Form(object):
         self.fileRoot.textChanged['QString'].connect(Form.setFileRoot)
         self.captureTab.currentChanged['int'].connect(Form.setCaptureMode)
         self.previewButton.released.connect(Form.movePreview)
-        self.previewButton.posChanged['int','int'].connect(Form.previewPos)
+        self.previewButton.posChanged['int','int'].connect(Form.movePreviewOrigin)
         self.useZoomOnRecord.clicked['bool'].connect(Form.setRecordZoomFlag)
         self.videoStabilization.clicked['bool'].connect(Form.doVideoStabilization)
         self.frameRate.currentIndexChanged['QString'].connect(Form.setFrameRate)
