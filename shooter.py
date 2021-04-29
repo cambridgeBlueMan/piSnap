@@ -313,6 +313,15 @@ class Shooter(qtw.QWidget):
         
     def setFileRoot(*args):
         pass
+
+    def updateStillRoot(self):
+        self.ui.stillFileRoot.text()
+        self.camvals["stillFileRoot"] = self.ui.stillFileRoot.text()
+
+    def updateVideoRoot(self):
+        self.ui.videoFileRoot.text()
+        self.camvals["vidFileRoot"] = self.ui.videoFileRoot.text()
+
     def isDateStamp(*args):
         pass
     def isCounter(*args):
@@ -341,7 +350,8 @@ class Shooter(qtw.QWidget):
         self.window().findChild(qtw.QCheckBox,"statusBarPreviewCheckBox" ).setChecked(True)
         self.window().findChild(qtw.QAction,"visibleAction" ).setChecked(True)
         
-
+    def setPreviewLockState(*args):
+        pass
 
     def showPreview(self, state, xPos=0, yPos=0):
         #print("hello")
