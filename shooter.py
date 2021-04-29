@@ -454,7 +454,7 @@ class Shooter(qtw.QWidget):
         # set camera.resolution for video
         self.camera.resolution = tuple(self.camvals["vidres"])
         self.resetResolutionStuff()
-        
+        # hello everybodyy
 
     def setupStillCapture(self):
         print(self.sender())
