@@ -74,8 +74,8 @@
         1.0,
         1.0
     ],
-    "stillFileRoot": "img_",
-    "vidFileRoot": "vid_",
+    "stillFileRoot": "vicky",
+    "vidFileRoot": "test",
     "stillFormat": "jpeg",
     "videoFormat": "h264",
     "fileCounter": 61,
