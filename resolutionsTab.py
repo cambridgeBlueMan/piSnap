@@ -30,9 +30,13 @@ class ResolutionsTab(qtw.QWidget):
         # add combo box items
         self.makeDataStructures()
         self.comboItemsAdded = self.addItemsToCombos()
-        self.applySettings()
+        self.settingsApplied = self.applySettings()
 
     def makeDataStructures(self):
+        """ takes the data structure shown below and extracts resolutions as strings,
+        and resolutions as tuples. Strings are used to populate two combo boxes displaying the
+        avaiable resolutions. tples with matching indices are used to set the  actual
+        values """
         resolutions = [
                     ('CGA', (320,200)),         ('QVGA', (320,240)),
                     ('VGA', (640,480)),         ('PAL', (768,576)),
@@ -46,53 +50,58 @@ class ResolutionsTab(qtw.QWidget):
                     ('HD 1080', (1920,1080)),   ('WUXGA', (1920,1200)),
                     ('2K', (2048,1080))
                     ]
+        #initialise the lists
         self.resAsString = []
         self.resAsTuple = []
+        # add items to the lists
         for item in resolutions:
             self.resAsString.append((item[0])+", "+str(item[1]))
             self.resAsTuple.append(item[1])
 
     def setVideoRes(self,int):
+        """ slot triggered by the vidres combo box. updates the camvals dictionary with the new
+        video resolution, and if video is the current setting of the captureTab Tab Widget runs the 
+        setupVideoCapture method. (Note this method is also triggered on change of the 
+        captureTab widget current index). Finally this method resets the zoom page """
+
         if self.comboItemsAdded == True:
             # set new camvals value
             self.camvals["vidres"] = self.resAsTuple[int] 
-            #self.camera.resolution = tuple(self.camvals["vidres"])
-            self.aShooter = self.cw.findChild(qtw.QWidget, "mWidget")
-            if self.aShooter:
-                #print(dir(x))
-                # want to set up vid capture here
-                print(self.aShooter.setupVideoCapture())
-                #print("resetResolution Stuff")
+            aShooter = self.cw.findChild(qtw.QWidget, "mWidget")
+            if aShooter:
+                # if we are currently on the video tab then we need to do all the reset stuff
+                if aShooter.ui.captureTab.currentIndex() == 1:
+                    aShooter.setupVideoCapture()
             self.aZoomTab = self.window().findChild(ZoomTab, "zoomTab") #.resetZoomStuff()
             if self.aZoomTab:
-                #print("got one!")
                 self.aZoomTab.resetZoomStuff()
             
     def setStillRes(self,int):
+        """ slot triggered by the imgres combo box. updates the camvals dictionary with the new
+        still image resolution, and if still is the current setting of the captureTab Tab Widget runs the 
+        setupStillCapture method. (Note this method is also triggered on change of the 
+        captureTab widget current index). """
+
         if self.comboItemsAdded == True:
-            
             self.camvals["imgres"] = self.resAsTuple[int]   
-            #self.camera.resolution = tuple(self.camvals["imgres"])
-  
-            self.cw.findChild(qtw.QWidget, "mWidget").setupStillCapture()   
-            x = self.window().findChild(ZoomTab, "zoomTab") #.resetZoomStuff()
-            if x:
-                #print("got one!")
-                x.resetZoomStuff()
-            #x.resetZoomStuff()
-            #print (self.window().findChild(ZoomTab, "zoomTab").resetZoomStuff) #.resetZoomStuff()
+            aShooter = self.cw.findChild(qtw.QWidget, "mWidget")
+            if aShooter:
+                if aShooter.ui.captureTab.currentIndex() == 0:
+                    aShooter.setupStillCapture()   
 
     def addItemsToCombos(self): 
         self.ui.vidres.addItems(self.resAsString) 
         self.ui.imgres.addItems(self.resAsString)
         return True
 
-    def applySettings(self): #set the resolutions comboboxes to the value saved in camvals
+    def applySettings(self): 
+        #set the resolutions comboboxes to the value saved in camvals
         if self.comboItemsAdded == True:
             ix=self.resAsTuple.index(tuple(self.camvals["vidres"]))
             self.ui.vidres.setCurrentText(self.resAsString[ix])
             ix=self.resAsTuple.index(tuple(self.camvals["imgres"]))
             self.ui.imgres.setCurrentText(self.resAsString[ix])
+            return True
             
 #######################################################################################
     #                           END OF CLASS

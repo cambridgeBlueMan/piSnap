@@ -48,33 +48,26 @@ class ZoomTab(QtWidgets.QWidget):
         self.ui.getZoom.setInvertedAppearance(True)
         self.pixelWidth  = 1/self.sensorWidth
         self.pixelHeight = 1/self.sensorHeight
-        # rsolution width and height are set by the user
-        self.resolutionWidth = self.camvals["vidres"][0] 
-        self.resolutionHeight = self.camvals["vidres"][1]
-        #self.zoomDimension = 0.5
         # set max value for ui items
-        self.zoom = [0,0, self.resolutionWidth/self.sensorWidth, self.resolutionWidth/self.sensorWidth]
+        self.zoom = [0,0, self.camvals["vidres"][0] /self.sensorWidth, self.camvals["vidres"][0] /self.sensorWidth]
         self.startZoom = self.zoom[:]
         self.endZoom = self.zoom[:]
-        #self.ui.getYOrigin.setMaximum((1-self.resolutionWidth/self.sensorWidth)*self.sensorWidth)
-        #self.ui.getXOrigin.setMaximum((1-self.resolutionWidth/self.sensorWidth)*self.sensorWidth)
-        self.ui.getZoom.setMinimum(self.resolutionWidth)
-        self.ui.getZoom.setValue(self.resolutionWidth)
+        self.ui.getZoom.setMinimum(self.camvals["vidres"][0] )
+        self.ui.getZoom.setValue(self.camvals["vidres"][0] )
         #
-        self.ui.adjustZoom.setDragButtonSize(self.resolutionWidth/8, self.resolutionHeight/8)
+        self.ui.adjustZoom.setDragButtonSize(self.camvals["vidres"][0] /8, self.camvals["vidres"][1] /8)
 
         self.camera.zoom = self.zoom
         # now we can set the resolution on the camer itself
-        self.camera.resolution = (self.resolutionWidth, self.resolutionHeight)
-        #self.camera.start_preview(fullscreen = False, window = (0,0, int(self.resolutionWidth/self.previewDivider), int(self.resolutionHeight/self.previewDivider)))
+        self.camera.resolution = (self.camvals["vidres"][0] , self.camvals["vidres"][1] )
          
     def doSnap(self):
         self.camera.capture("twattock.jpeg")
 
     def range(self, value):
         #value = 2028
-        toRange = self.resolutionHeight
-        fromRange = self.resolutionWidth
+        toRange = self.camvals["vidres"][1] 
+        fromRange = self.camvals["vidres"][0] 
         return value*toRange/fromRange
 
     def setZoomWithButton(self, x, y):
@@ -146,6 +139,9 @@ class ZoomTab(QtWidgets.QWidget):
         #self.printDiag(self)
 
     def doRunZoom(self, bool):
+        #set the resolution on the camer itself
+        self.camera.resolution = (self.camvals["vidres"][0] , self.camvals["vidres"][1] )
+
         # number of steps to complete the zoom
         loopSize = 300  
         # increment for each staep
@@ -228,8 +224,8 @@ class ZoomTab(QtWidgets.QWidget):
  
     def showPreview(self):
         if self.ui.showPreview.isChecked():
-            self.camera.start_preview(fullscreen = False, window = (int(self.resolutionWidth/self.previewDivider),0,
-                                                                int(self.resolutionWidth/self.previewDivider), int(self.resolutionHeight/self.previewDivider)))
+            self.camera.start_preview(fullscreen = False, window = (int(self.camvals["vidres"][0] /self.previewDivider),0,
+                                                                int(self.camvals["vidres"][0] /self.previewDivider), int(self.camvals["vidres"][1] /self.previewDivider)))
         else:
             self.camera.stop_preview()
         pass
@@ -239,17 +235,17 @@ class ZoomTab(QtWidgets.QWidget):
 
     def resetZoomStuff(self):
         print("in reset zoom stuff")
-        self.zoom = [0,0, self.resolutionWidth/self.sensorWidth, self.resolutionWidth/self.sensorWidth]
+        self.zoom = [0,0, self.camvals["vidres"][0] /self.sensorWidth, self.camvals["vidres"][0] /self.sensorWidth]
         self.startZoom = self.zoom[:]
         self.endZoom = self.zoom[:]
-        self.ui.getZoom.setMinimum(self.resolutionWidth)
-        self.ui.getZoom.setValue(self.resolutionWidth)
+        self.ui.getZoom.setMinimum(self.camvals["vidres"][0] )
+        self.ui.getZoom.setValue(self.camvals["vidres"][0] )
         #
-        self.ui.adjustZoom.setDragButtonSize(self.resolutionWidth/8, self.resolutionHeight/8)
+        self.ui.adjustZoom.setDragButtonSize(self.camvals["vidres"][0] /8, self.camvals["vidres"][1] /8)
 
         self.camera.zoom = self.zoom
         # now we can set the resolution on the camer itself
-        self.camera.resolution = (self.resolutionWidth, self.resolutionHeight)
+        self.camera.resolution = (self.camvals["vidres"][0] , self.camvals["vidres"][1] )
 
 
 

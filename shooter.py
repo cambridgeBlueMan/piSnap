@@ -314,11 +314,11 @@ class Shooter(qtw.QWidget):
         pass
 
     def updateStillRoot(self):
-        self.ui.stillFileRoot.text()
+        #self.ui.stillFileRoot.text()
         self.camvals["stillFileRoot"] = self.ui.stillFileRoot.text()
 
     def updateVideoRoot(self):
-        self.ui.videoFileRoot.text()
+        #self.ui.videoFileRoot.text()
         self.camvals["vidFileRoot"] = self.ui.videoFileRoot.text()
 
     def isDateStamp(*args):
@@ -370,8 +370,17 @@ class Shooter(qtw.QWidget):
             print(state)
             # note that width and height are here being derivded form the camers's
             # resolution settings and not from camvals
-            width = int(self.camera.resolution[0]/self.resDivider)
+            """ width = int(self.camera.resolution[0]/self.resDivider)
             height = int(self.camera.resolution[1]/self.resDivider) 
+ """
+            print("current index: ", self.ui.captureTab.currentIndex() )
+            if self.ui.captureTab.currentIndex() == 1:
+                width = int(self.camvals["vidres"][0]/self.resDivider)
+                height = int(self.camvals["vidres"][1]/self.resDivider)
+            if self.ui.captureTab.currentIndex() == 0:
+                width = int(self.camvals["imgres"][0]/self.resDivider)
+                height = int(self.camvals["imgres"][1]/self.resDivider)
+            print (width, height)
             self.geometry().x()
             # calculate x and y position for preview
             x = self.ui.imgContainer.geometry().x() + self.geometry().x() + self.window().geometry().x()
@@ -452,32 +461,22 @@ class Shooter(qtw.QWidget):
         self.ui.frameRate.setCurrentText(str(self.camvals["framerate"]))
         self.camera.frameRate=(self.camvals["framerate"])
         # set camera.resolution for video
-        self.camera.resolution = tuple(self.camvals["vidres"])
-        self.resetResolutionStuff()
-        # hello everybodyopopo
+        self.resetResolutionStuff("vidres")
 
     def setupStillCapture(self):
-        print(self.sender())
-        print("in still capture")
         """ make all relevant settings for still capture """
-        # set camera.resolution for still
-        self.camera.resolution = tuple(self.camvals["imgres"])
-        # adjust display area for video
-        self.resetResolutionStuff()
+        self.resetResolutionStuff("imgres")
 
-    def resetResolutionStuff(self):
-        print("in resetResolutionsStuff")
-        print("res is: ",self.camera.resolution)
-        self.ui.imgContainer.resize(self.camera.resolution[0]/self.resDivider, self.camera.resolution[1]/self.resDivider)
+    def resetResolutionStuff(self, imgType):
+        self.camera.resolution = tuple(self.camvals[imgType])
+        self.ui.imgContainer.resize(self.camvals[imgType][0]/self.resDivider, self.camvals[imgType][1]/self.resDivider)
         # get the size of the monitor
         sizeObject = qtw.QDesktopWidget().screenGeometry(-1)
-
         self.ui.previewFrame.resize(((sizeObject.width()/10) + 22), ((sizeObject.height()/10) + 22))
         self.ui.previewButton.setContainerSize((sizeObject.width()/10) + 22,  (sizeObject.height()/10) + 22) 
         self.ui.previewButton.setDragButtonSize(self.camera.resolution[0]/20 +22, self.camera.resolution[1]/20 + 22)
         #print("button size: ", (self.camera.resolution[0]/20)) # + 22)
         self.ui.previewButton.moveButtonToOrigin()
-        return "hello everybody"
         
 
 if __name__ == "__main__":
