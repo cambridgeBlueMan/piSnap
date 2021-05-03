@@ -64,9 +64,9 @@ class Shooter(qtw.QWidget):
         else: 
             self.getAudio = True
         self.ui.stillFileRoot.setText(self.camvals["stillFileRoot"])
+        self.ui.videoFileRoot.setText(self.camvals["vidFileRoot"])
 
-
-
+        
     def setupVLCPlayer(self):
         
         self.timer = qtc.QTimer(self)
@@ -353,9 +353,19 @@ class Shooter(qtw.QWidget):
         self.camera.start_preview(fullscreen=False, window = (x*10, y*10,width,height))
         self.window().findChild(qtw.QCheckBox,"statusBarPreviewCheckBox" ).setChecked(True)
         self.window().findChild(qtw.QAction,"visibleAction" ).setChecked(True)
-        
-    def setPreviewLockState(*args):
-        pass
+     
+    #when checked will enable unlockPreview   
+    def setPreviewLockState(self,state):
+        if state == True:
+            self.ui.previewFrame.setEnabled(True)
+            self.ui.previewButton.setEnabled(True)
+        else:
+            self.ui.previewFrame.setEnabled(False)
+            self.ui.previewButton.setEnabled(False)
+            x=self.ui.previewVisible.isChecked()
+            self.showPreview(x)
+            self.ui.previewButton.move(0,0)
+            
 
     def showPreview(self, state, xPos=0, yPos=0):
         #print("hello")
