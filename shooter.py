@@ -360,19 +360,10 @@ class Shooter(qtw.QWidget):
 
         """
         if state == True:
-
-
-            """
-            divider is currently hard coded at 2. This should be settable via a preview
+            """ divider is currently hard coded at 2. This should be settable via a preview
             size gui control
-
             """
-            print(state)
-            # note that width and height are here being derivded form the camers's
-            # resolution settings and not from camvals
-            """ width = int(self.camera.resolution[0]/self.resDivider)
-            height = int(self.camera.resolution[1]/self.resDivider) 
- """
+            print("sender: ", self.sender())
             print("current index: ", self.ui.captureTab.currentIndex() )
             if self.ui.captureTab.currentIndex() == 1:
                 width = int(self.camvals["vidres"][0]/self.resDivider)
@@ -391,6 +382,7 @@ class Shooter(qtw.QWidget):
             if self.sender() == None:
                 pass
             else:
+                # update stae of all the different preview checkboxes
                 if self.ui.previewVisible.isChecked() != True:
                     self.ui.previewVisible.setChecked(True)
                 if self.sender().objectName != "statusBarPreviewCheckBox":
@@ -412,6 +404,10 @@ class Shooter(qtw.QWidget):
                     self.window().findChild(qtw.QAction, "visibleAction").setChecked(False)
 
            
+    def updatePreviewCheckboxesState(self):
+        # to be implemented
+        pass
+
 
     def setPreviewSize(*args):
         pass 
