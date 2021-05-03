@@ -70,8 +70,9 @@ class ResolutionsTab(qtw.QWidget):
             aShooter = self.cw.findChild(qtw.QWidget, "mWidget")
             if aShooter:
                 # if we are currently on the video tab then we need to do all the reset stuff
-                if aShooter.ui.captureTab.currentIndex() == 1:
-                    aShooter.setupVideoCapture()
+                aShooter.setCaptureMode(aShooter.ui.captureTab.currentIndex())
+                #if aShooter.ui.captureTab.currentIndex() == 1:
+                #    aShooter.setupVideoCapture()
             self.aZoomTab = self.window().findChild(ZoomTab, "zoomTab") #.resetZoomStuff()
             if self.aZoomTab:
                 self.aZoomTab.resetZoomStuff()
@@ -86,8 +87,9 @@ class ResolutionsTab(qtw.QWidget):
             self.camvals["imgres"] = self.resAsTuple[int]   
             aShooter = self.cw.findChild(qtw.QWidget, "mWidget")
             if aShooter:
-                if aShooter.ui.captureTab.currentIndex() == 0:
-                    aShooter.setupStillCapture()   
+                aShooter.setCaptureMode(aShooter.ui.captureTab.currentIndex())
+                #if aShooter.ui.captureTab.currentIndex() == 0:
+                #    aShooter.setupStillCapture()   
 
     def addItemsToCombos(self): 
         self.ui.vidres.addItems(self.resAsString) 

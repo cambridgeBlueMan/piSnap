@@ -36,7 +36,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         #print("is checked?", self.statusBarPreviewCheckBox.isChecked())
         if self.statusBarPreviewCheckBox.isChecked():
             # stop it!
-            self.camera.stop_preview
+            self.mWidget.showPreview(False)
             # then call showPreview so pos can update
             self.mWidget.showPreview(True)
 

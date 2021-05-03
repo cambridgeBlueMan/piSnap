@@ -42,12 +42,7 @@ class Shooter(qtw.QWidget):
 
         # camera passed in on initialisation
         self.camera = camera
-
-        # do we want to capture audio?
-        if self.camvals["audioActive"] == "false":
-            self.getAudio = False
-        else: 
-            self.getAudio = True
+        self.initStuffFromCamvals()
 
         # do we want to record zoom?
         self.recordZoom = False
@@ -61,6 +56,16 @@ class Shooter(qtw.QWidget):
         self.setupVideoCapture()   
 
         self.setupVLCPlayer()
+
+    def initStuffFromCamvals(self):
+        # do we want to capture audio?
+        if self.camvals["audioActive"] == "false":
+            self.getAudio = False
+        else: 
+            self.getAudio = True
+        self.ui.stillFileRoot.setText(self.camvals["stillFileRoot"])
+
+
 
     def setupVLCPlayer(self):
         
@@ -439,7 +444,7 @@ class Shooter(qtw.QWidget):
         """
         slot called from the still/video tab selector currentChanged signal
         """
-        #print(self, ix)
+        print("index is: ", self, ix)
         # if video is selected then instantiate the vlc stuff
         if ix == 1:
             self.setupVideoCapture()
@@ -448,7 +453,7 @@ class Shooter(qtw.QWidget):
             # clean it all up, still to write
             self.setupStillCapture()
         state = self.ui.previewVisible.isChecked()   # previewVisible.isChecked()
-        print(state)
+        print("current state is: ", state)
         self.showPreview(state)
 
 
@@ -466,6 +471,7 @@ class Shooter(qtw.QWidget):
     def resetResolutionStuff(self, imgType):
         self.camera.resolution = tuple(self.camvals[imgType])
         self.ui.imgContainer.resize(self.camvals[imgType][0]/self.resDivider, self.camvals[imgType][1]/self.resDivider)
+        
         # get the size of the monitor
         sizeObject = qtw.QDesktopWidget().screenGeometry(-1)
         self.ui.previewFrame.resize(((sizeObject.width()/10) + 22), ((sizeObject.height()/10) + 22))
