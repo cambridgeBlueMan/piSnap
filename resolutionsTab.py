@@ -66,8 +66,10 @@ class ResolutionsTab(qtw.QWidget):
         captureTab widget current index). Finally this method resets the zoom page """
 
         if self.comboItemsAdded == True:
+            #print ("combo items added?: ", self.comboItemsAdded)
             # set new camvals value
             self.camvals["vidres"] = self.resAsTuple[int] 
+            #print("camvals after assignment: ", self.camvals["vidres"])
             # get the shooter object
             aShooter = self.cw.findChild(qtw.QWidget, "mWidget")
             # what is the current mode
@@ -79,26 +81,18 @@ class ResolutionsTab(qtw.QWidget):
                 aShooter.setCaptureMode(mode)
             if mode == 1 and isPreview == False:
                 #just redraw the frame with the new resolution
-                print("reDivider: ", type(self.camvals["vidres"][0]/aShooter.resDivider))
+                #print("reDivider: ", type(self.camvals["vidres"][0]/aShooter.resDivider))
                 width = self.camvals["vidres"][0]/aShooter.resDivider
                 height = self.camvals["vidres"][1]/aShooter.resDivider
+
                 width = math.floor(width)
                 height = math.floor(height)
                 #(height)
-                print (width, height)
+                #print ("set in resoltionsTab: ",width, height)
                 # resize the frame
                 aShooter.ui.imgContainer.resize(width, height)
+                aShooter.setCaptureMode(mode)
 
-            """ 
-            if aShooter:
-                # if we are currently on the video tab then we need to do all the reset stuff
-                aShooter.setCaptureMode(aShooter.ui.captureTab.currentIndex())
-                #if aShooter.ui.captureTab.currentIndex() == 1:
-                #    aShooter.setupVideoCapture()
-            self.aZoomTab = self.window().findChild(ZoomTab, "zoomTab") #.resetZoomStuff()
-            if self.aZoomTab:
-                self.aZoomTab.resetZoomStuff()
-             """
     def setStillRes(self,int):
         """ slot triggered by the imgres combo box. updates the camvals dictionary with the new
         still image resolution, and if still is the current setting of the captureTab Tab Widget runs the 
@@ -111,27 +105,23 @@ class ResolutionsTab(qtw.QWidget):
             # what is the current mode i.e. video or still tab (or more tabs yet to be defined)
             mode = aShooter.ui.captureTab.currentIndex()
             isPreview = aShooter.ui.previewVisible.isChecked()
+            # if still view is the current mode and preview is displaying
             if mode == 0 and isPreview == True:
                 #print("condition met ")
                 aShooter.setCaptureMode(mode)
             if mode == 0 and isPreview == False:
                 #just redraw the frame with the new resolution
-                print("reDivider: ", type(self.camvals["vidres"][0]/aShooter.resDivider))
+                #print("reDivider: ", type(self.camvals["vidres"][0]/aShooter.resDivider))
                 width = self.camvals["imgres"][0]/aShooter.resDivider
                 height = self.camvals["imgres"][1]/aShooter.resDivider
-                width = math.floor(width)
-                height = math.floor(height)
+                #width = math.floor(width)
+                #height = math.floor(height)
                 #(height)
-                print (width, height)
+                #print (width, height)
                 # resize the frame
                 aShooter.ui.imgContainer.resize(width, height)
+                aShooter.setCaptureMode(mode)
 
-
-            """ if aShooter:
-                aShooter.setCaptureMode(aShooter.ui.captureTab.currentIndex())
-                #if aShooter.ui.captureTab.currentIndex() == 0:
-                #    aShooter.setupStillCapture()   
-             """
     def addItemsToCombos(self): 
         self.ui.vidres.addItems(self.resAsString) 
         self.ui.imgres.addItems(self.resAsString)

@@ -342,15 +342,15 @@ class Shooter(qtw.QWidget):
         # stops the preview
         self.camera.stop_preview
         #print("in pos", x, y, self.camera.resolution)
-        # sets the width and height for the preview
+        # sets the self.width and self.height for the preview
         # 
-        # note that width and height are here being derivded form the camers's
+        # note that self.width and self.height are here being derivded form the camers's
         # resolution settings and not from camvals
-        width = int(self.camera.resolution[0]/self.resDivider)
-        height = int(self.camera.resolution[1]/self.resDivider) 
+        self.width = int(self.camera.resolution[0]/self.resDivider)
+        self.height = int(self.camera.resolution[1]/self.resDivider) 
         self.ui.previewVisible.setChecked(True)
         # I believe that the size of the bulletpoint container is 1/10 of the size of current resolution
-        self.camera.start_preview(fullscreen=False, window = (x*10, y*10,width,height))
+        self.camera.start_preview(fullscreen=False, window = (x*10, y*10,self.width,self.height))
         self.window().findChild(qtw.QCheckBox,"statusBarPreviewCheckBox" ).setChecked(True)
         self.window().findChild(qtw.QAction,"visibleAction" ).setChecked(True)
      
@@ -374,17 +374,17 @@ class Shooter(qtw.QWidget):
         several tick boxes around the place
 
         """
-        print("what is the index  of the tab?: ", self.ui.captureTab.currentIndex())
+        #print("what is the index  of the tab?: ", self.ui.captureTab.currentIndex())
         if self.ui.captureTab.currentIndex() == 1:
-            width = int(self.camvals["vidres"][0]/self.resDivider)
-            height = int(self.camvals["vidres"][1]/self.resDivider)
+            self.width = int(self.camvals["vidres"][0]/self.resDivider)
+            self.height = int(self.camvals["vidres"][1]/self.resDivider)
         if self.ui.captureTab.currentIndex() == 0:
-            width = int(self.camvals["imgres"][0]/self.resDivider)
-            height = int(self.camvals["imgres"][1]/self.resDivider)
-        print (width, height)
+            self.width = int(self.camvals["imgres"][0]/self.resDivider)
+            self.height = int(self.camvals["imgres"][1]/self.resDivider)
+        #print ("w, h: ", self.width, self.height)
         self.geometry().x()
         # resize the frame
-        self.ui.imgContainer.resize(width, height)
+        self.ui.imgContainer.resize(self.width, self.height)
         #
         if state == True:
             """ divider is currently hard coded at 2. This should be settable via a preview
@@ -392,22 +392,13 @@ class Shooter(qtw.QWidget):
             """
             #print("sender: ", self.sender())
             #print("current index: ", self.ui.captureTab.currentIndex() )
-            """ if self.ui.captureTab.currentIndex() == 1:
-                width = int(self.camvals["vidres"][0]/self.resDivider)
-                height = int(self.camvals["vidres"][1]/self.resDivider)
-            if self.ui.captureTab.currentIndex() == 0:
-                width = int(self.camvals["imgres"][0]/self.resDivider)
-                height = int(self.camvals["imgres"][1]/self.resDivider)
-            print (width, height)
-            self.geometry().x()
-            # resize the frame
-            self.ui.imgContainer.resize(width, height) """
-
             # calculate x and y position for preview
             x = self.ui.imgContainer.geometry().x() + self.geometry().x() + self.window().geometry().x()
             y = self.ui.imgContainer.geometry().y() + self.geometry().y() + self.window().geometry().y() + 27
             # show the preview
-            self.camera.start_preview(fullscreen=False, window = (x, y,width,height))
+            #print ("2ND TIME, w, h: ", self.width, self.height)
+            self.camera.stop_preview
+            self.camera.start_preview(fullscreen=False, window = (x, y,self.width, self.height))
             #update all the various tick boxes around the place
             if self.sender() == None:
                 pass
@@ -421,7 +412,7 @@ class Shooter(qtw.QWidget):
                     self.window().findChild(qtw.QAction, "visibleAction").setChecked(True)
 
         else:
-            print(state)
+            #print(state)
             self.camera.stop_preview()
             if self.sender() == None:
                 pass
@@ -432,18 +423,6 @@ class Shooter(qtw.QWidget):
                     self.window().findChild(qtw.QCheckBox,"statusBarPreviewCheckBox" ).setChecked(False)
                 if self.sender().objectName != "visibleAction":
                     self.window().findChild(qtw.QAction, "visibleAction").setChecked(False)
-            
-            """ # redraw the frame
-            imgType = self.ui.captureTab.currentIndex() 
-            if self.ui.captureTab.currentIndex() == 1:
-                width = int(self.camvals["vidres"][0]/self.resDivider)
-                height = int(self.camvals["vidres"][1]/self.resDivider)
-            if self.ui.captureTab.currentIndex() == 0:
-                width = int(self.camvals["imgres"][0]/self.resDivider)
-                height = int(self.camvals["imgres"][1]/self.resDivider)
-            self.ui.imgContainer.resize(width, height)
- """
-
            
     def updatePreviewCheckboxesState(self):
         # to be implemented
@@ -480,7 +459,7 @@ class Shooter(qtw.QWidget):
         """
         slot called from the still/video tab selector currentChanged signal
         """
-        print("index is: ", self, ix)
+        #print("index is: ", self, ix)
         # if video is selected then instantiate the vlc stuff
         if ix == 1:
             self.setupVideoCapture()
@@ -489,7 +468,7 @@ class Shooter(qtw.QWidget):
             # clean it all up, still to write
             self.setupStillCapture()
         state = self.ui.previewVisible.isChecked()   # previewVisible.isChecked()
-        print("current state is: ", state)
+        #print("current state is: ", state)
         self.showPreview(state)
 
 
