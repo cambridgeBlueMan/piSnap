@@ -156,7 +156,7 @@ class Ui_Form(object):
         self.unlockPreview.setObjectName("unlockPreview")
 
         self.retranslateUi(Form)
-        self.captureTab.setCurrentIndex(0)
+        self.captureTab.setCurrentIndex(1)
         self.thumbnails.itemDoubleClicked['QListWidgetItem*'].connect(Form.doThumbnailClicked)
         self.stopVid.clicked.connect(Form.doStopVid)
         self.startRecordVid.clicked.connect(Form.doRecordVid)

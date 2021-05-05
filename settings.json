@@ -74,18 +74,18 @@
         1.0,
         1.0
     ],
-    "stillFileRoot": "vicky",
-    "vidFileRoot": "test",
+    "stillFileRoot": "william",
+    "vidFileRoot": "harry",
     "stillFormat": "jpeg",
     "videoFormat": "h264",
     "fileCounter": 61,
     "vidres": [
-        1920,
-        1080
+        800,
+        600
     ],
     "imgres": [
-        2048,
-        1080
+        320,
+        240
     ],
     "zStartX": 25,
     "zStartY": 36,
