@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>460</width>
-    <height>301</height>
+    <width>596</width>
+    <height>597</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,10 +16,10 @@
   <widget class="QWidget" name="formLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>20</y>
-     <width>311</width>
-     <height>161</height>
+     <x>30</x>
+     <y>60</y>
+     <width>391</width>
+     <height>271</height>
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout">
@@ -36,7 +36,7 @@
     <item row="0" column="0">
      <widget class="QLabel" name="label_2">
       <property name="text">
-       <string>Video Resolutions</string>
+       <string>Video Resolutions     </string>
       </property>
      </widget>
     </item>

@@ -11,9 +11,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(460, 301)
+        Form.resize(596, 597)
         self.formLayoutWidget = QtWidgets.QWidget(Form)
-        self.formLayoutWidget.setGeometry(QtCore.QRect(40, 20, 311, 161))
+        self.formLayoutWidget.setGeometry(QtCore.QRect(30, 60, 391, 271))
         self.formLayoutWidget.setObjectName("formLayoutWidget")
         self.formLayout = QtWidgets.QFormLayout(self.formLayoutWidget)
         self.formLayout.setContentsMargins(0, 0, 0, 0)
@@ -40,5 +40,5 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.label.setText(_translate("Form", "Still Resolutions"))
-        self.label_2.setText(_translate("Form", "Video Resolutions"))
+        self.label_2.setText(_translate("Form", "Video Resolutions     "))
 

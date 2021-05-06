@@ -202,6 +202,12 @@ class Shooter(qtw.QWidget):
             #self.recordZoom = True
             self.camera.start_recording(filename, bitrate=int(self.camvals["videoBitRate"]))
             sleep(1)
+            '''while True:
+                if self.camera.recording==True:
+                    sleep(1)
+                    self.window().terminalWidget.appendPlainText(".")
+                else:
+                    break'''
             if self.recordZoom == True:
                 #print(self.window().zoomTab)
                 self.window().zoomTab.doRunZoom(self.window().zoomTab)
