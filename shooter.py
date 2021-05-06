@@ -301,19 +301,44 @@ class Shooter(qtw.QWidget):
             #if not self.is_paused:
             #    self.stop()
 
-    def doThumbnailClicked(self,widg):
+    def doThumbnailClicked(self,vid):
+        # get the dimensions of the media
+        vid = vid.text()
+        dimensions = self.getVideoDimensions(vid)
+        print("dimensions:", dimensions)
+        # resize the imgContainer
+        self.ui.imgContainer.resize(dimensions[0]/self.resDivider, dimensions[1]/self.resDivider)
+        # set the x window
+        self.mediaplayer.set_xwindow(int(self.ui.imgContainer.winId()))
+        self.mediaplayer.set_position(0)
         # start playing the selected video
         # put the file name to the video player?
-        self.media = self.vlcObj.media_new(widg.text())
+        self.media = self.vlcObj.media_new(vid)
         self.mediaplayer.set_media(self.media)
+        #print(self.mediaplayer.video_take_snapshot(0 , "filename.jpeg", 80, 60))
         self.mediaplayer.play()
         #print(self.mediaplayer.video_take_snapshot(0 , "filename2.jpeg", 80, 60))        
         self.timer.start()
-        # play the current video
 
-        #print(args[1].text())
-
-
+    def getVideoDimensions(self, vid):
+        """ 
+        This method uses a combination of subprocess and ffprobe to get the dimensions of the 
+        passed video.
+        
+         """
+        vid = str(vid)
+        print(vid)
+        result = subprocess.run(['ffprobe', '-v', 'error', '-hide_banner', '-of', 'default=noprint_wrappers=0', 
+        '-print_format', 'json',  '-select_streams', 'v:0', '-show_entries', 'stream=width,height', 
+        vid], capture_output=True, text=True)
+        # as indicated in the ffprobe command the output is returned as json
+        result = json.loads(result.stdout)
+        print(result) # uncomment this line to see full json
+        sleep(1)
+        width =  (result["streams"][0]["width"])
+        height = (result["streams"][0]["height"])
+        #print(width, height)
+        return (width, height)
         
     def setFileRoot(*args):
         pass

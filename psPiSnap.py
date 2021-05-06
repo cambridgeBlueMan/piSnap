@@ -81,7 +81,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         #self.previewVisible.clicked.connect(Form.showPreview)
 
         self.show()
-        print("end init")
+        #print("end init")
         
     def makeStatusBar(self):
         self.statusBar = qtw.QStatusBar()

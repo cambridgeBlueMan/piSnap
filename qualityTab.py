@@ -76,7 +76,7 @@ class QualityTab(qtw.QWidget):
         
 
     def doMux(self, state):
-        print ("The value of state is: ", state)
+        #print ("The value of state is: ", state)
         if state == True:
             self.camvals["mux"] = "true"
         else:
@@ -84,7 +84,7 @@ class QualityTab(qtw.QWidget):
         
 
     def isAudioActive(self, state):
-        print ("The value of state is: ", state)
+        #print ("The value of state is: ", state)
         if state == True:
             self.camvals["audioActive"] = "true"
         else:

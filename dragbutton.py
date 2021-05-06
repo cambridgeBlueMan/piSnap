@@ -64,7 +64,7 @@ class DragButton(qtw.QPushButton):
                 y = 0
             else:
                 y = newPos.y()
-            print(x,y)
+            #print(x,y)
             self.sendPos((x,y))
 
             self.move(x,y)

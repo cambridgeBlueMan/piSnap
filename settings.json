@@ -78,14 +78,14 @@
     "vidFileRoot": "harry",
     "stillFormat": "jpeg",
     "videoFormat": "h264",
-    "fileCounter": 61,
+    "fileCounter": 64,
     "vidres": [
-        1280,
-        720
+        1920,
+        1080
     ],
     "imgres": [
-        1280,
-        800
+        800,
+        480
     ],
     "zStartX": 25,
     "zStartY": 36,
