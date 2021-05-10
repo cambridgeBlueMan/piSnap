@@ -1,155 +1,112 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'preferences.ui'
+# Form implementation generated from reading ui file 'testButtons.ui'
 #
 # Created by: PyQt5 UI code generator 5.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+"""
+preferences.ui is a file initially created in QtDesigner.  This file is then translated into
+a single Python class called Ui_preferences by pyuic5.  
+"""
+from preferencesGui import *
+from picamera import PiCamera
+camera = PiCamera
+"""
+The Code_preferences class is to define all the logic and functions for the program to operate
+Most of these functions will already have been referenced in the designer file via signal/slot connections
 
-class Ui_preferences(object):
-    def setupUi(self, preferences):
-        preferences.setObjectName("preferences")
-        preferences.resize(441, 709)
-        self.buttonBox = QtWidgets.QDialogButtonBox(preferences)
-        self.buttonBox.setGeometry(QtCore.QRect(50, 630, 341, 32))
-        self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
-        self.buttonBox.setObjectName("buttonBox")
-        self.tabWidget = QtWidgets.QTabWidget(preferences)
-        self.tabWidget.setGeometry(QtCore.QRect(30, 20, 371, 591))
-        self.tabWidget.setObjectName("tabWidget")
-        self.General = QtWidgets.QWidget()
-        self.General.setObjectName("General")
-        self.frame = QtWidgets.QFrame(self.General)
-        self.frame.setGeometry(QtCore.QRect(10, 40, 351, 141))
-        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame.setObjectName("frame")
-        self.setPhotoPath = QtWidgets.QPushButton(self.frame)
-        self.setPhotoPath.setGeometry(QtCore.QRect(10, 10, 99, 30))
-        self.setPhotoPath.setStyleSheet("font: 11pt \"PibotoLt\";")
-        self.setPhotoPath.setObjectName("setPhotoPath")
-        self.setVideoPath = QtWidgets.QPushButton(self.frame)
-        self.setVideoPath.setGeometry(QtCore.QRect(10, 50, 99, 30))
-        self.setVideoPath.setStyleSheet("font: 11pt \"PibotoLt\";")
-        self.setVideoPath.setObjectName("setVideoPath")
-        self.setFilePath = QtWidgets.QPushButton(self.frame)
-        self.setFilePath.setGeometry(QtCore.QRect(10, 90, 99, 30))
-        self.setFilePath.setStyleSheet("font: 11pt \"PibotoLt\";")
-        self.setFilePath.setObjectName("setFilePath")
-        self.defaultPhotoPath = QtWidgets.QLabel(self.frame)
-        self.defaultPhotoPath.setGeometry(QtCore.QRect(140, 10, 161, 22))
-        self.defaultPhotoPath.setStyleSheet("color : blue")
-        self.defaultPhotoPath.setObjectName("defaultPhotoPath")
-        self.defaultVideoPath = QtWidgets.QLabel(self.frame)
-        self.defaultVideoPath.setGeometry(QtCore.QRect(140, 50, 181, 22))
-        self.defaultVideoPath.setStyleSheet("color : blue")
-        self.defaultVideoPath.setObjectName("defaultVideoPath")
-        self.defaultFilePath = QtWidgets.QLabel(self.frame)
-        self.defaultFilePath.setGeometry(QtCore.QRect(140, 100, 181, 22))
-        self.defaultFilePath.setStyleSheet("color : blue")
-        self.defaultFilePath.setObjectName("defaultFilePath")
-        self.label = QtWidgets.QLabel(self.General)
-        self.label.setGeometry(QtCore.QRect(10, 10, 161, 22))
-        self.label.setObjectName("label")
-        self.frame_2 = QtWidgets.QFrame(self.General)
-        self.frame_2.setGeometry(QtCore.QRect(10, 210, 351, 101))
-        self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_2.setObjectName("frame_2")
-        self.label_3 = QtWidgets.QLabel(self.frame_2)
-        self.label_3.setGeometry(QtCore.QRect(10, 10, 151, 22))
-        self.label_3.setObjectName("label_3")
-        self.label_4 = QtWidgets.QLabel(self.frame_2)
-        self.label_4.setGeometry(QtCore.QRect(10, 50, 151, 22))
-        self.label_4.setObjectName("label_4")
-        self.pushButton_4 = QtWidgets.QPushButton(self.frame_2)
-        self.pushButton_4.setGeometry(QtCore.QRect(268, 10, 71, 30))
-        self.pushButton_4.setStyleSheet("font: 75 italic 10pt \"PibotoLt\";\n"
-"font: 11pt \"PibotoLt\";")
-        self.pushButton_4.setObjectName("pushButton_4")
-        self.pushButton_5 = QtWidgets.QPushButton(self.frame_2)
-        self.pushButton_5.setGeometry(QtCore.QRect(268, 50, 71, 30))
-        self.pushButton_5.setStyleSheet("font: 11pt \"PibotoLt\";")
-        self.pushButton_5.setObjectName("pushButton_5")
-        self.comboBox = QtWidgets.QComboBox(self.frame_2)
-        self.comboBox.setGeometry(QtCore.QRect(170, 10, 83, 32))
-        self.comboBox.setObjectName("comboBox")
-        self.comboBox_2 = QtWidgets.QComboBox(self.frame_2)
-        self.comboBox_2.setGeometry(QtCore.QRect(170, 50, 83, 32))
-        self.comboBox_2.setObjectName("comboBox_2")
-        self.frame_3 = QtWidgets.QFrame(self.General)
-        self.frame_3.setGeometry(QtCore.QRect(10, 350, 351, 161))
-        self.frame_3.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame_3.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_3.setObjectName("frame_3")
-        self.label_6 = QtWidgets.QLabel(self.frame_3)
-        self.label_6.setGeometry(QtCore.QRect(10, 10, 131, 22))
-        self.label_6.setObjectName("label_6")
-        self.pushButton_6 = QtWidgets.QPushButton(self.frame_3)
-        self.pushButton_6.setGeometry(QtCore.QRect(308, 10, 31, 30))
-        self.pushButton_6.setStyleSheet("font: 75 11pt \"PibotoLt\";\n"
-"font: 75 11pt \"PibotoLt\";")
-        self.pushButton_6.setObjectName("pushButton_6")
-        self.checkBox = QtWidgets.QCheckBox(self.frame_3)
-        self.checkBox.setGeometry(QtCore.QRect(20, 80, 271, 27))
-        self.checkBox.setObjectName("checkBox")
-        self.checkBox_2 = QtWidgets.QCheckBox(self.frame_3)
-        self.checkBox_2.setGeometry(QtCore.QRect(20, 110, 261, 27))
-        self.checkBox_2.setObjectName("checkBox_2")
-        self.label_7 = QtWidgets.QLabel(self.frame_3)
-        self.label_7.setGeometry(QtCore.QRect(10, 50, 141, 22))
-        self.label_7.setObjectName("label_7")
-        self.lineEdit = QtWidgets.QLineEdit(self.frame_3)
-        self.lineEdit.setGeometry(QtCore.QRect(140, 10, 161, 32))
-        self.lineEdit.setObjectName("lineEdit")
-        self.label_2 = QtWidgets.QLabel(self.General)
-        self.label_2.setGeometry(QtCore.QRect(10, 180, 241, 22))
-        self.label_2.setObjectName("label_2")
-        self.label_5 = QtWidgets.QLabel(self.General)
-        self.label_5.setGeometry(QtCore.QRect(10, 320, 68, 22))
-        self.label_5.setObjectName("label_5")
-        self.tabWidget.addTab(self.General, "")
-        self.tab_2 = QtWidgets.QWidget()
-        self.tab_2.setObjectName("tab_2")
-        self.tabWidget.addTab(self.tab_2, "")
-        self.tab_3 = QtWidgets.QWidget()
-        self.tab_3.setObjectName("tab_3")
-        self.tabWidget.addTab(self.tab_3, "")
+Note that this class has to inherit from the relevant parent class. In this case a QDialog,
+but could as easily be a QMainMenu
 
-        self.retranslateUi(preferences)
-        self.tabWidget.setCurrentIndex(0)
-        self.buttonBox.accepted.connect(preferences.accept)
-        self.buttonBox.rejected.connect(preferences.reject)
-        self.setPhotoPath.clicked.connect(preferences.getDefaultPhotoPath)
-        self.setVideoPath.clicked.connect(preferences.getDefaultVideoPath)
-        self.setFilePath.clicked.connect(preferences.getDefaultFilePath)
-        QtCore.QMetaObject.connectSlotsByName(preferences)
+remember that this means that this is a Dialog window or other window with some added code/methods
 
-    def retranslateUi(self, preferences):
-        _translate = QtCore.QCoreApplication.translate
-        preferences.setWindowTitle(_translate("preferences", "PiCamera Preferences"))
-        self.setPhotoPath.setText(_translate("preferences", "Photos"))
-        self.setVideoPath.setText(_translate("preferences", "Videos"))
-        self.setFilePath.setText(_translate("preferences", "Files"))
-        self.defaultPhotoPath.setText(_translate("preferences", "/home/pi/Pictures"))
-        self.defaultVideoPath.setText(_translate("preferences", "/home/pi/Videos"))
-        self.defaultFilePath.setText(_translate("preferences", "/home/pi/Documents"))
-        self.label.setText(_translate("preferences", "Set default directories "))
-        self.label_3.setText(_translate("preferences", "<html><head/><body><p><span style=\" font-size:11pt;\">Photo capture format</span></p></body></html>"))
-        self.label_4.setText(_translate("preferences", "<html><head/><body><p><span style=\" font-size:11pt;\">Video capture format</span></p></body></html>"))
-        self.pushButton_4.setText(_translate("preferences", "parms..."))
-        self.pushButton_5.setText(_translate("preferences", "parms..."))
-        self.label_6.setText(_translate("preferences", "<html><head/><body><p><span style=\" font-size:11pt;\">Timestamp format</span></p></body></html>"))
-        self.pushButton_6.setText(_translate("preferences", "?"))
-        self.checkBox.setText(_translate("preferences", "Include timestamp in photo name"))
-        self.checkBox_2.setText(_translate("preferences", "Include timestamp in video name"))
-        self.label_7.setText(_translate("preferences", "<html><head/><body><p><span style=\" font-size:11pt;\">Sample timestamp:</span></p></body></html>"))
-        self.label_2.setText(_translate("preferences", "Photo/Video capture formats"))
-        self.label_5.setText(_translate("preferences", "TextLabel"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.General), _translate("preferences", "&General"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("preferences", "&Interface"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("preferences", "&Other"))
+This Dialog window with added code will be passed to an instance of the automatically
+created Designer class. This designer created class has methods to draw the various widgets and associate them 
+with the passed instance of the code/widget class
+"""
+class Preferences(QtWidgets.QDialog):
+
+
+    def __init__(self, win, camvals, camera):
+        super().__init__()
+        # Ui_Form is the main designer generated class. so instantiate one. Precede the variable name with
+        # the word 'self'
+        if camvals == None:
+            with open("settings.json", "r") as settings:
+                self.camvals = json.load(settings)
+        else:
+            self.camvals = camvals
+
+        if camera == None:
+            self.camera = PiCamera()
+        else:
+            self.camera = camera
+        self.ui = Ui_Dialog()
+        # now pass the main window object to it so that the setupUi method can draw all
+        # the widgets into the window
+        self.ui.setupUi(self)
+        #self.addData.addStuff(self.ui)
+        #self.addData.addStuff(self.ui)
+        # show it!
+        self.ui.defaultFilePath.setText(self.camvals["defaultFilePath"]) 
+        self.ui.defaultPhotoPath.setText(self.camvals["defaultPhotoPath"]) 
+        self.ui.defaultVideoPath.setText(self.camvals["defaultVideoPath"]) 
+    def setDefaultFilePath(self):
+        # the stuff on the right hand side of the "=" in the line below draws an open file dialog
+        # "Set Default File Directory" is the name of the dialog, and 
+        # when this is closed with a directory selected then that directory name will be stored in the variable
+        # "directory" which is on the left hand side of the "="
+        
+        directory = QtWidgets.QFileDialog.getExistingDirectory(self, "Set Default File Directory", self.ui.defaultFilePath.text())
+        # now set the defaultFilePath label in the user interface to the chosen directory
+        
+        self.ui.defaultFilePath.setText(directory)
+        self.camvals["defaultFilePath"]=directory
+        
+        
+    def setDefaultPhotoPath(self):
+        directory = QtWidgets.QFileDialog.getExistingDirectory(self, "Set Default Photo Directory", self.ui.defaultPhotoPath.text())
+        self.ui.defaultPhotoPath.setText(directory)
+        self.camvals["defaultPhotoPath"]=directory
+        
+        # copy the block of code from getDefaultFilePath function to here and make the appropriate changes to the
+        # dialog name and the original default directory
+         
+    def setDefaultVideoPath(self):
+        directory = QtWidgets.QFileDialog.getExistingDirectory(self, "Set Default Video Directory", self.ui.defaultVideoPath.text())
+        self.ui.defaultVideoPath.setText(directory)
+        self.camvals["defaultVideoPath"]=directory
+        
+    """
+Add the additional methods/ data structures etc here
+    def myClick(*args):
+        print(args[0].sender().property("buttonVal"))
+    
+
+
+    """
+class Data_preferences(object):
+    def __init__(self):
+        super().__init__()
+    def addStuff(self,ui):
+        ui.comboBox.addItems(('jpeg', 'png', 'gif', 'bmp', 'yuv', 'rgb', 'rgba', 'bgr', 'bgra', 'raw')) 
+if __name__ == "__main__":
+    import sys
+    # instiantiate an app object from the QApplication class 
+    app = QtWidgets.QApplication(sys.argv)
+    # instantiate an object containing the logic code
+    preferences = Preferences()
+    # instantiate an object from the imported Ui_preferences class
+    ui = Ui_preferences()
+    # pass a reference to the preferences object to the setupUi method of the Ui_preferences instance ui
+    ui.setupUi(preferences)
+    addData = Data_preferences()
+    addData.addStuff(ui)
+    # show it!
+    preferences.show()
+    sys.exit(app.exec_())
+
 

@@ -26,6 +26,9 @@
         1.0,
         1.0
     ],
+    "defaultFilePath": "",
+    "defaultPhotoPath": "/home/pi/camera1",
+    "defaultVideoPath": "",
     "digital_gain": 0,
     "drc_strength": "high",
     "exposure_compensation": 8,
@@ -78,7 +81,7 @@
     "vidFileRoot": "vickytest",
     "stillFormat": "jpeg",
     "videoFormat": "h264",
-    "fileCounter": 75,
+    "fileCounter": 76,
     "vidres": [
         800,
         600

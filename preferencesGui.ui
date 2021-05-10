@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>preferences</class>
- <widget class="QDialog" name="preferences">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>441</width>
-    <height>709</height>
+    <width>467</width>
+    <height>717</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>PiCamera Preferences</string>
+   <string>Dialog</string>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>630</y>
+     <x>60</x>
+     <y>640</y>
      <width>341</width>
      <height>32</height>
     </rect>
@@ -33,7 +33,7 @@
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>20</y>
+     <y>30</y>
      <width>371</width>
      <height>591</height>
     </rect>
@@ -60,7 +60,7 @@
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <widget class="QPushButton" name="setPhotoPath">
+     <widget class="QPushButton" name="doSetPhotoPath">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -76,7 +76,7 @@
        <string>Photos</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="setVideoPath">
+     <widget class="QPushButton" name="doSetVideoPath">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -92,7 +92,7 @@
        <string>Videos</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="setFilePath">
+     <widget class="QPushButton" name="doSetFilePath">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -404,12 +404,12 @@ font: 75 11pt &quot;PibotoLt&quot;;</string>
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>preferences</receiver>
+   <receiver>Dialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>278</x>
+     <y>654</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -420,12 +420,12 @@ font: 75 11pt &quot;PibotoLt&quot;;</string>
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>preferences</receiver>
+   <receiver>Dialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>346</x>
+     <y>660</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
@@ -434,57 +434,57 @@ font: 75 11pt &quot;PibotoLt&quot;;</string>
    </hints>
   </connection>
   <connection>
-   <sender>setPhotoPath</sender>
+   <sender>doSetPhotoPath</sender>
    <signal>clicked()</signal>
-   <receiver>preferences</receiver>
-   <slot>getDefaultPhotoPath()</slot>
+   <receiver>Dialog</receiver>
+   <slot>setDefaultPhotoPath()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>98</x>
-     <y>114</y>
+     <y>132</y>
     </hint>
     <hint type="destinationlabel">
-     <x>418</x>
-     <y>115</y>
+     <x>452</x>
+     <y>92</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>setVideoPath</sender>
+   <sender>doSetVideoPath</sender>
    <signal>clicked()</signal>
-   <receiver>preferences</receiver>
-   <slot>getDefaultVideoPath()</slot>
+   <receiver>Dialog</receiver>
+   <slot>setDefaultVideoPath()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>104</x>
-     <y>160</y>
+     <x>133</x>
+     <y>173</y>
     </hint>
     <hint type="destinationlabel">
-     <x>423</x>
-     <y>167</y>
+     <x>427</x>
+     <y>171</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>setFilePath</sender>
+   <sender>doSetFilePath</sender>
    <signal>clicked()</signal>
-   <receiver>preferences</receiver>
-   <slot>getDefaultFilePath()</slot>
+   <receiver>Dialog</receiver>
+   <slot>setDefaultFilePath()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>109</x>
-     <y>203</y>
+     <x>120</x>
+     <y>214</y>
     </hint>
     <hint type="destinationlabel">
-     <x>429</x>
-     <y>207</y>
+     <x>440</x>
+     <y>221</y>
     </hint>
    </hints>
   </connection>
  </connections>
  <slots>
-  <slot>getDefaultPhotoPath()</slot>
-  <slot>getDefaultVideoPath()</slot>
-  <slot>getDefaultFilePath()</slot>
+  <slot>setDefaultPhotoPath()</slot>
+  <slot>setDefaultVideoPath()</slot>
+  <slot>setDefaultFilePath()</slot>
  </slots>
 </ui>

@@ -15,6 +15,7 @@ from keyboardslider import KeyboardSlider
 from psSettings import PSSettings
 from psPiCamera import PSPiCamera
 from quit import Quit
+from preferences import Preferences
 #from picamera import PiCamera
 
 class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
@@ -131,6 +132,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         editMenu.addAction(prefsAction)
         editMenu.addAction(undoAction)
         undoAction.setShortcut('Ctrl+Z')
+        prefsAction.triggered.connect(self.openPreferencesDialogue)
 
         #create preview menu and add actions
         previewMenu = menuBar.addMenu('&Preview')
@@ -157,7 +159,12 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         previewMenu.addAction(alpha25Action)
         alpha25Action.setShortcut('2')
         alpha25Action.triggered.connect(lambda:self.setPreviewAlpha(25))
-        
+
+    def openPreferencesDialogue(self):
+        self.prefs=Preferences(self,self.camvals,self.camera)
+        self.prefs.show()
+        print(self.prefs)
+
 
     def doSave(self):
         print('Save code here')

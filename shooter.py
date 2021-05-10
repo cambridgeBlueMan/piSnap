@@ -84,8 +84,8 @@ class Shooter(qtw.QWidget):
     def snapAndSave(self):  
         """ takes a still picture and automatically generates a file name """
 
-        # get a file name
-        filename = self.camvals["stillFileRoot"] + '{:04d}'.format(self.camvals["fileCounter"]) + '.' + self.camvals["stillFormat"]
+        # build a file name
+        filename = self.camvals["defaultPhotoPath"]+self.camvals["stillFileRoot"] + '{:04d}'.format(self.camvals["fileCounter"]) + '.' + self.camvals["stillFormat"]
         # does the file exist? if not then write it
         if path.exists(filename):
             # if file exists then put the picture to a stream object
@@ -114,7 +114,7 @@ class Shooter(qtw.QWidget):
                 pass
             if ret == 0: #appendButton:
                 # if save with an appended timestamp then save the buffer/stream with the timestamp
-                filename = self.camvals["stillFileRoot"] + '{:04d}'.format(self.camvals["fileCounter"]) \
+                filename = self.camvals["defaultPhotoPath"]+self.camvals["stillFileRoot"] + '{:04d}'.format(self.camvals["fileCounter"]) \
                 + str(datetime.datetime.now()).replace(':','_') + '.'+ self.camvals["stillFormat"]
                 with open (filename, 'wb') as f:
                     f.write(stream.getbuffer())
@@ -197,7 +197,7 @@ class Shooter(qtw.QWidget):
             # various settings for video
             self.camera.framerate = 30 #self.camvals["framerate"]
             self.vidRoot = self.camvals["vidFileRoot"] + str(datetime.datetime.now()).replace(':','_') + '.'
-            filename = self.vidRoot + self.camvals["videoFormat"]
+            filename = self.camvals["defaultVideoPath"]+self.vidRoot + self.camvals["videoFormat"]
             #self.media = self.vlcObj.media_new(filename)
             #self.mediaplayer.set_media(self.media)
 
@@ -212,8 +212,7 @@ class Shooter(qtw.QWidget):
             self.window().terminalWidget.clear()
             self.window().terminalWidget.setPlainText("Camera currently recording!")
 
-            _thread.start_new_thread ( 
-                self.updateTerminalWidgetWhileRecording, ((self.camera, str) ))
+            _thread.start_new_thread (self.updateTerminalWidgetWhileRecording, ((self.camera, str) ))
 
             '''while True:
                 if self.camera.recording==True:
@@ -238,9 +237,9 @@ class Shooter(qtw.QWidget):
             if self.getAudio == True:
                 #print(type(self.proc))
                 self.proc.send_signal(signal.SIGINT) ## Send interrupt signal
-                vidInput = self.vidRoot + self.camvals["videoFormat"]
+                vidInput = self.camvals["defaultVideoPath"]+self.vidRoot + self.camvals["videoFormat"]
                 audioInput = self.vidRoot + "wav"
-                output = self.vidRoot + "mp4"
+                output = self.camvals["defaultVideoPath"]+self.vidRoot + "mp4"
                 #print(vidInput)
                 #print(audioInput)
                 #print(output)
