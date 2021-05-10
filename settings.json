@@ -78,14 +78,14 @@
     "vidFileRoot": "vickytest",
     "stillFormat": "jpeg",
     "videoFormat": "h264",
-    "fileCounter": 73,
+    "fileCounter": 75,
     "vidres": [
-        1600,
-        1200
+        800,
+        600
     ],
     "imgres": [
-        1680,
-        1050
+        320,
+        200
     ],
     "zStartX": 25,
     "zStartY": 36,

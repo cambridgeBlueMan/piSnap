@@ -15,6 +15,7 @@ import signal
 from os import path
 import json
 import vlc
+import _thread
 #import regexp
 #from  import *
 #from settings import camvals
@@ -177,7 +178,13 @@ class Shooter(qtw.QWidget):
     def setFrameRate(self,myvar):
         self.camera.framerate = int(myvar)
         self.camvals["framerate"] = int(myvar)
-        
+    
+    def updateTerminalWidgetWhileRecording(self, camera, str):
+        while camera.recording == True: #camera.recording:
+            self.window().terminalWidget.moveCursor(qtg.QTextCursor.End)
+            self.window().terminalWidget.insertPlainText(" .")
+            sleep(1)
+
 
     def doRecordVid(self, test):
         """ record a video stream to a file with automatically generated name """
@@ -202,6 +209,12 @@ class Shooter(qtw.QWidget):
             #self.recordZoom = True
             self.camera.start_recording(filename, bitrate=int(self.camvals["videoBitRate"]))
             sleep(1)
+            self.window().terminalWidget.clear()
+            self.window().terminalWidget.setPlainText("Camera currently recording!")
+
+            _thread.start_new_thread ( 
+                self.updateTerminalWidgetWhileRecording, ((self.camera, str) ))
+
             '''while True:
                 if self.camera.recording==True:
                     sleep(1)
@@ -322,6 +335,7 @@ class Shooter(qtw.QWidget):
         self.media = self.vlcObj.media_new(vid)
         self.mediaplayer.set_media(self.media)
         #print(self.mediaplayer.video_take_snapshot(0 , "filename.jpeg", 80, 60))
+        
         self.mediaplayer.play()
         #print(self.mediaplayer.video_take_snapshot(0 , "filename2.jpeg", 80, 60))        
         self.timer.start()
