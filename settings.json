@@ -26,16 +26,16 @@
         1.0,
         1.0
     ],
-    "defaultFilePath": "",
-    "defaultPhotoPath": "/home/pi/camera1",
-    "defaultVideoPath": "",
+    "defaultFilePath": "/home/pi/Documents",
+    "defaultPhotoPath": "/home/pi/Photos",
+    "defaultVideoPath": "/home/pi/Videos",
     "digital_gain": 0,
     "drc_strength": "high",
     "exposure_compensation": 8,
     "exposure_mode": "auto",
     "exposure_speed": 0,
     "flash_mode": "redeye",
-    "framerate": 35,
+    "framerate": 30,
     "hflip": false,
     "image_denoise": true,
     "image_effect": "none",
@@ -83,12 +83,12 @@
     "videoFormat": "h264",
     "fileCounter": 76,
     "vidres": [
-        800,
-        600
+        1920,
+        1080
     ],
     "imgres": [
-        320,
-        200
+        1600,
+        1200
     ],
     "zStartX": 25,
     "zStartY": 36,

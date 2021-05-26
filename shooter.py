@@ -188,6 +188,10 @@ class Shooter(qtw.QWidget):
 
     def doRecordVid(self, test):
         """ record a video stream to a file with automatically generated name """
+        # waqtch out for!!!!
+        # picamera.exc.PiCameraValueError: output resolution and framerate 
+        # # exceeds macroblocks/s limit (245760) for the selected H.264 profile and level
+        
         # do nothing if recording is in progress
         if self.camera.recording:
             self.window().terminalWidget.appendPlainText("Camera is already recording!")
@@ -195,9 +199,10 @@ class Shooter(qtw.QWidget):
             # start recording video, automatically generate file name
             # this means has to have time stamp
             # various settings for video
-            self.camera.framerate = 30 #self.camvals["framerate"]
+            self.camera.framerate = self.camvals["framerate"]
             self.vidRoot = self.camvals["vidFileRoot"] + str(datetime.datetime.now()).replace(':','_') + '.'
-            filename = self.camvals["defaultVideoPath"]+self.vidRoot + self.camvals["videoFormat"]
+            filename = self.camvals["defaultVideoPath"] + "/" + self.vidRoot + self.camvals["videoFormat"]
+            print("file name is: ", filename)
             #self.media = self.vlcObj.media_new(filename)
             #self.mediaplayer.set_media(self.media)
 
@@ -207,6 +212,9 @@ class Shooter(qtw.QWidget):
             # you could capture here a small still
             # do you want too incude a zoom in the reocrding
             #self.recordZoom = True
+            if self.recordZoom == True:
+                #print(self.window().zoomTab)
+                self.window().zoomTab.doRunZoom(self.window().zoomTab)
             self.camera.start_recording(filename, bitrate=int(self.camvals["videoBitRate"]))
             sleep(1)
             self.window().terminalWidget.clear()
@@ -220,10 +228,7 @@ class Shooter(qtw.QWidget):
                     self.window().terminalWidget.appendPlainText(".")
                 else:
                     break'''
-            if self.recordZoom == True:
-                #print(self.window().zoomTab)
-                self.window().zoomTab.doRunZoom(self.window().zoomTab)
-
+            
 
     def doStopVid(self, what):
          # if camera is playing then stop playing  
@@ -237,15 +242,15 @@ class Shooter(qtw.QWidget):
             if self.getAudio == True:
                 #print(type(self.proc))
                 self.proc.send_signal(signal.SIGINT) ## Send interrupt signal
-                vidInput = self.camvals["defaultVideoPath"]+self.vidRoot + self.camvals["videoFormat"]
+                vidInput = self.camvals["defaultVideoPath"] + "/" +self.vidRoot + self.camvals["videoFormat"]
                 audioInput = self.vidRoot + "wav"
-                output = self.camvals["defaultVideoPath"]+self.vidRoot + "mp4"
+                output = self.camvals["defaultVideoPath"] + "/" +self.vidRoot + "mp4"
                 #print(vidInput)
                 #print(audioInput)
                 #print(output)
                 self.proc = subprocess.Popen(["ffmpeg",  "-i",  vidInput,  "-i",  audioInput,  "-c:v",  "copy","-c:a",  "aac",  output])
             else:
-                output = self.vidRoot + "h264"    
+                output = self.camvals["defaultVideoPath"] + "/"  + self.vidRoot + self.camvals["videoFormat"]  
             self.mediaplayer.set_xwindow(int(self.ui.imgContainer.winId()))
 
             #self.mediaplayer.set_position(0)
@@ -485,15 +490,17 @@ class Shooter(qtw.QWidget):
 
         # ffmpeg -i twat.h264 -frames:v 1 -f image2 frame.png
 
-        makeThumbnail = subprocess.Popen(["ffmpeg",  "-i" ,  (self.vidRoot + self.camvals["videoFormat"]),
-        "-frames:v", "1",  "-f",  "image2",   (self.vidRoot + self.camvals["stillFormat"])])
+        makeThumbnail = subprocess.Popen(["ffmpeg",  "-i" ,  
+        (self.camvals["defaultVideoPath"] + "/" + self.vidRoot + self.camvals["videoFormat"]),
+        "-frames:v", "1",  "-f",  "image2",   (self.camvals["defaultVideoPath"] + "/" 
+        + self.vidRoot + self.camvals["stillFormat"])])
         
         # mpeg conversion takes a little time, so we wait for it before loading into the list widget item
         # I think in an  ideal world this should be a BytesIO object rather than a file.
         # much easier to clean all that up at end of session
 
         sleep(2)
-        self.thumb = (self.vidRoot + self.camvals["stillFormat"]) 
+        self.thumb = (self.camvals["defaultVideoPath"] + "/"  + self.vidRoot + self.camvals["stillFormat"]) 
         self.myIcon = qtg.QIcon(self.thumb) 
         self.myItem = qtw.QListWidgetItem(self.myIcon, self.vidRoot + self.camvals["videoFormat"], self.ui.thumbnails)        
         # then add it to the widget

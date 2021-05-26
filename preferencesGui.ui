@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>467</width>
-    <height>717</height>
+    <width>452</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>60</x>
-     <y>640</y>
+     <x>30</x>
+     <y>240</y>
      <width>341</width>
      <height>32</height>
     </rect>
@@ -29,373 +29,116 @@
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
-  <widget class="QTabWidget" name="tabWidget">
+  <widget class="QFrame" name="frame">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>20</x>
      <y>30</y>
-     <width>371</width>
-     <height>591</height>
+     <width>351</width>
+     <height>141</height>
     </rect>
    </property>
-   <property name="currentIndex">
-    <number>0</number>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
    </property>
-   <widget class="QWidget" name="General">
-    <attribute name="title">
-     <string>&amp;General</string>
-    </attribute>
-    <widget class="QFrame" name="frame">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>40</y>
-       <width>351</width>
-       <height>141</height>
-      </rect>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <widget class="QPushButton" name="doSetPhotoPath">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>99</width>
-        <height>30</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">font: 11pt &quot;PibotoLt&quot;;</string>
-      </property>
-      <property name="text">
-       <string>Photos</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="doSetVideoPath">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>50</y>
-        <width>99</width>
-        <height>30</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">font: 11pt &quot;PibotoLt&quot;;</string>
-      </property>
-      <property name="text">
-       <string>Videos</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="doSetFilePath">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>90</y>
-        <width>99</width>
-        <height>30</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">font: 11pt &quot;PibotoLt&quot;;</string>
-      </property>
-      <property name="text">
-       <string>Files</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="defaultPhotoPath">
-      <property name="geometry">
-       <rect>
-        <x>140</x>
-        <y>10</y>
-        <width>161</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color : blue</string>
-      </property>
-      <property name="text">
-       <string>/home/pi/Pictures</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="defaultVideoPath">
-      <property name="geometry">
-       <rect>
-        <x>140</x>
-        <y>50</y>
-        <width>181</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color : blue</string>
-      </property>
-      <property name="text">
-       <string>/home/pi/Videos</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="defaultFilePath">
-      <property name="geometry">
-       <rect>
-        <x>140</x>
-        <y>100</y>
-        <width>181</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color : blue</string>
-      </property>
-      <property name="text">
-       <string>/home/pi/Documents</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>161</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Set default directories </string>
-     </property>
-    </widget>
-    <widget class="QFrame" name="frame_2">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>210</y>
-       <width>351</width>
-       <height>101</height>
-      </rect>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <widget class="QLabel" name="label_3">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>151</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Photo capture format&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_4">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>50</y>
-        <width>151</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Video capture format&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_4">
-      <property name="geometry">
-       <rect>
-        <x>268</x>
-        <y>10</y>
-        <width>71</width>
-        <height>30</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">font: 75 italic 10pt &quot;PibotoLt&quot;;
-font: 11pt &quot;PibotoLt&quot;;</string>
-      </property>
-      <property name="text">
-       <string>parms...</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_5">
-      <property name="geometry">
-       <rect>
-        <x>268</x>
-        <y>50</y>
-        <width>71</width>
-        <height>30</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">font: 11pt &quot;PibotoLt&quot;;</string>
-      </property>
-      <property name="text">
-       <string>parms...</string>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBox">
-      <property name="geometry">
-       <rect>
-        <x>170</x>
-        <y>10</y>
-        <width>83</width>
-        <height>32</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBox_2">
-      <property name="geometry">
-       <rect>
-        <x>170</x>
-        <y>50</y>
-        <width>83</width>
-        <height>32</height>
-       </rect>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QFrame" name="frame_3">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>350</y>
-       <width>351</width>
-       <height>161</height>
-      </rect>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <widget class="QLabel" name="label_6">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>131</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Timestamp format&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_6">
-      <property name="geometry">
-       <rect>
-        <x>308</x>
-        <y>10</y>
-        <width>31</width>
-        <height>30</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">font: 75 11pt &quot;PibotoLt&quot;;
-font: 75 11pt &quot;PibotoLt&quot;;</string>
-      </property>
-      <property name="text">
-       <string>?</string>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="checkBox">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>80</y>
-        <width>271</width>
-        <height>27</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Include timestamp in photo name</string>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="checkBox_2">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>110</y>
-        <width>261</width>
-        <height>27</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Include timestamp in video name</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_7">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>50</y>
-        <width>141</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Sample timestamp:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lineEdit">
-      <property name="geometry">
-       <rect>
-        <x>140</x>
-        <y>10</y>
-        <width>161</width>
-        <height>32</height>
-       </rect>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QLabel" name="label_2">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>180</y>
-       <width>241</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Photo/Video capture formats</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_5">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>320</y>
-       <width>68</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QPushButton" name="doSetPhotoPath">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>99</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 11pt &quot;PibotoLt&quot;;</string>
+    </property>
+    <property name="text">
+     <string>Photos</string>
+    </property>
    </widget>
-   <widget class="QWidget" name="tab_2">
-    <attribute name="title">
-     <string>&amp;Interface</string>
-    </attribute>
+   <widget class="QPushButton" name="doSetVideoPath">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>99</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 11pt &quot;PibotoLt&quot;;</string>
+    </property>
+    <property name="text">
+     <string>Videos</string>
+    </property>
    </widget>
-   <widget class="QWidget" name="tab_3">
-    <attribute name="title">
-     <string>&amp;Other</string>
-    </attribute>
+   <widget class="QPushButton" name="doSetFilePath">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>90</y>
+      <width>99</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 11pt &quot;PibotoLt&quot;;</string>
+    </property>
+    <property name="text">
+     <string>Files</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="defaultPhotoPath">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>10</y>
+      <width>161</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color : blue</string>
+    </property>
+    <property name="text">
+     <string>/home/pi/Pictures</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="defaultVideoPath">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>50</y>
+      <width>181</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color : blue</string>
+    </property>
+    <property name="text">
+     <string>/home/pi/Videos</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="defaultFilePath">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>100</y>
+      <width>181</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color : blue</string>
+    </property>
+    <property name="text">
+     <string>/home/pi/Documents</string>
+    </property>
    </widget>
   </widget>
  </widget>
@@ -408,8 +151,8 @@ font: 75 11pt &quot;PibotoLt&quot;;</string>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>278</x>
-     <y>654</y>
+     <x>248</x>
+     <y>254</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -424,8 +167,8 @@ font: 75 11pt &quot;PibotoLt&quot;;</string>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>346</x>
-     <y>660</y>
+     <x>316</x>
+     <y>260</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
@@ -440,12 +183,12 @@ font: 75 11pt &quot;PibotoLt&quot;;</string>
    <slot>setDefaultPhotoPath()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>98</x>
-     <y>132</y>
+     <x>84</x>
+     <y>55</y>
     </hint>
     <hint type="destinationlabel">
-     <x>452</x>
-     <y>92</y>
+     <x>24</x>
+     <y>205</y>
     </hint>
    </hints>
   </connection>
@@ -456,12 +199,12 @@ font: 75 11pt &quot;PibotoLt&quot;;</string>
    <slot>setDefaultVideoPath()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>133</x>
-     <y>173</y>
+     <x>52</x>
+     <y>96</y>
     </hint>
     <hint type="destinationlabel">
-     <x>427</x>
-     <y>171</y>
+     <x>129</x>
+     <y>187</y>
     </hint>
    </hints>
   </connection>
@@ -472,19 +215,19 @@ font: 75 11pt &quot;PibotoLt&quot;;</string>
    <slot>setDefaultFilePath()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>120</x>
-     <y>214</y>
+     <x>113</x>
+     <y>131</y>
     </hint>
     <hint type="destinationlabel">
-     <x>440</x>
-     <y>221</y>
+     <x>455</x>
+     <y>192</y>
     </hint>
    </hints>
   </connection>
  </connections>
  <slots>
   <slot>setDefaultPhotoPath()</slot>
-  <slot>setDefaultVideoPath()</slot>
   <slot>setDefaultFilePath()</slot>
+  <slot>setDefaultVideoPath()</slot>
  </slots>
 </ui>
