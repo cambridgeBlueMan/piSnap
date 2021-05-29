@@ -4,7 +4,7 @@ from PyQt5 import QtWidgets as qtw
 #from qtw import QMessageBox, QPushButton
 from picamera import PiCamera
 from psSettings import PSSettings
-from shooterGui import Ui_Form
+from gui.shooterGui import Ui_Form
 from io import BytesIO
 from time import sleep
 # used to test if file exists

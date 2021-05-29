@@ -6,7 +6,7 @@ from PyQt5 import QtWidgets as qtw
 # SEE COMMENTS AT END OF THIS FILE
 # ################################
 
-from qualityTabGui import Ui_Form
+from gui.qualityTabGui import Ui_Form
 #
 from psSettings import PSSettings
 

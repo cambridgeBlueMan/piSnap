@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 # insert appropriate names here
-from zoomTabGui import Ui_Form
+from gui.zoomTabGui import Ui_Form
 #
 from picamera import PiCamera
 from time import sleep

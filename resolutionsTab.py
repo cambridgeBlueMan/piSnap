@@ -2,9 +2,9 @@ from PyQt5 import QtCore as qtc
 from PyQt5 import QtGui as qtg 
 from PyQt5 import QtWidgets as qtw
 
-from resolutionsTabGui import Ui_Form
+from gui.resolutionsTabGui import Ui_Form
 from psSettings import PSSettings
-from zoomTab import ZoomTab
+#from gui.zoomTabGui import ZoomTab
 from picamera import PiCamera
 from time import sleep
 import sys
