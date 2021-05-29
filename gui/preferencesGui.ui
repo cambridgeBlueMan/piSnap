@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>452</width>
-    <height>300</height>
+    <width>536</width>
+    <height>322</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -156,7 +156,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
-     <y>274</y>
+     <y>270</y>
     </hint>
    </hints>
   </connection>
@@ -172,7 +172,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
-     <y>274</y>
+     <y>270</y>
     </hint>
    </hints>
   </connection>
@@ -219,8 +219,40 @@
      <y>131</y>
     </hint>
     <hint type="destinationlabel">
-     <x>455</x>
+     <x>451</x>
      <y>192</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>Dialog</receiver>
+   <slot>doAccepted()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>53</x>
+     <y>262</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>54</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>Dialog</receiver>
+   <slot>doRejected()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>156</x>
+     <y>247</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>206</x>
+     <y>270</y>
     </hint>
    </hints>
   </connection>
@@ -229,5 +261,7 @@
   <slot>setDefaultPhotoPath()</slot>
   <slot>setDefaultFilePath()</slot>
   <slot>setDefaultVideoPath()</slot>
+  <slot>doAccepted()</slot>
+  <slot>doRejected()</slot>
  </slots>
 </ui>

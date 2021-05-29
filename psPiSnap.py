@@ -13,7 +13,7 @@ from adjustmentsTab import Adjustments
 from zoomTab import ZoomTab
 from keyboardslider import KeyboardSlider
 from psSettings import PSSettings
-from psPiCamera import PSPiCamera
+from picamera import PiCamera
 from quit import Quit
 from preferences import Preferences
 #from picamera import PiCamera
@@ -22,7 +22,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
     def __init__(self):  #first initialize the super class QWidget
         super().__init__() 
         # get the settings
-        self.camera = PSPiCamera(self)
+        self.camera = PiCamera()
         # pass the main window and camera objects to a settings object
         self.settings = PSSettings(self, self.camera)
         self.camvals = self.settings.camvals

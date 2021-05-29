@@ -27,7 +27,7 @@
         1.0
     ],
     "defaultFilePath": "/home/pi/Documents",
-    "defaultPhotoPath": "/home/pi/Photos",
+    "defaultPhotoPath": "/home/pi/Pictures",
     "defaultVideoPath": "/home/pi/Videos",
     "digital_gain": 0,
     "drc_strength": "high",

@@ -2,7 +2,7 @@ from PyQt5 import QtCore as qtc
 from PyQt5 import QtGui as qtg
 from PyQt5 import QtWidgets as qtw
 #from qtw import QMessageBox, QPushButton
-from psPiCamera import PSPiCamera
+from picamera import PiCamera
 from psSettings import PSSettings
 from shooterGui import Ui_Form
 from io import BytesIO
@@ -72,7 +72,7 @@ class Shooter(qtw.QWidget):
         
         self.timer = qtc.QTimer(self)
         self.timer.setInterval(100)
-        self.timer.timeout.connect(self.updateUi)
+        self.timer.timeout.connect(self.updateVidPosSlider)
         # is_paused indicates whether video is paused or not
         self.is_paused = False
         self.vlcObj = vlc.Instance()
@@ -215,7 +215,12 @@ class Shooter(qtw.QWidget):
             if self.recordZoom == True:
                 #print(self.window().zoomTab)
                 self.window().zoomTab.doRunZoom(self.window().zoomTab)
-            self.camera.start_recording(filename, bitrate=int(self.camvals["videoBitRate"]))
+            try:
+                self.camera.start_recording(filename, bitrate=int(self.camvals["videoBitRate"]))
+            except PiCamera.exc.PiCameraValueError as err:
+                print("hello!!!", err)
+
+
             sleep(1)
             self.window().terminalWidget.clear()
             self.window().terminalWidget.setPlainText("Camera currently recording!")
@@ -297,7 +302,7 @@ class Shooter(qtw.QWidget):
         self.timer.start()
 
     
-    def updateUi(self):
+    def updateVidPosSlider(self):
         """
         Updates the user interface
         """
@@ -526,7 +531,7 @@ class Shooter(qtw.QWidget):
     def setupVideoCapture(self):
         """ make all relevant settings appropriate for video capture """   
         self.ui.frameRate.setCurrentText(str(self.camvals["framerate"]))
-        self.camera.frameRate=(self.camvals["framerate"])
+        self.camera.framerate=(self.camvals["framerate"])
         # set camera.resolution for video
         self.resetResolutionStuff("vidres")
 

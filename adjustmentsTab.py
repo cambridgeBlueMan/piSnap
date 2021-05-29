@@ -3,7 +3,7 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtGui as qtg
 
 # insert appropriate names here
-from adjustmentsTabGui import Ui_adjustments
+from gui.adjustmentsTabGui import Ui_adjustments
 from psSettings import PSSettings
 from psSliders import PSCompositeSlider
 
@@ -14,12 +14,17 @@ import datetime
 import json
 
 class Adjustments(qtw.QWidget):
+    """ provides a widget displayed in a tab to enable adjustment of a fiar number of the camera classes attributes:
+    brightness, contrast, image effects etc.
+
+    Both the camvals dictionary and the camera object are passed the instance
+    """
 
     def __init__(self,camvals, camera):
         super().__init__()
         #flag to prevent combo boxes updating camvals values when items are added to combobox
         self.comboItemsAdded = False  
-        # camvals = None means we are running the code as stand alone
+        # camvals = None means we are running the code as stand alone for debugging purposes, say
         # so we need to load the settings file
         if camvals == None:
             with open("settings.json", "r") as settings:
@@ -62,8 +67,10 @@ class Adjustments(qtw.QWidget):
         return True
 
     def setCompositeSliderRanges(self):
-        """ It is not currently possible to set the defaults for the custom composite
-        slider class instances. This must therefore be done here """
+        """ 
+        It is not currently possible to set the defaults for the custom composite
+        slider class instances. This must therefore be done here 
+        """
 
         self.ui.sharpness.setRanges(-100,100,self.camera.sharpness)
         #print(type(self.ui.contrast))
@@ -75,7 +82,11 @@ class Adjustments(qtw.QWidget):
         self.ui.color_effects_v.setRanges(0,255,128)
             
     def applySettings(self):
-        #for each key in the settings dictionery 
+        """ 
+        Traverses the camvals dictionary and applies the settings therein to the appropriate widget.
+        note that this fires the widget causing the actual camera object attribute to be set!!
+
+        """
         if self.comboItemsAdded == True:
             for key in self.camvals:
                 # color_effects is a special case, it has no direct analogue in the gui
@@ -95,13 +106,17 @@ class Adjustments(qtw.QWidget):
                         x.setCurrentText(self.camvals[key])
                     elif self.findChild(PSCompositeSlider, key):
                         self.findChild(PSCompositeSlider, key).setValue(self.camvals[key])
-
                     else:
                         pass
         
     def changeCameraValue(self, value):
+
+        """ 
+        This method handles signals triggered by the various composite sliders in the adjustments widget
+
+        """
+        # which slider
         control = self.sender().objectName()
-        #value = args[1]
         if control == "sharpness":
             self.camera.sharpness  = value
             self.camvals ["sharpness"] = value
@@ -118,6 +133,7 @@ class Adjustments(qtw.QWidget):
         else:
             pass
             #print("Unknown control!")
+
     def doColorEffect(self,value):
         #get the name of the sending control
         control = self.sender().objectName()
@@ -140,8 +156,7 @@ class Adjustments(qtw.QWidget):
                 self.camera.color_effects = self.camvals["color_effects"]
         if control =="color_effects_none":
             #print(value)
-            if value == 2:
-                
+            if value == 2: # note the 2 here :)   
                 self.camera.color_effects = None
             else:
                 self.camera.color_effects = self.camvals["color_effects"]
