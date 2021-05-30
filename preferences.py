@@ -1,36 +1,12 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'testButtons.ui'
-#
-# Created by: PyQt5 UI code generator 5.11.3
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-"""
-preferences.ui is a file initially created in QtDesigner.  This file is then translated into
-a single Python class called Ui_preferences by pyuic5.  
-"""
-from preferences import *
+from gui.preferencesGui import *
 from picamera import PiCamera
+import json
 camera = PiCamera
-"""
-The Code_preferences class is to define all the logic and functions for the program to operate
-Most of these functions will already have been referenced in the designer file via signal/slot connections
-Note that this class has to inherit from the relevant parent class. In this case a QDialog,
-but could as easily be a QMainMenu
-remember that this means that this is a Dialog window or other window with some added code/methods
-This Dialog window with added code will be passed to an instance of the automatically
-created Designer class. This designer created class has methods to draw the various widgets and associate them 
-with the passed instance of the code/widget class
-"""
+
 class Preferences(QtWidgets.QDialog):
-
-
     def __init__(self, win, camvals, camera):
         super().__init__()
-        # Ui_Form is the main designer generated class. so instantiate one. Precede the variable name with
-        # the word 'self'
         if camvals == None:
             with open("settings.json", "r") as settings:
                 self.camvals = json.load(settings)
@@ -42,52 +18,41 @@ class Preferences(QtWidgets.QDialog):
         else:
             self.camera = camera
         self.ui = Ui_Dialog()
-        # now pass the main window object to it so that the setupUi method can draw all
-        # the widgets into the window
         self.ui.setupUi(self)
-        #self.addData.addStuff(self.ui)
-        #self.addData.addStuff(self.ui)
-        # show it!
         self.ui.defaultFilePath.setText(self.camvals["defaultFilePath"]) 
         self.ui.defaultPhotoPath.setText(self.camvals["defaultPhotoPath"]) 
         self.ui.defaultVideoPath.setText(self.camvals["defaultVideoPath"]) 
-    def setDefaultFilePath(self):
-        # the stuff on the right hand side of the "=" in the line below draws an open file dialog
-        # "Set Default File Directory" is the name of the dialog, and 
-        # when this is closed with a directory selected then that directory name will be stored in the variable
-        # "directory" which is on the left hand side of the "="
-        
+
+    def setDefaultFilePath(self):        
         directory = QtWidgets.QFileDialog.getExistingDirectory(self, "Set Default File Directory", self.ui.defaultFilePath.text())
-        # now set the defaultFilePath label in the user interface to the chosen directory
-        
-        self.ui.defaultFilePath.setText(directory)
-        self.camvals["defaultFilePath"]=directory
-        
+        # directory returns "" if dialog is cancelled
+        if directory != "":
+            self.ui.defaultFilePath.setText(directory)
         
     def setDefaultPhotoPath(self):
         directory = QtWidgets.QFileDialog.getExistingDirectory(self, "Set Default Photo Directory", self.ui.defaultPhotoPath.text())
-        self.ui.defaultPhotoPath.setText(directory)
-        self.camvals["defaultPhotoPath"]=directory
-        
-        # copy the block of code from getDefaultFilePath function to here and make the appropriate changes to the
-        # dialog name and the original default directory
-         
+        if directory != "":
+            self.ui.defaultPhotoPath.setText(directory)
+             
     def setDefaultVideoPath(self):
         directory = QtWidgets.QFileDialog.getExistingDirectory(self, "Set Default Video Directory", self.ui.defaultVideoPath.text())
-        self.ui.defaultVideoPath.setText(directory)
-        self.camvals["defaultVideoPath"]=directory
+        if directory != "":    
+            self.ui.defaultVideoPath.setText(directory)
+
+    def doAccepted(self):
+        self.camvals["defaultFilePath"]=self.ui.defaultFilePath.text()
+        self.camvals["defaultPhotoPath"]=self.ui.defaultPhotoPath.text()
+        self.camvals["defaultVideoPath"]=self.ui.defaultVideoPath.text()
+
+    def doRejected(self):
+        pass
         
-    """
-Add the additional methods/ data structures etc here
-    def myClick(*args):
-        print(args[0].sender().property("buttonVal"))
-    
-    """
 class Data_preferences(object):
     def __init__(self):
         super().__init__()
     def addStuff(self,ui):
         ui.comboBox.addItems(('jpeg', 'png', 'gif', 'bmp', 'yuv', 'rgb', 'rgba', 'bgr', 'bgra', 'raw')) 
+
 if __name__ == "__main__":
     import sys
     # instiantiate an app object from the QApplication class 

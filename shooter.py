@@ -7,6 +7,7 @@ from psSettings import PSSettings
 from gui.shooterGui import Ui_Form
 from io import BytesIO
 from time import sleep
+import picamera
 # used to test if file exists
 import os.path
 import datetime
@@ -217,23 +218,16 @@ class Shooter(qtw.QWidget):
                 self.window().zoomTab.doRunZoom(self.window().zoomTab)
             try:
                 self.camera.start_recording(filename, bitrate=int(self.camvals["videoBitRate"]))
-            except PiCamera.exc.PiCameraValueError as err:
-                print("hello!!!", err)
+                sleep(1)
+                self.window().terminalWidget.clear()
+                self.window().terminalWidget.setPlainText("Camera currently recording!")
+                _thread.start_new_thread (self.updateTerminalWidgetWhileRecording, ((self.camera, str) ))
 
-
-            sleep(1)
-            self.window().terminalWidget.clear()
-            self.window().terminalWidget.setPlainText("Camera currently recording!")
-
-            _thread.start_new_thread (self.updateTerminalWidgetWhileRecording, ((self.camera, str) ))
-
-            '''while True:
-                if self.camera.recording==True:
-                    sleep(1)
-                    self.window().terminalWidget.appendPlainText(".")
-                else:
-                    break'''
-            
+            except picamera.PiCameraError as err:
+                #print("hello!!!", err)
+                self.window().terminalWidget.clear()
+                txt = "Recording could not be started: " + str(err)
+                self.window().terminalWidget.setPlainText(txt)
 
     def doStopVid(self, what):
          # if camera is playing then stop playing  
@@ -264,9 +258,7 @@ class Shooter(qtw.QWidget):
             self.mediaplayer.set_media(self.media)
             self.mediaplayer.play()
             self.mediaplayer.set_pause(1)
-
-       
-                
+     
     def doPlayVid(self, test): 
         #print (test)
         #print(self.ui.imgContainer)

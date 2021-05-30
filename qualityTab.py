@@ -66,8 +66,9 @@ class QualityTab(qtw.QWidget):
 
     def setCamValFromCombo(self, str):
         if self.comboItemsAdded == True:
+            print(str)
             self.camvals[self.sender().objectName()] = str
-            setattr(self.camera,self.sender().objectName(),str)
+            #setattr(self.camera,self.sender().objectName(),str)
 
     def setIso(self,str):
         if self.comboItemsAdded == True:
