@@ -3,7 +3,7 @@ from gui.preferencesGui import *
 from picamera import PiCamera
 import json
 camera = PiCamera
-
+#TODO Make this dailog box an addition to the tabbed widget
 class Preferences(QtWidgets.QDialog):
     def __init__(self, win, camvals, camera):
         super().__init__()

@@ -11,7 +11,8 @@ import sys
 import datetime
 import json
 import math
-
+#TODO Image frame and preview not aligning on Vicky's computer and perhaps others??
+#QUERY Should change to say 'video resolutions' trigger activation of viedo tab and vice versa?
 class ResolutionsTab(qtw.QWidget):
     def __init__(self, camvals, camera, centralWidget):
         super().__init__()
@@ -58,7 +59,7 @@ class ResolutionsTab(qtw.QWidget):
         for item in resolutions:
             self.resAsString.append((item[0])+", "+str(item[1]))
             self.resAsTuple.append(item[1])
-
+#TODO If video resolution changes, reset the currently stored zoom
     def setVideoRes(self,int):
         """ slot triggered by the vidres combo box. updates the camvals dictionary with the new
         video resolution, and if video is the current setting of the captureTab Tab Widget runs the 

@@ -186,7 +186,7 @@ class Shooter(qtw.QWidget):
             self.window().terminalWidget.insertPlainText(" .")
             sleep(1)
 
-
+#TODO Sort out video recording
     def doRecordVid(self, test):
         """ record a video stream to a file with automatically generated name """
         # waqtch out for!!!!
@@ -379,7 +379,8 @@ class Shooter(qtw.QWidget):
 
     def movePreview(self):
         pass
-  
+  #TODO Bullet point button should scale to match currently selected resolution
+  #TODO single click on bullet should position preview top left
     def movePreviewOrigin(self, x,y):
         """ 
         previewPos is a slot which is called whenever the bullet point

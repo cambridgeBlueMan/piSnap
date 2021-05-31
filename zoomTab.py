@@ -8,8 +8,10 @@ from time import sleep
 import sys
 import datetime
 import json
-
-
+#VICKY tidy overall zoom tab layout in designer, particularly the buttons at the bottom
+#VICKY Get rid of show preview button in zoom toll designer file and the slot at the other end
+#TODO running a zoom should have it's own little player ie starts, pause,stop 
+#LEA Botton soze should match current resolution and show a bullet point instead of the letter 'B'
         
 class ZoomTab(QtWidgets.QWidget):
     
@@ -106,7 +108,7 @@ class ZoomTab(QtWidgets.QWidget):
     def printDiag(self, bool):
         print("startZoom: ", self.startZoom)
         print("endZoom: ", self.endZoom)
-
+#VICKY set zom slider control - ineleagant fit-move slider right hand side in a little
     def setZoom(self, val):
         #print(val)
         self.zoom[2] = val/self.sensorWidth
@@ -122,7 +124,7 @@ class ZoomTab(QtWidgets.QWidget):
        
         self.camera.zoom = self.zoom 
         # we need also to reset the ranges of the getYOrigin and getXOrigin sliders
-        
+      #LEA Set speed slider - not currently wired up
     def setSpeed(self,val):
         pass
         #print(val)

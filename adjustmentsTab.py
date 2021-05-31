@@ -12,7 +12,7 @@ from time import sleep
 import sys
 import datetime
 import json
-
+#TODO
 class Adjustments(qtw.QWidget):
     """ provides a widget displayed in a tab to enable adjustment of a fiar number of the camera classes attributes:
     brightness, contrast, image effects etc.
