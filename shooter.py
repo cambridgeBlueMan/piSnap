@@ -17,6 +17,7 @@ from os import path
 import json
 import vlc
 import _thread
+import psFunctions
 #import regexp
 #from  import *
 #from settings import camvals
@@ -224,8 +225,10 @@ class Shooter(qtw.QWidget):
                 if self.recordZoom == True:
                 #print(self.window().zoomTab)
                     self.window().zoomTab.doRunZoom(self.window().zoomTab)
-                self.window().terminalWidget.clear()
-                self.window().terminalWidget.setPlainText("Camera currently recording!")
+                psFunctions.printT(self.window(),"Camera currently recording!", True)
+                #self.window().terminalWidget.clear()
+                psFunctions.printT(self.window(),"Camera currently recording!")
+                #self.window().terminalWidget.setPlainText("Camera currently recording!")
                 _thread.start_new_thread (self.updateTerminalWidgetWhileRecording, ((self.camera, str) ))
 
             except picamera.PiCameraError as err:

@@ -16,6 +16,7 @@ from psSettings import PSSettings
 from picamera import PiCamera
 from quit import Quit
 from preferences import Preferences
+import psFunctions
 #from picamera import PiCamera
 
 class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
@@ -174,7 +175,8 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         #print('alpha')
             self.camera.preview.alpha=val
         except: 
-            self.terminalWidget.appendPlainText("Preview not currently active!")
+            psFunctions.printT(self, "Preview not currently active!")
+            #self.terminalWidget.appendPlainText("Preview not currently active!")
 
     def doSaveAs(self):
         print('Save As code here')
