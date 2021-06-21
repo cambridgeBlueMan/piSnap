@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>537</width>
-    <height>617</height>
+    <height>598</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,7 +16,7 @@
   <widget class="KeyboardSlider" name="getZoom">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>0</x>
      <y>420</y>
      <width>501</width>
      <height>21</height>
@@ -38,43 +38,30 @@
     <enum>Qt::Horizontal</enum>
    </property>
   </widget>
-  <widget class="QCheckBox" name="showPreview">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>580</y>
-     <width>161</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>show preview</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="start">
    <property name="geometry">
     <rect>
-     <x>160</x>
-     <y>490</y>
+     <x>140</x>
+     <y>470</y>
      <width>71</width>
      <height>30</height>
     </rect>
    </property>
    <property name="text">
-    <string>set start</string>
+    <string>Set start</string>
    </property>
   </widget>
   <widget class="QPushButton" name="showStart">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>490</y>
+     <x>10</x>
+     <y>470</y>
      <width>81</width>
      <height>30</height>
     </rect>
    </property>
    <property name="text">
-    <string>show start</string>
+    <string>Show start</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">
@@ -93,14 +80,14 @@
   <widget class="QPushButton" name="end">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>140</x>
      <y>530</y>
      <width>71</width>
      <height>30</height>
     </rect>
    </property>
    <property name="text">
-    <string>set end</string>
+    <string>Set end</string>
    </property>
   </widget>
   <widget class="QFrame" name="frame">
@@ -135,8 +122,8 @@
   <widget class="QPushButton" name="runZoom">
    <property name="geometry">
     <rect>
-     <x>150</x>
-     <y>570</y>
+     <x>280</x>
+     <y>530</y>
      <width>99</width>
      <height>30</height>
     </rect>
@@ -148,14 +135,14 @@
   <widget class="QPushButton" name="showEnd">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>540</y>
+     <x>10</x>
+     <y>530</y>
      <width>81</width>
      <height>30</height>
     </rect>
    </property>
    <property name="text">
-    <string>show end</string>
+    <string>Show end</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
@@ -168,20 +155,20 @@
     </rect>
    </property>
    <property name="text">
-    <string>set Zoom</string>
+    <string>Set Zoom</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
      <x>280</x>
-     <y>450</y>
-     <width>68</width>
+     <y>460</y>
+     <width>81</width>
      <height>22</height>
     </rect>
    </property>
    <property name="text">
-    <string>set Speed</string>
+    <string>Set Speed</string>
    </property>
   </widget>
   <widget class="QSlider" name="getSpeed">
@@ -251,22 +238,6 @@
     <hint type="destinationlabel">
      <x>21</x>
      <y>451</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>showPreview</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>Form</receiver>
-   <slot>showPreview(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>76</x>
-     <y>596</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>370</x>
-     <y>583</y>
     </hint>
    </hints>
   </connection>

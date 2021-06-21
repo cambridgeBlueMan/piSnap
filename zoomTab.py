@@ -8,18 +8,9 @@ from time import sleep
 import sys
 import datetime
 import json
-#VICKY tidy overall zoom tab layout in designer, particularly the buttons at the bottom
-#VICKY Get rid of show preview button in zoom toll designer file and the slot at the other end
+
 #TODO running a zoom should have it's own little player ie starts, pause,stop 
-#VICKY 
-# create a file called psFunctions
-# in the file make a function called printT (info)
-# the function body should take the info which has been passed in and output it 
-# top the terminal widget
-# possibly a second (boolean) argument which should indicate whether the terminal widget should
-# by cleared prior to adding the new information   
-# note that in order to be usable by the app that psFunctions will have to be imported
-# into any files where it is to be used     
+   
 class ZoomTab(QtWidgets.QWidget):
     
         
@@ -115,7 +106,7 @@ class ZoomTab(QtWidgets.QWidget):
     def printDiag(self, bool):
         print("startZoom: ", self.startZoom)
         print("endZoom: ", self.endZoom)
-#VICKY set zom slider control - ineleagant fit-move slider right hand side in a little
+
     def setZoom(self, val):
         #print(val)
         self.zoom[2] = val/self.sensorWidth
@@ -149,7 +140,7 @@ class ZoomTab(QtWidgets.QWidget):
 
     def doRunZoom(self, bool):
         #set the resolution on the camer itself
-        self.camera.resolution = (self.camvals["vidres"][0] , self.camvals["vidres"][1] )
+        #self.camera.resolution = (self.camvals["vidres"][0] , self.camvals["vidres"][1] )
 
         # number of steps to complete the zoom
         loopSize = 1200
