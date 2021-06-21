@@ -209,16 +209,21 @@ class Shooter(qtw.QWidget):
 
             # record audio if required
             if self.getAudio == True:
+                # TODO add try statement to ensure safe return from subprocess
+                # and audio file successfully started
+                # also there should be various bits abd bobs to set up the sample rate 
+                # and bit depth
+                
                 self.proc = subprocess.Popen(["rec", (self.vidRoot + "wav"),]) ## Run program
             # you could capture here a small still
             # do you want too incude a zoom in the reocrding
             #self.recordZoom = True
-            if self.recordZoom == True:
-                #print(self.window().zoomTab)
-                self.window().zoomTab.doRunZoom(self.window().zoomTab)
             try:
                 self.camera.start_recording(filename, bitrate=int(self.camvals["videoBitRate"]))
                 sleep(1)
+                if self.recordZoom == True:
+                #print(self.window().zoomTab)
+                    self.window().zoomTab.doRunZoom(self.window().zoomTab)
                 self.window().terminalWidget.clear()
                 self.window().terminalWidget.setPlainText("Camera currently recording!")
                 _thread.start_new_thread (self.updateTerminalWidgetWhileRecording, ((self.camera, str) ))
@@ -381,6 +386,8 @@ class Shooter(qtw.QWidget):
         pass
   #TODO Bullet point button should scale to match currently selected resolution
   #TODO single click on bullet should position preview top left
+  # TODO ideally if app loses focus and preview is on then preview should disappear, 
+  # reappearing when focus returns to the app
     def movePreviewOrigin(self, x,y):
         """ 
         previewPos is a slot which is called whenever the bullet point

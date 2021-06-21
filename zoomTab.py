@@ -11,8 +11,15 @@ import json
 #VICKY tidy overall zoom tab layout in designer, particularly the buttons at the bottom
 #VICKY Get rid of show preview button in zoom toll designer file and the slot at the other end
 #TODO running a zoom should have it's own little player ie starts, pause,stop 
-#LEA Botton soze should match current resolution and show a bullet point instead of the letter 'B'
-        
+#VICKY 
+# create a file called psFunctions
+# in the file make a function called printT (info)
+# the function body should take the info which has been passed in and output it 
+# top the terminal widget
+# possibly a second (boolean) argument which should indicate whether the terminal widget should
+# by cleared prior to adding the new information   
+# note that in order to be usable by the app that psFunctions will have to be imported
+# into any files where it is to be used     
 class ZoomTab(QtWidgets.QWidget):
     
         
@@ -126,8 +133,8 @@ class ZoomTab(QtWidgets.QWidget):
         # we need also to reset the ranges of the getYOrigin and getXOrigin sliders
       #LEA Set speed slider - not currently wired up
     def setSpeed(self,val):
-        pass
-        #print(val)
+        #pass
+        print(val)
 
     def doSetStart(self,bool):
         #print(args)
@@ -145,7 +152,7 @@ class ZoomTab(QtWidgets.QWidget):
         self.camera.resolution = (self.camvals["vidres"][0] , self.camvals["vidres"][1] )
 
         # number of steps to complete the zoom
-        loopSize = 300  
+        loopSize = 1200
         # increment for each staep
         deltaX = 0
         deltaY = 0
