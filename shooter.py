@@ -62,10 +62,12 @@ class Shooter(qtw.QWidget):
 
     def initStuffFromCamvals(self):
         # do we want to capture audio?
+        """
         if self.camvals["audioActive"] == "false":
             self.getAudio = False
         else: 
             self.getAudio = True
+        """
         self.ui.stillFileRoot.setText(self.camvals["stillFileRoot"])
         self.ui.videoFileRoot.setText(self.camvals["vidFileRoot"])
 
@@ -85,9 +87,11 @@ class Shooter(qtw.QWidget):
     
     def snapAndSave(self):  
         """ takes a still picture and automatically generates a file name """
-
+        # TODO it is not yet possible to take a still pictue with the zoom
+        # bear in mind that even when taking a still picture we may want it at a particular zoom level
+        
         # build a file name
-        filename = self.camvals["defaultPhotoPath"]+self.camvals["stillFileRoot"] + '{:04d}'.format(self.camvals["fileCounter"]) + '.' + self.camvals["stillFormat"]
+        filename = self.camvals["defaultPhotoPath"]+ "/" + self.camvals["stillFileRoot"] + '{:04d}'.format(self.camvals["fileCounter"]) + '.' + self.camvals["stillFormat"]
         # does the file exist? if not then write it
         if path.exists(filename):
             # if file exists then put the picture to a stream object
@@ -185,57 +189,51 @@ class Shooter(qtw.QWidget):
         while camera.recording == True: #camera.recording:
             self.window().terminalWidget.moveCursor(qtg.QTextCursor.End)
             self.window().terminalWidget.insertPlainText(" .")
+            print("Hello")
             sleep(1)
+        #psFunctions.printT("Camera stopped recording!", True)
 
 #TODO Sort out video recording
     def doRecordVid(self, test):
-        """ record a video stream to a file with automatically generated name """
-        # waqtch out for!!!!
-        # picamera.exc.PiCameraValueError: output resolution and framerate 
-        # # exceeds macroblocks/s limit (245760) for the selected H.264 profile and level
-        
+        """ record a video stream to a file with automatically generated name """ 
         # do nothing if recording is in progress
         if self.camera.recording:
-            self.window().terminalWidget.appendPlainText("Camera is already recording!")
+            psFunctions.printT(self.window(),"Camera currently recording!", True)
         else:
-            # start recording video, automatically generate file name
-            # this means has to have time stamp
             # various settings for video
             self.camera.framerate = self.camvals["framerate"]
+            # make file name, less extension
             self.vidRoot = self.camvals["vidFileRoot"] + str(datetime.datetime.now()).replace(':','_') + '.'
+            # make vid file name
             filename = self.camvals["defaultVideoPath"] + "/" + self.vidRoot + self.camvals["videoFormat"]
-            print("file name is: ", filename)
-            #self.media = self.vlcObj.media_new(filename)
-            #self.mediaplayer.set_media(self.media)
-
-            # record audio if required
-            if self.getAudio == True:
+            #if self.getAudio == True:
+            if self.camvals["audioActive"]=="true":
                 # TODO add try statement to ensure safe return from subprocess
-                # and audio file successfully started
-                # also there should be various bits abd bobs to set up the sample rate 
-                # and bit depth
-                
-                self.proc = subprocess.Popen(["rec", (self.vidRoot + "wav"),]) ## Run program
+                """
+                currently trying to get error messages from the child process to return to
+                python in such a way that they can be 'try'd for
+                """
+                self.proc = subprocess.Popen(["rec",  "-r", self.camvals["audioSampleRate"], "-b", self.camvals["audioBitRate"], \
+                    (self.camvals["defaultVideoPath"] + "/" + self.vidRoot + "wav"),]) ## Run program
             # you could capture here a small still
             # do you want too incude a zoom in the reocrding
             #self.recordZoom = True
-            try:
-                self.camera.start_recording(filename, bitrate=int(self.camvals["videoBitRate"]))
-                sleep(1)
-                if self.recordZoom == True:
-                #print(self.window().zoomTab)
-                    self.window().zoomTab.doRunZoom(self.window().zoomTab)
-                psFunctions.printT(self.window(),"Camera currently recording!", True)
-                #self.window().terminalWidget.clear()
-                psFunctions.printT(self.window(),"Camera currently recording!")
-                #self.window().terminalWidget.setPlainText("Camera currently recording!")
-                _thread.start_new_thread (self.updateTerminalWidgetWhileRecording, ((self.camera, str) ))
 
-            except picamera.PiCameraError as err:
-                #print("hello!!!", err)
-                self.window().terminalWidget.clear()
-                txt = "Recording could not be started: " + str(err)
-                self.window().terminalWidget.setPlainText(txt)
+            #try:
+            self.camera.start_recording(filename, bitrate=int(self.camvals["videoBitRate"]))
+            sleep(1)
+            _thread.start_new_thread (self.updateTerminalWidgetWhileRecording, ((self.camera, str) ))
+            if self.recordZoom == True:
+            #print(self.window().zoomTab)
+                self.window().zoomTab.doRunZoom(self.window().zoomTab)
+            psFunctions.printT(self.window(),"Camera currently recording!", True)
+                #self.window().terminalWidget.setPlainText("Camera currently recording!")
+
+            #except picamera.PiCameraError as err:
+            #    #print("hello!!!", err)
+            #    self.window().terminalWidget.clear()
+            #    txt = "Recording could not be started: " + str(err)
+            #    self.window().terminalWidget.setPlainText(txt)
 
     def doStopVid(self, what):
          # if camera is playing then stop playing  
@@ -246,22 +244,31 @@ class Shooter(qtw.QWidget):
         # if camera is recording then stop recording
         if self.camera.recording:
             self.camera.stop_recording() # picamera method
-            if self.getAudio == True:
+            psFunctions.printT(self.window(),"Camera stopped recording!", True)
+            #if self.getAudio == True:
+            if self.camvals["audioActive"]=="true":
+                # TODO note that the val of audioActive could possible currently change while the video is recording
+                # a fair amount of stuff needs cornering out here, I suspect
                 #print(type(self.proc))
                 self.proc.send_signal(signal.SIGINT) ## Send interrupt signal
                 vidInput = self.camvals["defaultVideoPath"] + "/" +self.vidRoot + self.camvals["videoFormat"]
-                audioInput = self.vidRoot + "wav"
+                audioInput = self.camvals["defaultVideoPath"] + "/" +self.vidRoot + "wav"
                 output = self.camvals["defaultVideoPath"] + "/" +self.vidRoot + "mp4"
                 #print(vidInput)
                 #print(audioInput)
                 #print(output)
-                self.proc = subprocess.Popen(["ffmpeg",  "-i",  vidInput,  "-i",  audioInput,  "-c:v",  "copy","-c:a",  "aac",  output])
+                self.proc = subprocess.Popen(["ffmpeg", "-loglevel",  "warning",  "-stats",  "-i",  vidInput,  "-i",  audioInput,  "-c:v",  "copy","-c:a",  "aac",  output])
             else:
                 output = self.camvals["defaultVideoPath"] + "/"  + self.vidRoot + self.camvals["videoFormat"]  
             self.mediaplayer.set_xwindow(int(self.ui.imgContainer.winId()))
 
             #self.mediaplayer.set_position(0)
             self.addToMediaList()
+            ################################################
+            #filename = self.camvals["defaultVideoPath"] + "/" + self.vidRoot + self.camvals["videoFormat"]
+            #self.myIcon = qtg.QIcon(filename) 
+            #self.myItem = qtw.QListWidgetItem(self.myIcon, filename, self.ui.thumbnails)   
+            #############################
             self.media = self.vlcObj.media_new(output)
             self.mediaplayer.set_media(self.media)
             self.mediaplayer.play()
@@ -331,6 +338,7 @@ class Shooter(qtw.QWidget):
 
     def doThumbnailClicked(self,vid):
         # get the dimensions of the media
+        # TODO when thumbnail is clicked it should turn the preview off, if necessary
         vid = vid.text()
         dimensions = self.getVideoDimensions(vid)
         print("dimensions:", dimensions)
@@ -498,7 +506,7 @@ class Shooter(qtw.QWidget):
 
         # ffmpeg -i twat.h264 -frames:v 1 -f image2 frame.png
 
-        makeThumbnail = subprocess.Popen(["ffmpeg",  "-i" ,  
+        makeThumbnail = subprocess.Popen(["ffmpeg",  "-loglevel",  "warning",  "-i" ,  
         (self.camvals["defaultVideoPath"] + "/" + self.vidRoot + self.camvals["videoFormat"]),
         "-frames:v", "1",  "-f",  "image2",   (self.camvals["defaultVideoPath"] + "/" 
         + self.vidRoot + self.camvals["stillFormat"])])
@@ -510,7 +518,8 @@ class Shooter(qtw.QWidget):
         sleep(2)
         self.thumb = (self.camvals["defaultVideoPath"] + "/"  + self.vidRoot + self.camvals["stillFormat"]) 
         self.myIcon = qtg.QIcon(self.thumb) 
-        self.myItem = qtw.QListWidgetItem(self.myIcon, self.vidRoot + self.camvals["videoFormat"], self.ui.thumbnails)        
+        self.myItem = qtw.QListWidgetItem(self.myIcon, self.camvals["defaultVideoPath"] + "/"  
+        + self.vidRoot + self.camvals["videoFormat"], self.ui.thumbnails)        
         # then add it to the widget
 
 

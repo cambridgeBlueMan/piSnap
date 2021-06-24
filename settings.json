@@ -3,10 +3,10 @@
     "annotate_background": null,
     "annotate_frame_num": false,
     "annotate_text_size": 32,
-    "audioActive": "false",
-    "audioBitRate": "24",
+    "audioActive": "true",
+    "audioBitRate": "16",
     "audioFileFormat": "wav",
-    "audioSampleRate": "44.1kz",
+    "audioSampleRate": "44100",
     "awb_gains": [
         0,
         0
@@ -35,7 +35,7 @@
     "exposure_mode": "auto",
     "exposure_speed": 0,
     "flash_mode": "redeye",
-    "framerate": 35,
+    "framerate": 30,
     "hflip": false,
     "image_denoise": true,
     "image_effect": "none",
@@ -81,7 +81,7 @@
     "vidFileRoot": "vid_",
     "stillFormat": "jpeg",
     "videoFormat": "h264",
-    "fileCounter": 76,
+    "fileCounter": 78,
     "vidres": [
         1920,
         1080

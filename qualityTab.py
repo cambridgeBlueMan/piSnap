@@ -39,7 +39,7 @@ class QualityTab(qtw.QWidget):
 
     def addItemsToCombos(*args):
         args[0].ui.audioBitRate.addItems(["8", "16", "24", "48"])
-        args[0].ui.audioSampleRate.addItems(["44.1kz", "48kz"])
+        args[0].ui.audioSampleRate.addItems(["44100", "48000"])
         args[0].ui.audioFileFormat.addItems(["wav", "aiff"])
         args[0].ui.videoBitRate.addItems(["0", "2000000", "4000000","8000000", "17000000"])
         args[0].ui.videoQuality.addItems(["10", "20", "25", "30", "35", "40"])
