@@ -54,9 +54,14 @@ class Ui_Form(object):
         self.label_2.setObjectName("label_2")
         self.getSpeed = QtWidgets.QSlider(Form)
         self.getSpeed.setGeometry(QtCore.QRect(280, 490, 221, 26))
-        self.getSpeed.setProperty("value", 49)
+        self.getSpeed.setMinimum(600)
+        self.getSpeed.setMaximum(1800)
+        self.getSpeed.setProperty("value", 600)
         self.getSpeed.setOrientation(QtCore.Qt.Horizontal)
         self.getSpeed.setObjectName("getSpeed")
+        self.printDiag = QtWidgets.QPushButton(Form)
+        self.printDiag.setGeometry(QtCore.QRect(400, 530, 99, 30))
+        self.printDiag.setObjectName("printDiag")
 
         self.retranslateUi(Form)
         self.start.clicked.connect(Form.doSetStart)
@@ -68,6 +73,7 @@ class Ui_Form(object):
         self.adjustZoom.posChanged['int','int'].connect(Form.setZoomWithButton)
         self.adjustZoom.released.connect(Form.movePosition)
         self.getSpeed.sliderMoved['int'].connect(Form.setSpeed)
+        self.printDiag.clicked.connect(Form.doPrintDiag)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -82,6 +88,7 @@ class Ui_Form(object):
         self.showEnd.setText(_translate("Form", "Show end"))
         self.label.setText(_translate("Form", "Set Zoom"))
         self.label_2.setText(_translate("Form", "Set Speed"))
+        self.printDiag.setText(_translate("Form", "PrintDiag"))
 
 from dragbutton import DragButton
 from keyboardslider import KeyboardSlider
