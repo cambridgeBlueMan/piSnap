@@ -41,6 +41,7 @@
     "image_effect": "none",
     "image_effect_params": null,
     "iso": 0,
+    "loopSize": 1249,
     "meter_mode": "backlit",
     "mux": "true",
     "overlays": [],

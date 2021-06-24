@@ -180,11 +180,30 @@
      <height>26</height>
     </rect>
    </property>
+   <property name="minimum">
+    <number>600</number>
+   </property>
+   <property name="maximum">
+    <number>1800</number>
+   </property>
    <property name="value">
-    <number>49</number>
+    <number>600</number>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="printDiag">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>530</y>
+     <width>99</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PrintDiag</string>
    </property>
   </widget>
  </widget>
@@ -353,6 +372,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>printDiag</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>doPrintDiag()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>435</x>
+     <y>536</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>526</x>
+     <y>536</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>doSetStart()</slot>
@@ -366,5 +401,6 @@
   <slot>setZoomWithButton(int,int)</slot>
   <slot>movePosition()</slot>
   <slot>setSpeed(int)</slot>
+  <slot>doPrintDiag()</slot>
  </slots>
 </ui>

@@ -8,6 +8,7 @@ from time import sleep
 import sys
 import datetime
 import json
+import psFunctions
 
 #TODO running a zoom should have it's own little player ie starts, pause,stop 
    
@@ -54,8 +55,7 @@ class ZoomTab(QtWidgets.QWidget):
         self.endZoom = self.zoom[:]
         self.ui.getZoom.setMinimum(self.camvals["vidres"][0] )
         self.ui.getZoom.setValue(self.camvals["vidres"][0] )
-        
-        #
+        #get the name pf the speed object and set its vaue to the camvals value as per above
         self.ui.adjustZoom.setDragButtonSize(self.camvals["vidres"][0] /8, self.camvals["vidres"][1] /8)
 
         self.camera.zoom = self.zoom
@@ -104,9 +104,10 @@ class ZoomTab(QtWidgets.QWidget):
         self.zoom[1] = val/self.sensorWidth
         self.camera.zoom = self.zoom 
 
-    def printDiag(self, bool):
+    def doPrintDiag(self, bool):
         print("startZoom: ", self.startZoom)
         print("endZoom: ", self.endZoom)
+        #self.window.printT()
 
     def setZoom(self, val):
         #print(val)
@@ -125,6 +126,7 @@ class ZoomTab(QtWidgets.QWidget):
         # we need also to reset the ranges of the getYOrigin and getXOrigin sliders
       #LEA Set speed slider - not currently wired up
     def setSpeed(self,val):
+        self.camvals["loopSize"] = val 
         #pass
         print(val)
 
@@ -144,7 +146,8 @@ class ZoomTab(QtWidgets.QWidget):
         #self.camera.resolution = (self.camvals["vidres"][0] , self.camvals["vidres"][1] )
 
         # number of steps to complete the zoom
-        loopSize = 1200
+        loopSize = (self.camvals["loopSize"])
+        #loopSize = 1200
         # increment for each staep
         deltaX = 0
         deltaY = 0
