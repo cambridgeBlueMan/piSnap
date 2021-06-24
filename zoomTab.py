@@ -54,6 +54,7 @@ class ZoomTab(QtWidgets.QWidget):
         self.endZoom = self.zoom[:]
         self.ui.getZoom.setMinimum(self.camvals["vidres"][0] )
         self.ui.getZoom.setValue(self.camvals["vidres"][0] )
+        
         #
         self.ui.adjustZoom.setDragButtonSize(self.camvals["vidres"][0] /8, self.camvals["vidres"][1] /8)
 

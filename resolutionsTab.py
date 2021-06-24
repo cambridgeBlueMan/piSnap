@@ -11,7 +11,6 @@ import sys
 import datetime
 import json
 import math
-#TODO Image frame and preview not aligning on Vicky's computer and perhaps others??
 #QUERY Should change to say 'video resolutions' trigger activation of viedo tab and vice versa?
 class ResolutionsTab(qtw.QWidget):
     def __init__(self, camvals, camera, centralWidget):

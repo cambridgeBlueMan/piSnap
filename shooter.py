@@ -89,10 +89,11 @@ class Shooter(qtw.QWidget):
         """ takes a still picture and automatically generates a file name """
         # TODO it is not yet possible to take a still pictue with the zoom
         # bear in mind that even when taking a still picture we may want it at a particular zoom level
-        
+        self.camera.zoom = self.window().zoomTab.zoom[:]
         # build a file name
         filename = self.camvals["defaultPhotoPath"]+ "/" + self.camvals["stillFileRoot"] + '{:04d}'.format(self.camvals["fileCounter"]) + '.' + self.camvals["stillFormat"]
         # does the file exist? if not then write it
+
         if path.exists(filename):
             # if file exists then put the picture to a stream object
             stream = BytesIO()
