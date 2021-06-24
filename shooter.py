@@ -226,6 +226,9 @@ class Shooter(qtw.QWidget):
             _thread.start_new_thread (self.updateTerminalWidgetWhileRecording, ((self.camera, str) ))
             if self.recordZoom == True:
             #print(self.window().zoomTab)
+                fh = open("diags.txt", "a")
+                fh.write(filename + "," + str(self.window().zoomTab.startZoom[:]))
+                fh.close()
                 self.window().zoomTab.doRunZoom(self.window().zoomTab)
             psFunctions.printT(self.window(),"Camera currently recording!", True)
                 #self.window().terminalWidget.setPlainText("Camera currently recording!")

@@ -56,6 +56,7 @@ class ZoomTab(QtWidgets.QWidget):
         self.ui.getZoom.setMinimum(self.camvals["vidres"][0] )
         self.ui.getZoom.setValue(self.camvals["vidres"][0] )
         #get the name pf the speed object and set its vaue to the camvals value as per above
+        self.ui.getSpeed.setValue(self.camvals["loopSize"])
         self.ui.adjustZoom.setDragButtonSize(self.camvals["vidres"][0] /8, self.camvals["vidres"][1] /8)
 
         self.camera.zoom = self.zoom
@@ -107,7 +108,8 @@ class ZoomTab(QtWidgets.QWidget):
     def doPrintDiag(self, bool):
         print("startZoom: ", self.startZoom)
         print("endZoom: ", self.endZoom)
-        #self.window.printT()
+        psFunctions.printT(self.window(), "startZoom: " + str(self.startZoom ))
+        psFunctions.printT(self.window(), "endZoom: " + str(self.endZoom ))
 
     def setZoom(self, val):
         #print(val)

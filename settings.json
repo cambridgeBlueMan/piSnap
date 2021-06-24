@@ -41,7 +41,7 @@
     "image_effect": "none",
     "image_effect_params": null,
     "iso": 0,
-    "loopSize": 1249,
+    "loopSize": 789,
     "meter_mode": "backlit",
     "mux": "true",
     "overlays": [],
@@ -84,8 +84,8 @@
     "videoFormat": "h264",
     "fileCounter": 81,
     "vidres": [
-        1920,
-        1080
+        854,
+        480
     ],
     "imgres": [
         1600,
