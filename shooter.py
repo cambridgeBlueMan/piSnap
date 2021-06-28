@@ -215,7 +215,8 @@ class Shooter(qtw.QWidget):
                 python in such a way that they can be 'try'd for
                 """
                 self.proc = subprocess.Popen(["rec",  "-r", self.camvals["audioSampleRate"], "-b", self.camvals["audioBitRate"], \
-                    (self.camvals["defaultVideoPath"] + "/" + self.vidRoot + "wav"),]) ## Run program
+                    (self.camvals["defaultVideoPath"] + "/" + self.vidRoot + self.camvals["audioFileFormat"]),], stdout = subprocess.PIPE, stderr = subprocess.PIPE) ## Run program
+                
             # you could capture here a small still
             # do you want too incude a zoom in the reocrding
             #self.recordZoom = True
@@ -227,7 +228,10 @@ class Shooter(qtw.QWidget):
             if self.recordZoom == True:
             #print(self.window().zoomTab)
                 fh = open("diags.txt", "a")
-                fh.write(filename + "," + str(self.window().zoomTab.startZoom[:]))
+                fh.write(filename + "," + str(self.camvals["vidres"]) + "," 
+                + str(self.window().zoomTab.startZoom[:]) 
+                + "," + str(self.window().zoomTab.endZoom[:]) 
+                + "\n" )
                 fh.close()
                 self.window().zoomTab.doRunZoom(self.window().zoomTab)
             psFunctions.printT(self.window(),"Camera currently recording!", True)
@@ -255,8 +259,14 @@ class Shooter(qtw.QWidget):
                 # a fair amount of stuff needs cornering out here, I suspect
                 #print(type(self.proc))
                 self.proc.send_signal(signal.SIGINT) ## Send interrupt signal
+                procRet  = self.proc.communicate()
+                psFunctions.printT(self.window(), str(procRet[0]))
+                if procRet[0] == "b''":
+                    psFunctions.printT(self.window(),"audio recording terminated succesfully!", True)
+                else:
+                    psFunctions.printT(self.window(),"There was a problem with the audio recording", True)
                 vidInput = self.camvals["defaultVideoPath"] + "/" +self.vidRoot + self.camvals["videoFormat"]
-                audioInput = self.camvals["defaultVideoPath"] + "/" +self.vidRoot + "wav"
+                audioInput = self.camvals["defaultVideoPath"] + "/" +self.vidRoot + self.camvals["audioFileFormat"]
                 output = self.camvals["defaultVideoPath"] + "/" +self.vidRoot + "mp4"
                 #print(vidInput)
                 #print(audioInput)
