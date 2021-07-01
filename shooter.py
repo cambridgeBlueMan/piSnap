@@ -22,6 +22,8 @@ import psFunctions
 #from  import *
 #from settings import camvals
 #print(camvals)
+# TODO the file root text fields need some validation to ensure that only legitimate file name 
+# characters are entered. i.e. I suspect stuff like %*£" etc is illegal in a linux file name
 
 class Shooter(qtw.QWidget):
 
@@ -190,7 +192,7 @@ class Shooter(qtw.QWidget):
         while camera.recording == True: #camera.recording:
             self.window().terminalWidget.moveCursor(qtg.QTextCursor.End)
             self.window().terminalWidget.insertPlainText(" .")
-            print("Hello")
+            #print("Hello")
             sleep(1)
         #psFunctions.printT("Camera stopped recording!", True)
 
@@ -210,13 +212,24 @@ class Shooter(qtw.QWidget):
             #if self.getAudio == True:
             if self.camvals["audioActive"]=="true":
                 # TODO add try statement to ensure safe return from subprocess
-                """
-                currently trying to get error messages from the child process to return to
-                python in such a way that they can be 'try'd for
-                """
-                self.proc = subprocess.Popen(["rec",  "-r", self.camvals["audioSampleRate"], "-b", self.camvals["audioBitRate"], \
-                    (self.camvals["defaultVideoPath"] + "/" + self.vidRoot + self.camvals["audioFileFormat"]),], stdout = subprocess.PIPE, stderr = subprocess.PIPE) ## Run program
+                # first build the command to run
+                cmd = ["rec",  "-r", self.camvals["audioSampleRate"], "-b", self.camvals["audioBitRate"], \
+                        (self.camvals["defaultVideoPath"] + "/" + self.vidRoot + self.camvals["audioFileFormat"]),]
+
                 
+                try:
+                    # try to start recording the audio
+                    self.proc = subprocess.Popen(cmd, \
+                            stdout = subprocess.PIPE, stderr = subprocess.PIPE, text=True) ## Run program
+                    # communicate holds two element tuple of form (stdout, stderr)
+                    procRet = self.proc.communicate()
+                    #therefore, if we have some stderr raise an error
+                    if procRet[1] > "":
+                        raise subprocess.CalledProcessError(2,cmd)
+                except subprocess.CalledProcessError as inst:
+                    psFunctions.printT(self.window(), str(inst) , True)
+                    self.camvals["audioActive"]="false"
+                    #print("This is inst: ", inst)
             # you could capture here a small still
             # do you want too incude a zoom in the reocrding
             #self.recordZoom = True
@@ -234,7 +247,7 @@ class Shooter(qtw.QWidget):
                 + "\n" )
                 fh.close()
                 self.window().zoomTab.doRunZoom(self.window().zoomTab)
-            psFunctions.printT(self.window(),"Camera currently recording!", True)
+            psFunctions.printT(self.window(),"Camera currently recording!")
                 #self.window().terminalWidget.setPlainText("Camera currently recording!")
 
             #except picamera.PiCameraError as err:
@@ -257,11 +270,11 @@ class Shooter(qtw.QWidget):
             if self.camvals["audioActive"]=="true":
                 # TODO note that the val of audioActive could possible currently change while the video is recording
                 # a fair amount of stuff needs cornering out here, I suspect
-                #print(type(self.proc))
+                print(type(self.proc))
                 self.proc.send_signal(signal.SIGINT) ## Send interrupt signal
                 procRet  = self.proc.communicate()
                 psFunctions.printT(self.window(), str(procRet[0]))
-                if procRet[0] == "b''":
+                if procRet[0] == b'':
                     psFunctions.printT(self.window(),"audio recording terminated succesfully!", True)
                 else:
                     psFunctions.printT(self.window(),"There was a problem with the audio recording", True)

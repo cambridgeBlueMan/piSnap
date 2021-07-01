@@ -4,6 +4,9 @@ from picamera import PiCamera
 import json
 camera = PiCamera
 #TODO Make this dailog box an addition to the tabbed widget
+#TODO aslteratively keep this where it is, but widen the dialog box so it is big
+# enough to hold the full path
+# TODO what happens if the external disk is missing and the files pointed to are on there
 class Preferences(QtWidgets.QDialog):
     def __init__(self, win, camvals, camera):
         super().__init__()
