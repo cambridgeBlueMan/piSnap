@@ -227,7 +227,10 @@ class Shooter(qtw.QWidget):
             if self.recordZoom == True:
             #print(self.window().zoomTab)
                 fh = open("diags.txt", "a")
-                fh.write(filename + "," + str(self.window().zoomTab.startZoom[:]))
+                fh.write(filename + "," + str(self.camvals["vidres"])
+                +"," + str(self.window().zoomTab.startZoom[:]) + "," 
+                + str(self.window().zoomTab.endZoom[:]) + str(self.camvals["loopSize"])
+                + "\n")
                 fh.close()
                 self.window().zoomTab.doRunZoom(self.window().zoomTab)
             psFunctions.printT(self.window(),"Camera currently recording!", True)

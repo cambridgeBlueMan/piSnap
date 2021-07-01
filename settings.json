@@ -3,7 +3,7 @@
     "annotate_background": null,
     "annotate_frame_num": false,
     "annotate_text_size": 32,
-    "audioActive": "true",
+    "audioActive": "false",
     "audioBitRate": "16",
     "audioFileFormat": "aiff",
     "audioSampleRate": "44100",
@@ -41,7 +41,7 @@
     "image_effect": "none",
     "image_effect_params": null,
     "iso": 0,
-    "loopSize": 789,
+    "loopSize": 1289,
     "meter_mode": "backlit",
     "mux": "true",
     "overlays": [],
@@ -84,8 +84,8 @@
     "videoFormat": "h264",
     "fileCounter": 81,
     "vidres": [
-        854,
-        480
+        1600,
+        1200
     ],
     "imgres": [
         1600,
