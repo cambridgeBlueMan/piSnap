@@ -33,7 +33,10 @@ class Shooter(qtw.QWidget):
         self.ui = Ui_Form()
         # use its setupUi method to draw the widgets into the main window
         self.ui.setupUi(self)
-
+        #reference qline edit widget
+        rx = qtc.QRegExp("^[-_A-Za-z0-9]{1,25}")
+        self.ui.stillFileRoot.setValidator(qtg.QRegExpValidator(rx))
+        self.ui.videoFileRoot.setValidator(qtg.QRegExpValidator(rx))
         # now show the main window with its widgets (only necessary if this class is stand alone)
         #self.show()
 
@@ -256,7 +259,8 @@ class Shooter(qtw.QWidget):
             #    txt = "Recording could not be started: " + str(err)
             #    self.window().terminalWidget.setPlainText(txt)
 
-    def doStopVid(self, what):
+    def doStopVid(self):
+        print("now in do stop vid")
          # if camera is playing then stop playing  
         if self.mediaplayer.is_playing() == 1:
             #print("media playing")

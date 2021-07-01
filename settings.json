@@ -26,9 +26,9 @@
         1.0,
         1.0
     ],
-    "defaultFilePath": "/media/pi/MACBANK/Documents",
-    "defaultPhotoPath": "/media/pi/MACBANK/Pictures",
-    "defaultVideoPath": "/media/pi/MACBANK/Videos",
+    "defaultFilePath": "/media/pi/T7/Documents",
+    "defaultPhotoPath": "/media/pi/T7/Pictures",
+    "defaultVideoPath": "/media/pi/T7/Videos",
     "digital_gain": 0,
     "drc_strength": "high",
     "exposure_compensation": 8,

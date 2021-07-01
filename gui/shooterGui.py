@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-   
+# -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 'shooterGui.ui'
 #
@@ -14,6 +14,7 @@ class Ui_Form(object):
         Form.resize(1163, 889)
         self.captureTab = QtWidgets.QTabWidget(Form)
         self.captureTab.setGeometry(QtCore.QRect(240, 650, 801, 221))
+        self.captureTab.setInputMethodHints(QtCore.Qt.ImhUrlCharactersOnly)
         self.captureTab.setObjectName("captureTab")
         self.still = QtWidgets.QWidget()
         self.still.setObjectName("still")
@@ -40,6 +41,7 @@ class Ui_Form(object):
         self.label_15.setObjectName("label_15")
         self.formLayout_4.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_15)
         self.stillFileRoot = QtWidgets.QLineEdit(self.formLayoutWidget_3)
+        self.stillFileRoot.setInputMethodHints(QtCore.Qt.ImhNone)
         self.stillFileRoot.setObjectName("stillFileRoot")
         self.formLayout_4.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.stillFileRoot)
         self.acceptStillRootUpdate = QtWidgets.QPushButton(self.still)
@@ -113,6 +115,7 @@ class Ui_Form(object):
         self.label.setObjectName("label")
         self.formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label)
         self.videoFileRoot = QtWidgets.QLineEdit(self.formLayoutWidget)
+        self.videoFileRoot.setInputMethodHints(QtCore.Qt.ImhNone)
         self.videoFileRoot.setObjectName("videoFileRoot")
         self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.videoFileRoot)
         self.acceptVideoRootUpdate = QtWidgets.QPushButton(self.video)

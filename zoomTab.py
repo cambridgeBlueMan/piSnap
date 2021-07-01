@@ -11,7 +11,7 @@ import json
 import psFunctions
 
 #TODO running a zoom should have it's own little player ie starts, pause,stop 
-   
+#TODO ending camera recording at end of a zoom should be switchable
 class ZoomTab(QtWidgets.QWidget):
     
         
@@ -216,6 +216,12 @@ class ZoomTab(QtWidgets.QWidget):
 
             self.camera.zoom = self.zoom[:]
             #print("iter")
+        print("loop now ended")
+        #loop now ended 
+        if self.camera.recording:
+            self.window().mWidget.doStopVid()
+            print("now in if")
+        
 
     def doShowStart(self, bool):
         self.camera.zoom = self.startZoom[:]
