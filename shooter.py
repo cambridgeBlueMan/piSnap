@@ -483,7 +483,7 @@ class Shooter(qtw.QWidget):
         self.ui.imgContainer.resize(self.width, self.height)
         #
         if state == True:
-            """ divider is currently hard coded at 2. This should be settable via a preview
+            """ TODO divider is currently hard coded at 2. This should be settable via a preview
             size gui control
             """
             #print("sender: ", self.sender())
