@@ -126,7 +126,8 @@ class Shooter(qtw.QWidget):
                 pass
             if ret == 0: #appendButton:
                 # if save with an appended timestamp then save the buffer/stream with the timestamp
-                filename = self.camvals["defaultPhotoPath"]+self.camvals["stillFileRoot"] + '{:04d}'.format(self.camvals["fileCounter"]) \
+                filename = self.camvals["defaultPhotoPath"]+self.camvals["stillFileRoot"] 
+                + '{:04d}'.format(self.camvals["fileCounter"]) \
                 + str(datetime.datetime.now()).replace(':','_') + '.'+ self.camvals["stillFormat"]
                 with open (filename, 'wb') as f:
                     f.write(stream.getbuffer())
@@ -199,7 +200,7 @@ class Shooter(qtw.QWidget):
             sleep(1)
         #psFunctions.printT("Camera stopped recording!", True)
 
-#TODO Sort out video recording
+# TODO Sort out video recording
     def doRecordVid(self, test):
         """ record a video stream to a file with automatically generated name """ 
         # do nothing if recording is in progress
@@ -216,10 +217,14 @@ class Shooter(qtw.QWidget):
             if self.camvals["audioActive"]=="true":
                 # TODO add try statement to ensure safe return from subprocess
                 # first build the command to run
+
+                # arecord --device="hw:USB,0" -t wav -c 2 -f S32_LE -r 48000  helloEverybody2.wav
+                """
+                cmd = ["arecord", "-D", "hw:USB,0" "-r", self.camvals["audioSampleRate"], "-f", "S32_LE", "-c", "2", \
+                    (self.camvals["defaultVideoPath"] + "/" + self.vidRoot + self.camvals["audioFileFormat"]),]
+                """ 
                 cmd = ["rec",  "-r", self.camvals["audioSampleRate"], "-b", self.camvals["audioBitRate"], \
                         (self.camvals["defaultVideoPath"] + "/" + self.vidRoot + self.camvals["audioFileFormat"]),]
-
-                
                 try:
                     # try to start recording the audio
                     self.proc = subprocess.Popen(cmd, \
@@ -228,9 +233,11 @@ class Shooter(qtw.QWidget):
                     procRet = self.proc.communicate()
                     #therefore, if we have some stderr raise an error
                     if procRet[1] > "":
-                        raise subprocess.CalledProcessError(2,cmd)
-                except subprocess.CalledProcessError as inst:
-                    psFunctions.printT(self.window(), str(inst) , True)
+                        print(procRet[1])
+                        psFunctions.printT(self.window(), procRet[1])
+                        #raise subprocess.CalledProcessError(2,cmd)
+                except subprocess.CalledProcessError: # as inst:
+                    psFunctions.printT(self.window(), "Audio failed!!" , True)
                     self.camvals["audioActive"]="false"
                     #print("This is inst: ", inst)
             # you could capture here a small still
@@ -463,7 +470,7 @@ class Shooter(qtw.QWidget):
             self.ui.previewButton.move(0,0)
             
 
-    def showPreview(self, state, xPos=0, yPos=0):
+    def showPreview(self, state):
         #print("hello")
 
         """ on/off toggle for preview. 'state' is boolean on/off value. Typically passed from one of 

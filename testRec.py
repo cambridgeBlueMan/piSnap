@@ -1,33 +1,57 @@
 
 
 
+import _thread
 
 import signal
 
 #from subprocess import Popen, PIPE
 import subprocess
+global compProc
+_thread.start_new_thread(
 try:
     # capture_output = True gets stderr and stdout as elements of the returned compProc
-    compProc = subprocess.run(['rec',  'twattock.wav'], capture_output=True, check = True)
+    # Exceptions raised in the child process, before the new program has 
+    # started to execute, will be re-raised in the parent.
+    compProc = subprocess.Popen(['rec',  '/media/pi/MACBANK/twattock.wav'], \
+        stdout = subprocess.PIPE, stderr = subprocess.PIPE, text=True)
     # following line will trigger a python calledProcessError if rerturncode is none zero
-    compProc.check_returncode()
-    subprocess.
+    #compProc.communicate()
+    # POLL method
+    #x = compProc.poll()
+    #print("output from poll: ", x)
+    # COMMUNICATE
+    x = compProc.communicate()
+    print("output from communicate: ", x[1])
+    # STDERR
+    #x = compProc.stderr
+    #print("output from stderr: ", x)
+    #subprocess.
 
-except subprocess.CalledProcessError:
-    print(compProc)
+except subprocess.CalledProcessError: # as inst:
+    #print(compProc)
     print("We had a called process error")
+    #print(type(inst))    # the exception instance
+    #print(inst.args)     # arguments stored in .args
+    #print(inst)          # __str__ allows args to be printed directly,
+                          # but may be overridden in exception subclasses
+    #x, y = inst.args     # unpack args
+    #print('x =', x)
+    #print('y =', y)
 except KeyboardInterrupt:
+    #x = compProc.communicate()
+    #print (x[1])
     print("We had a keyboard interrupt!!!")
 
 
-
+)
 
 x = input("press space to stop")
 #stderr = proc.communicate()
 
 #print(stderr)
-proc.send_signal(signal.SIGINT) ## Send interrupt signal
- """
+compProc.send_signal(signal.SIGINT) ## Send interrupt signal
+"""
 
 #process = Popen(['ls', '-l'], stdout=PIPE, stderr=PIPE)
 

@@ -6,7 +6,8 @@ camera = PiCamera
 #TODO Make this dailog box an addition to the tabbed widget
 #TODO aslteratively keep this where it is, but widen the dialog box so it is big
 # enough to hold the full path
-# TODO what happens if the external disk is missing and the files pointed to are on there
+# TODO need to chekc whether the folder exists and if it doesn't then 
+# set to some standard default (pi/Videos etc)
 class Preferences(QtWidgets.QDialog):
     def __init__(self, win, camvals, camera):
         super().__init__()

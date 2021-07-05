@@ -32,6 +32,28 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.setObjectName("pisnapApp")
         ####################################
         self.initUI()
+        ##################################### APP FOCUS
+        app.focusChanged.connect(self.on_focusChanged)
+
+    def on_focusChanged(self):
+        """
+        mewthod to turn on or off the preview depending on whether the app has focus 
+        anded with whether preview is active 
+        """
+        print(self.isActiveWindow())  
+        if self.isActiveWindow():
+            # check whether preview is currently displayed
+            # and if it is then show it
+            #else:
+            # if preview isn't displayed then you don't 
+            # need to do anything
+            if self.mWidget.ui.previewVisible.isChecked:
+                self.mWidget.showPreview(True)
+        else:
+            #if preview is currently active you need to hide it
+            # if it isnt yuou don't need to do anythinhg
+            if self.mWidget.ui.previewVisible.isChecked:
+                self.mWidget.showPreview(False)
 
     def moveEvent(self, e):
         # if the preview is currently visibe

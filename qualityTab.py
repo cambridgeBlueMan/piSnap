@@ -15,6 +15,7 @@ from time import sleep
 import sys
 import datetime
 import json
+import psFunctions
 
 class QualityTab(qtw.QWidget):
 
@@ -23,7 +24,6 @@ class QualityTab(qtw.QWidget):
         self.comboItemsAdded = False
         # camvals = None means we are running the code as stand alone
         # so we need to load the settings file
-        self.comboItemsAdded = False
         if camvals == None:
             with open("settings.json", "r") as settings:
                 self.camvals = json.load(settings)
@@ -49,19 +49,27 @@ class QualityTab(qtw.QWidget):
         return True
 
     def applySettings(self):
-        #if self.comboItemsAdded == True:
-        #print (self.camvals["audioBitRate"])
+        if self.comboItemsAdded == True:
+            print("is audio active?: ", bool(self.camvals["audioActive"]))
         #for each key in the settings dictionery 
-        self.ui.audioBitRate.setCurrentText(str(self.camvals["audioBitRate"]))
-        self.ui.audioSampleRate.setCurrentText(str(self.camvals["audioSampleRate"]))
-        self.ui.audioFileFormat.setCurrentText(str(self.camvals["audioFileFormat"]))
-        self.ui.videoBitRate.setCurrentText(str(self.camvals["videoBitRate"]))                
-        self.ui.videoQuality.setCurrentText(str(self.camvals["videoQuality"]))
-        self.ui.mux.setChecked(bool(self.camvals["mux"]))
-        self.ui.audioActive.setChecked(bool(self.camvals["audioActive"]))
-        self.ui.videoProfile.setCurrentText(str(self.camvals["videoProfile"]))
-        self.ui.videoLevel.setCurrentText(str(self.camvals["videoLevel"]))
-        self.ui.iso.setCurrentText(str(self.camvals["iso"]))
+            self.ui.audioBitRate.setCurrentText(str(self.camvals["audioBitRate"]))
+            self.ui.audioSampleRate.setCurrentText(str(self.camvals["audioSampleRate"]))
+            self.ui.audioFileFormat.setCurrentText(str(self.camvals["audioFileFormat"]))
+            self.ui.videoBitRate.setCurrentText(str(self.camvals["videoBitRate"]))                
+            self.ui.videoQuality.setCurrentText(str(self.camvals["videoQuality"]))
+            if self.camvals["mux"] == "true":
+                state = True
+            else:
+                state = False
+            self.ui.mux.setChecked(state)
+            if self.camvals["audioActive"] == "true":
+                state = True
+            else:
+                state = False
+            self.ui.audioActive.setChecked(state)
+            self.ui.videoProfile.setCurrentText(str(self.camvals["videoProfile"]))
+            self.ui.videoLevel.setCurrentText(str(self.camvals["videoLevel"]))
+            self.ui.iso.setCurrentText(str(self.camvals["iso"]))
 
 
     def setCamValFromCombo(self, str):
