@@ -46,6 +46,7 @@ class QualityTab(qtw.QWidget):
         args[0].ui.videoProfile.addItems(["baseline", "main", "extended", "high", "constrained"])
         args[0].ui.videoLevel.addItems(["4","4.1", "4.2"])
         args[0].ui.iso.addItems(["0", "100", "200", "320", "400", "500", "640", "800"])
+        args[0].ui.soundDevices.addItems(["USB", "Duet"])
         return True
 
     def applySettings(self):
@@ -57,6 +58,7 @@ class QualityTab(qtw.QWidget):
             self.ui.audioFileFormat.setCurrentText(str(self.camvals["audioFileFormat"]))
             self.ui.videoBitRate.setCurrentText(str(self.camvals["videoBitRate"]))                
             self.ui.videoQuality.setCurrentText(str(self.camvals["videoQuality"]))
+            self.ui.soundDevices.setCurrentText(str(self.camvals["soundDevices"]))
             if self.camvals["mux"] == "true":
                 state = True
             else:
@@ -98,6 +100,7 @@ class QualityTab(qtw.QWidget):
             self.camvals["audioActive"] = "true"
         else:
             self.camvals["audioActive"] = "false"
+
 
 #######################################################################################
     #                           END OF CLASS
