@@ -68,7 +68,7 @@
      <item row="2" column="1">
       <widget class="QComboBox" name="audioFileFormat"/>
      </item>
-     <item row="3" column="0">
+     <item row="4" column="0">
       <widget class="QCheckBox" name="mux">
        <property name="enabled">
         <bool>true</bool>
@@ -81,12 +81,22 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="0">
+     <item row="5" column="0">
       <widget class="QCheckBox" name="audioActive">
        <property name="text">
         <string>audio is active</string>
        </property>
       </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>Sound Devices</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QComboBox" name="soundDevices"/>
      </item>
     </layout>
    </widget>
@@ -201,8 +211,8 @@
    <slot>setCamValFromCombo(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>255</x>
-     <y>86</y>
+     <x>279</x>
+     <y>251</y>
     </hint>
     <hint type="destinationlabel">
      <x>400</x>
@@ -218,7 +228,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>279</x>
-     <y>109</y>
+     <y>289</y>
     </hint>
     <hint type="destinationlabel">
      <x>392</x>
@@ -233,8 +243,8 @@
    <slot>setCamValFromCombo(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>289</x>
-     <y>160</y>
+     <x>279</x>
+     <y>327</y>
     </hint>
     <hint type="destinationlabel">
      <x>388</x>
@@ -249,8 +259,8 @@
    <slot>setCamValFromCombo(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>199</x>
-     <y>291</y>
+     <x>259</x>
+     <y>72</y>
     </hint>
     <hint type="destinationlabel">
      <x>420</x>
@@ -265,8 +275,8 @@
    <slot>setCamValFromCombo(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>163</x>
-     <y>339</y>
+     <x>223</x>
+     <y>110</y>
     </hint>
     <hint type="destinationlabel">
      <x>359</x>
@@ -281,8 +291,8 @@
    <slot>isAudioActive(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>127</x>
-     <y>225</y>
+     <x>128</x>
+     <y>436</y>
     </hint>
     <hint type="destinationlabel">
      <x>361</x>
@@ -297,8 +307,8 @@
    <slot>setCamValFromCombo(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>150</x>
-     <y>368</y>
+     <x>210</x>
+     <y>148</y>
     </hint>
     <hint type="destinationlabel">
      <x>358</x>
@@ -313,8 +323,8 @@
    <slot>setCamValFromCombo(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>195</x>
-     <y>409</y>
+     <x>255</x>
+     <y>186</y>
     </hint>
     <hint type="destinationlabel">
      <x>315</x>
@@ -329,8 +339,8 @@
    <slot>doMux(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>103</x>
-     <y>189</y>
+     <x>104</x>
+     <y>403</y>
     </hint>
     <hint type="destinationlabel">
      <x>479</x>
@@ -345,8 +355,8 @@
    <slot>setIso(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>109</x>
-     <y>489</y>
+     <x>141</x>
+     <y>541</y>
     </hint>
     <hint type="destinationlabel">
      <x>587</x>
@@ -354,8 +364,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>soundDevices</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>Form</receiver>
+   <slot>setCamValFromCombo(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>201</x>
+     <y>373</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>497</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
+  <signal>soundDevices()</signal>
   <slot>setAudioBitRate(int)</slot>
   <slot>setAudioSampleRate(int)</slot>
   <slot>setAudioFileFormat(int)</slot>
