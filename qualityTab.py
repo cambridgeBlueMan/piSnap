@@ -5,6 +5,7 @@ from PyQt5 import QtWidgets as qtw
 # ################################
 # SEE COMMENTS AT END OF THIS FILE
 # ################################
+from io import StringIO
 
 from gui.qualityTabGui import Ui_Form
 #
@@ -16,6 +17,7 @@ import sys
 import datetime
 import json
 import psFunctions
+import subprocess
 
 class QualityTab(qtw.QWidget):
 
@@ -33,9 +35,39 @@ class QualityTab(qtw.QWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         # add combo box items
+        self.soundDevs = self.getSoundDevs(self)
         self.comboItemsAdded = self.addItemsToCombos(self)
         
         self.applySettings()
+
+    def getSoundDevs(*args):
+        # initialise the list of sound devices
+        soundDevs=list()
+        #get the operating system to run the command "arecord -D"
+        # this returns a list of sound devices capable of recording to the 
+        # object soundevs.stdout
+        # stdout is the standard output from the program. I.e. the list
+        # of sound devices that would be printed tp the screen if you ran
+        # arecord -D from the command line in the usual way
+        soundevs = subprocess.run(["arecord", "-L"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, \
+            check=True, text=True)
+        
+        # we convert the returned object to a StringIO type object
+        # which we can then parse as if it were a file
+        buffer = StringIO(soundevs.stdout)
+        # rest of code as before, but now we have gathered the data dynamically
+        for line in buffer:
+            if line.startswith('hw:CARD='):
+                line=line.replace('hw:CARD=','')
+                ix=line.find(',')
+                devname=(line[0:ix])
+                endix=(len(line)-1)
+                startix=line.rfind('=')+1
+                devnum=(line[startix:endix])
+                dev=('hw:'+devname+','+devnum)
+                soundDevs.append(dev)
+        # return a list of hardware record devices
+        return soundDevs   
 
     def addItemsToCombos(*args):
         args[0].ui.audioBitRate.addItems(["8", "16", "24", "48"])
@@ -46,7 +78,7 @@ class QualityTab(qtw.QWidget):
         args[0].ui.videoProfile.addItems(["baseline", "main", "extended", "high", "constrained"])
         args[0].ui.videoLevel.addItems(["4","4.1", "4.2"])
         args[0].ui.iso.addItems(["0", "100", "200", "320", "400", "500", "640", "800"])
-        args[0].ui.soundDevices.addItems(["USB", "Duet"])
+        args[0].ui.soundDevices.addItems(args[0].soundDevs)
         return True
 
     def applySettings(self):
