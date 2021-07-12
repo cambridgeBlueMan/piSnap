@@ -4,8 +4,8 @@
     "annotate_frame_num": false,
     "annotate_text_size": 32,
     "audioActive": "false",
-    "audioBitRate": "24",
-    "audioFileFormat": "bollo",
+    "audioBitRate": "16",
+    "audioFileFormat": "wav",
     "audioSampleRate": "48000",
     "awb_gains": [
         0,
@@ -36,6 +36,7 @@
     "exposure_speed": 0,
     "flash_mode": "redeye",
     "framerate": 30,
+    "fileNameFormat": "counter",
     "hflip": false,
     "image_denoise": true,
     "image_effect": "none",
@@ -65,6 +66,7 @@
     "sharpness": 0,
     "shutter_speed": 0,
     "still_stats": false,
+    "soundDevices": 0,
     "vflip": false,
     "videoBitRate": "8000000",
     "video_denoise": true,
@@ -82,7 +84,7 @@
     "vidFileRoot": "video_",
     "stillFormat": "jpeg",
     "videoFormat": "h264",
-    "fileCounter": 81,
+    "fileCounter": 89,
     "vidres": [
         1600,
         1200

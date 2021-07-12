@@ -58,35 +58,6 @@
       <string>Snap/Hold</string>
      </property>
     </widget>
-    <widget class="QRadioButton" name="isCounter">
-     <property name="geometry">
-      <rect>
-       <x>630</x>
-       <y>20</y>
-       <width>119</width>
-       <height>27</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Counter </string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="isDatestamp">
-     <property name="geometry">
-      <rect>
-       <x>510</x>
-       <y>20</y>
-       <width>119</width>
-       <height>27</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Datestamp</string>
-     </property>
-    </widget>
     <widget class="QWidget" name="formLayoutWidget_3">
      <property name="geometry">
       <rect>
@@ -437,6 +408,35 @@
     <string>Unlock Preview</string>
    </property>
   </widget>
+  <widget class="QRadioButton" name="isDatestamp">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>820</y>
+     <width>119</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Datestamp</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="isCounter">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>850</y>
+     <width>119</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Counter </string>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
@@ -620,11 +620,11 @@
    <sender>isDatestamp</sender>
    <signal>clicked()</signal>
    <receiver>Form</receiver>
-   <slot>isDateStamp()</slot>
+   <slot>setFileNameFormat()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>773</x>
-     <y>719</y>
+     <x>43</x>
+     <y>846</y>
     </hint>
     <hint type="destinationlabel">
      <x>119</x>
@@ -636,11 +636,11 @@
    <sender>isCounter</sender>
    <signal>clicked()</signal>
    <receiver>Form</receiver>
-   <slot>isCounter()</slot>
+   <slot>setFileNameFormat()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>903</x>
-     <y>720</y>
+     <x>53</x>
+     <y>876</y>
     </hint>
     <hint type="destinationlabel">
      <x>124</x>
@@ -821,7 +821,7 @@
   <slot>showPreview()</slot>
   <slot>doPlayVid()</slot>
   <slot>doPauseVid()</slot>
-  <slot>isDateStamp()</slot>
+  <slot>setFileNameFormat()</slot>
   <slot>isCounter()</slot>
   <slot>setFileRoot(QString)</slot>
   <slot>setCaptureMode(int)</slot>

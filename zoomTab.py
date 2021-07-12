@@ -13,9 +13,6 @@ import psFunctions
 #TODO running a zoom should have it's own little player ie starts, pause,stop 
 #TODO ending camera recording at end of a zoom should be switchable
 class ZoomTab(QtWidgets.QWidget):
-    
-        
-
     def __init__(self, camvals, camera):
         super().__init__()
         # Ui_Form is the main designer generated class. so instantiate one. Precede the variable name with
@@ -25,7 +22,6 @@ class ZoomTab(QtWidgets.QWidget):
                 self.camvals = json.load(settings)
         else:
             self.camvals = camvals
-
         if camera == None:
             self.camera = PiCamera()
         else:
@@ -126,7 +122,6 @@ class ZoomTab(QtWidgets.QWidget):
        
         self.camera.zoom = self.zoom 
         # we need also to reset the ranges of the getYOrigin and getXOrigin sliders
-      #LEA Set speed slider - not currently wired up
     def setSpeed(self,val):
         self.camvals["loopSize"] = val 
         #pass
@@ -146,7 +141,15 @@ class ZoomTab(QtWidgets.QWidget):
     def doRunZoom(self, bool):
         #set the resolution on the camer itself
         #self.camera.resolution = (self.camvals["vidres"][0] , self.camvals["vidres"][1] )
+        """ # LEA 
+        The actual speed of the zoom should be a function of not just the speed control
+        but also the distance to travel
+        To be clear the loopSize is exactly that and not a speed control per se. 
+        It dictates how many times the loop must run
+        so, if a zoom is across a large distance then it makes sense that a larger loopsize
+        should be involved in getting it there
 
+        """
         # number of steps to complete the zoom
         loopSize = (self.camvals["loopSize"])
         #loopSize = 1200

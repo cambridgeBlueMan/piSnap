@@ -18,13 +18,6 @@ import json
 import vlc
 import _thread
 import psFunctions
-#import regexp
-#from  import *
-#from settings import camvals
-#print(camvals)
-# TODO the file root text fields need some validation to ensure that only legitimate file name 
-# characters are entered. i.e. I suspect stuff like %*£" etc is illegal in a linux file name
-
 class Shooter(qtw.QWidget):
 
     def __init__(self, camvals, camera):
@@ -75,6 +68,10 @@ class Shooter(qtw.QWidget):
         """
         self.ui.stillFileRoot.setText(self.camvals["stillFileRoot"])
         self.ui.videoFileRoot.setText(self.camvals["vidFileRoot"])
+        if self.camvals["fileNameFormat"] == "counter":
+            self.ui.isCounter.setChecked(True)
+        else:
+            self.ui.isDatestamp.setChecked(True)
 
         
     def setupVLCPlayer(self):
@@ -92,11 +89,15 @@ class Shooter(qtw.QWidget):
     
     def snapAndSave(self):  
         """ takes a still picture and automatically generates a file name """
-        # TODO it is not yet possible to take a still pictue with the zoom
-        # bear in mind that even when taking a still picture we may want it at a particular zoom level
         self.camera.zoom = self.window().zoomTab.zoom[:]
         # build a file name
-        filename = self.camvals["defaultPhotoPath"]+ "/" + self.camvals["stillFileRoot"] + '{:04d}'.format(self.camvals["fileCounter"]) + '.' + self.camvals["stillFormat"]
+
+        # make file name, less extension
+        if self.camvals["fileNameFormat"] == "counter":
+            self.imgRoot = self.camvals["stillFileRoot"] + '{:04d}'.format(self.camvals["fileCounter"]) + '.'
+        else:
+            self.imgRoot = self.camvals["stillFileRoot"] + str(datetime.datetime.now()).replace(':','_') + '.'
+        filename = self.camvals["defaultPhotoPath"]+ "/" + self.imgRoot + '.' + self.camvals["stillFormat"]
         # does the file exist? if not then write it
 
         if path.exists(filename):
@@ -117,7 +118,6 @@ class Shooter(qtw.QWidget):
             if ret == qtw.QMessageBox.Save:
                 # if save then overwite existing file
                 with open (filename, 'wb') as f:
-                    #print(stream)
                     f.write(stream.getbuffer())
                     self.showImage(filename)
             if ret == qtw.QMessageBox.Cancel:
@@ -126,8 +126,7 @@ class Shooter(qtw.QWidget):
                 pass
             if ret == 0: #appendButton:
                 # if save with an appended timestamp then save the buffer/stream with the timestamp
-                filename = self.camvals["defaultPhotoPath"]+self.camvals["stillFileRoot"] 
-                + '{:04d}'.format(self.camvals["fileCounter"]) \
+                filename = self.camvals["defaultPhotoPath"]+ self.imgRoot \
                 + str(datetime.datetime.now()).replace(':','_') + '.'+ self.camvals["stillFormat"]
                 with open (filename, 'wb') as f:
                     f.write(stream.getbuffer())
@@ -150,7 +149,6 @@ class Shooter(qtw.QWidget):
         
     def incFileCounter(self):
         """ increments the file counter and saves it to the settings file """
-        #print(self)
         self.camvals["fileCounter"] = self.camvals["fileCounter"] + 1
         with open("settings.json", "w") as settings:
             json.dump(self.camvals, settings, indent = 4)
@@ -169,7 +167,6 @@ class Shooter(qtw.QWidget):
     
     def snapAndHold(self):
         """ take a still picture and store in a stream object """
-        #print("in snap and hold")
         stream = self.imgToStream()
         # save for this scenario
         with open ("aPic.jpg", 'wb') as f:
@@ -192,12 +189,24 @@ class Shooter(qtw.QWidget):
         self.camera.framerate = int(myvar)
         self.camvals["framerate"] = int(myvar)
     
-    def updateTerminalWidgetWhileRecording(self, camera, str):
+    def updateTerminalWidgetWhileRecording(self, camera):
         while camera.recording == True: #camera.recording:
-            self.window().terminalWidget.moveCursor(qtg.QTextCursor.End)
-            self.window().terminalWidget.insertPlainText(" .")
-            #print("Hello")
+            try:
+                self.window().terminalWidget.moveCursor(qtg.QTextCursor.End)
+                self.window().terminalWidget.insertPlainText(" .")
+                """ if subproc.poll() == 2:
+                    raise subprocess.SubprocessError(2,self.cmd) """
+            except subprocess.SubprocessError: # as err:
+                    psFunctions.printT(self.window(), "Audio failed!!" )
+                    #psFunctions.printT(self.window(), str(err) , True)
             sleep(1)
+
+    def checkAudio(self,subproc):
+        while True:
+            if subproc.poll()==2:
+                raise subproc.SubprocessError(2,self.cmd)
+            sleep (1)
+
         #psFunctions.printT("Camera stopped recording!", True)
 
 # TODO Sort out video recording
@@ -210,8 +219,13 @@ class Shooter(qtw.QWidget):
             # various settings for video
             self.camera.framerate = self.camvals["framerate"]
             # make file name, less extension
-            self.vidRoot = self.camvals["vidFileRoot"] + str(datetime.datetime.now()).replace(':','_') + '.'
+            if self.camvals["fileNameFormat"] == "counter":
+                self.vidRoot = self.camvals["vidFileRoot"] + '{:04d}'.format(self.camvals["fileCounter"]) + '.'
+            else:
+                self.vidRoot = self.camvals["vidFileRoot"] + str(datetime.datetime.now()).replace(':','_') + '.'
             # make vid file name
+            # TODO must ensure that default video path does exist and if not 
+            # deal with accordingly
             filename = self.camvals["defaultVideoPath"] + "/" + self.vidRoot + self.camvals["videoFormat"]
             #if self.getAudio == True:
             if self.camvals["audioActive"]=="true":
@@ -220,26 +234,30 @@ class Shooter(qtw.QWidget):
 
                 # arecord --device="hw:USB,0" -t wav -c 2 -f S32_LE -r 48000  helloEverybody2.wav
                 """
-                cmd = ["arecord", "-D", "hw:USB,0" "-r", self.camvals["audioSampleRate"], "-f", "S32_LE", "-c", "2", \
+                self.cmd = ["arecord", "-D", "hw:USB,0" "-r", self.camvals["audioSampleRate"], "-f", "S32_LE", "-c", "2", \
                     (self.camvals["defaultVideoPath"] + "/" + self.vidRoot + self.camvals["audioFileFormat"]),]
                 """ 
-                cmd = ["rec",  "-r", self.camvals["audioSampleRate"], "-b", self.camvals["audioBitRate"], \
+                self.cmd = ["rec",  "-r", self.camvals["audioSampleRate"], "-b", self.camvals["audioBitRate"], \
                         (self.camvals["defaultVideoPath"] + "/" + self.vidRoot + self.camvals["audioFileFormat"]),]
                 try:
                     # try to start recording the audio
-                    self.proc = subprocess.Popen(cmd, \
+                    self.proc = subprocess.Popen(self.cmd, \
                             stdout = subprocess.PIPE, stderr = subprocess.PIPE, text=True) ## Run program
                     # communicate holds two element tuple of form (stdout, stderr)
-                    procRet = self.proc.communicate()
+                    """   procRet = self.proc.communicate()
                     #therefore, if we have some stderr raise an error
                     if procRet[1] > "":
-                        print(procRet[1])
                         psFunctions.printT(self.window(), procRet[1])
-                        #raise subprocess.CalledProcessError(2,cmd)
-                except subprocess.CalledProcessError: # as inst:
-                    psFunctions.printT(self.window(), "Audio failed!!" , True)
-                    self.camvals["audioActive"]="false"
-                    #print("This is inst: ", inst)
+                        psFunctions.printT(self.window(), str(self.proc.poll())) """
+                    #sleep(1)
+                    """ if self.proc.poll() == 2:
+                        raise subprocess.SubprocessError(2,self.cmd) """
+                    _thread.start_new_thread (self.checkAudio(), (self.proc))
+
+                except subprocess.SubprocessError: # as err:
+                    psFunctions.printT(self.window(), "Audio failed!!" )
+                    #psFunctions.printT(self.window(), str(err) , True)
+                    #self.camvals["audioActive"]="false"
             # you could capture here a small still
             # do you want too incude a zoom in the reocrding
             #self.recordZoom = True
@@ -247,7 +265,7 @@ class Shooter(qtw.QWidget):
             #try:
             self.camera.start_recording(filename, bitrate=int(self.camvals["videoBitRate"]))
             sleep(1)
-            _thread.start_new_thread (self.updateTerminalWidgetWhileRecording, ((self.camera, str) ))
+            _thread.start_new_thread (self.updateTerminalWidgetWhileRecording, (self.camera, str ))
             if self.recordZoom == True:
             #print(self.window().zoomTab)
                 fh = open("diags.txt", "a")
@@ -267,21 +285,21 @@ class Shooter(qtw.QWidget):
             #    self.window().terminalWidget.setPlainText(txt)
 
     def doStopVid(self):
-        print("now in do stop vid")
          # if camera is playing then stop playing  
         if self.mediaplayer.is_playing() == 1:
-            #print("media playing")
             self.mediaplayer.stop() # vlcObj.vlm_stop_media(self.vlcObj, str_to_bytes(self.media))
             #self.mediaplayer.set_position(0)
         # if camera is recording then stop recording
         if self.camera.recording:
             self.camera.stop_recording() # picamera method
+            # if necessary increment the fileCounter
+            if self.camvals["fileNameFormat"] == "counter":
+                self.camvals["fileCounter"] == self.camvals["fileCounter"] + 1
             psFunctions.printT(self.window(),"Camera stopped recording!", True)
             #if self.getAudio == True:
             if self.camvals["audioActive"]=="true":
                 # TODO note that the val of audioActive could possible currently change while the video is recording
                 # a fair amount of stuff needs cornering out here, I suspect
-                print(type(self.proc))
                 self.proc.send_signal(signal.SIGINT) ## Send interrupt signal
                 procRet  = self.proc.communicate()
                 psFunctions.printT(self.window(), str(procRet[0]))
@@ -292,9 +310,6 @@ class Shooter(qtw.QWidget):
                 vidInput = self.camvals["defaultVideoPath"] + "/" +self.vidRoot + self.camvals["videoFormat"]
                 audioInput = self.camvals["defaultVideoPath"] + "/" +self.vidRoot + self.camvals["audioFileFormat"]
                 output = self.camvals["defaultVideoPath"] + "/" +self.vidRoot + "mp4"
-                #print(vidInput)
-                #print(audioInput)
-                #print(output)
                 self.proc = subprocess.Popen(["ffmpeg", "-loglevel",  "warning",  "-stats",  "-i",  vidInput,  "-i",  audioInput,  "-c:v",  "copy","-c:a",  "aac",  output])
             else:
                 output = self.camvals["defaultVideoPath"] + "/"  + self.vidRoot + self.camvals["videoFormat"]  
@@ -313,21 +328,15 @@ class Shooter(qtw.QWidget):
             self.mediaplayer.set_pause(1)
      
     def doPlayVid(self, test): 
-        #print (test)
-        #print(self.ui.imgContainer)
         self.mediaplayer.set_xwindow(int(self.ui.imgContainer.winId()))
         self.mediaplayer.set_position(0)
-        #print(self.mediaplayer.video_take_snapshot(0 , "filename.jpeg", 80, 60))
-        self.mediaplayer.play()
-        #print(self.mediaplayer.video_take_snapshot(0 , "filename2.jpeg", 80, 60))        
+        self.mediaplayer.play()      
         self.timer.start()
         # play the current video
         
     def doPauseVid(self, test):
-        #print ("in pause vid")
         if self.mediaplayer.is_playing():
             self.mediaplayer.pause()
-            #self.playbutton.setText("Play")
             self.is_paused = True
             self.timer.stop()
         else:
@@ -340,8 +349,6 @@ class Shooter(qtw.QWidget):
       
     def setPosition(self, pos):
         # called from vid pos slider
-        #print ("in position vid")
-        #print(pos)
         self.timer.stop()
         self.mediaplayer.set_position(pos / 1000.0)
         self.timer.start()
@@ -356,18 +363,13 @@ class Shooter(qtw.QWidget):
         # Note that the setValue function only takes values of type int,
         # so we must first convert the corresponding media position.
         media_pos = int(self.mediaplayer.get_position() * 1000)
-        #print(self.mediaplayer.get_position())
         self.ui.vidPosSlider.setValue(media_pos)
         if self.mediaplayer.get_position() == 1.0:
             #self.mediaplayer.set_position(0)
-            #print("hello everybody")
             self.mediaplayer.stop()
-            #print(self.mediaplayer.video_take_snapshot(0 , "filename.jpeg", 240, 180 ))
-
         # No need to call this function if nothing is played
         if not self.mediaplayer.is_playing():
             self.timer.stop()
-
             # After the video finished, the play button stills shows "Pause",
             # which is not the desired behavior of a media player.
             # This fixes that "bug".
@@ -379,7 +381,6 @@ class Shooter(qtw.QWidget):
         # TODO when thumbnail is clicked it should turn the preview off, if necessary
         vid = vid.text()
         dimensions = self.getVideoDimensions(vid)
-        print("dimensions:", dimensions)
         # resize the imgContainer
         self.ui.imgContainer.resize(dimensions[0]/self.resDivider, dimensions[1]/self.resDivider)
         # set the x window
@@ -389,10 +390,7 @@ class Shooter(qtw.QWidget):
         # put the file name to the video player?
         self.media = self.vlcObj.media_new(vid)
         self.mediaplayer.set_media(self.media)
-        #print(self.mediaplayer.video_take_snapshot(0 , "filename.jpeg", 80, 60))
-        
-        self.mediaplayer.play()
-        #print(self.mediaplayer.video_take_snapshot(0 , "filename2.jpeg", 80, 60))        
+        self.mediaplayer.play()    
         self.timer.start()
 
     def getVideoDimensions(self, vid):
@@ -402,34 +400,32 @@ class Shooter(qtw.QWidget):
         
          """
         vid = str(vid)
-        print(vid)
         result = subprocess.run(['ffprobe', '-v', 'error', '-hide_banner', '-of', 'default=noprint_wrappers=0', 
         '-print_format', 'json',  '-select_streams', 'v:0', '-show_entries', 'stream=width,height', 
         vid], capture_output=True, text=True)
         # as indicated in the ffprobe command the output is returned as json
         result = json.loads(result.stdout)
-        print(result) # uncomment this line to see full json
         sleep(1)
         width =  (result["streams"][0]["width"])
         height = (result["streams"][0]["height"])
-        #print(width, height)
         return (width, height)
         
     def setFileRoot(*args):
         pass
 
     def updateStillRoot(self):
-        #self.ui.stillFileRoot.text()
         self.camvals["stillFileRoot"] = self.ui.stillFileRoot.text()
 
     def updateVideoRoot(self):
         #self.ui.videoFileRoot.text()
         self.camvals["vidFileRoot"] = self.ui.videoFileRoot.text()
 
-    def isDateStamp(*args):
-        pass
-    def isCounter(*args):
-        pass
+    def setFileNameFormat(*args):
+        print(args[0].sender().objectName())
+        if args[0].sender().objectName() == "isCounter":
+            args[0].camvals["fileNameFormat"] = "counter"
+        else:
+            args[0].camvals["fileNameFormat"] = "time"
 
     def movePreview(self):
         pass
@@ -444,7 +440,6 @@ class Shooter(qtw.QWidget):
          """
         # stops the preview
         self.camera.stop_preview
-        #print("in pos", x, y, self.camera.resolution)
         # sets the self.width and self.height for the preview
         # 
         # note that self.width and self.height are here being derivded form the camers's
@@ -471,20 +466,17 @@ class Shooter(qtw.QWidget):
             
 
     def showPreview(self, state):
-        #print("hello")
 
         """ on/off toggle for preview. 'state' is boolean on/off value. Typically passed from one of 
         several tick boxes around the place
 
         """
-        #print("what is the index  of the tab?: ", self.ui.captureTab.currentIndex())
         if self.ui.captureTab.currentIndex() == 1:
             self.width = int(self.camvals["vidres"][0]/self.resDivider)
             self.height = int(self.camvals["vidres"][1]/self.resDivider)
         if self.ui.captureTab.currentIndex() == 0:
             self.width = int(self.camvals["imgres"][0]/self.resDivider)
             self.height = int(self.camvals["imgres"][1]/self.resDivider)
-        #print ("w, h: ", self.width, self.height)
         self.geometry().x()
         # resize the frame
         self.ui.imgContainer.resize(self.width, self.height)
@@ -493,13 +485,10 @@ class Shooter(qtw.QWidget):
             """ TODO divider is currently hard coded at 2. This should be settable via a preview
             size gui control
             """
-            #print("sender: ", self.sender())
-            #print("current index: ", self.ui.captureTab.currentIndex() )
             # calculate x and y position for preview
             x = self.ui.imgContainer.geometry().x() + self.geometry().x() + self.window().geometry().x()
             y = self.ui.imgContainer.geometry().y() + self.geometry().y() + self.window().geometry().y() + 27
             # show the preview
-            #print ("2ND TIME, w, h: ", self.width, self.height)
             self.camera.stop_preview
             self.camera.start_preview(fullscreen=False, window = (x, y,self.width, self.height))
             #update all the various tick boxes around the place
@@ -515,7 +504,6 @@ class Shooter(qtw.QWidget):
                     self.window().findChild(qtw.QAction, "visibleAction").setChecked(True)
 
         else:
-            #print(state)
             self.camera.stop_preview()
             if self.sender() == None:
                 pass
@@ -565,7 +553,6 @@ class Shooter(qtw.QWidget):
         """
         slot called from the still/video tab selector currentChanged signal
         """
-        #print("index is: ", self, ix)
         # if video is selected then instantiate the vlc stuff
         if ix == 1:
             self.setupVideoCapture()
@@ -574,7 +561,6 @@ class Shooter(qtw.QWidget):
             # clean it all up, still to write
             self.setupStillCapture()
         state = self.ui.previewVisible.isChecked()   # previewVisible.isChecked()
-        #print("current state is: ", state)
         self.showPreview(state)
 
 
@@ -591,7 +577,6 @@ class Shooter(qtw.QWidget):
 
     def resetResolutionStuff(self, imgType):
         self.camera.resolution = tuple(self.camvals[imgType])
-        print("in reset resolutionsStuff", self.camvals[imgType])
         self.ui.imgContainer.resize(self.camvals[imgType][0]/self.resDivider, self.camvals[imgType][1]/self.resDivider)
         
         # get the size of the monitor
@@ -599,7 +584,6 @@ class Shooter(qtw.QWidget):
         self.ui.previewFrame.resize(((sizeObject.width()/10) + 22), ((sizeObject.height()/10) + 22))
         self.ui.previewButton.setContainerSize((sizeObject.width()/10) + 22,  (sizeObject.height()/10) + 22) 
         self.ui.previewButton.setDragButtonSize(self.camera.resolution[0]/20 +22, self.camera.resolution[1]/20 + 22)
-        #print("button size: ", (self.camera.resolution[0]/20)) # + 22)
         self.ui.previewButton.moveButtonToOrigin()
         
 

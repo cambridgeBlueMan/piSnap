@@ -83,8 +83,7 @@ class QualityTab(qtw.QWidget):
 
     def applySettings(self):
         if self.comboItemsAdded == True:
-            print("is audio active?: ", bool(self.camvals["audioActive"]))
-        #for each key in the settings dictionery 
+            #for each key in the settings dictionery 
             self.ui.audioBitRate.setCurrentText(str(self.camvals["audioBitRate"]))
             self.ui.audioSampleRate.setCurrentText(str(self.camvals["audioSampleRate"]))
             self.ui.audioFileFormat.setCurrentText(str(self.camvals["audioFileFormat"]))
@@ -108,7 +107,6 @@ class QualityTab(qtw.QWidget):
 
     def setCamValFromCombo(self, str):
         if self.comboItemsAdded == True:
-            print(str)
             self.camvals[self.sender().objectName()] = str
             #setattr(self.camera,self.sender().objectName(),str)
 
@@ -119,7 +117,6 @@ class QualityTab(qtw.QWidget):
         
 
     def doMux(self, state):
-        #print ("The value of state is: ", state)
         if state == True:
             self.camvals["mux"] = "true"
         else:
@@ -127,7 +124,6 @@ class QualityTab(qtw.QWidget):
         
 
     def isAudioActive(self, state):
-        #print ("The value of state is: ", state)
         if state == True:
             self.camvals["audioActive"] = "true"
         else:
