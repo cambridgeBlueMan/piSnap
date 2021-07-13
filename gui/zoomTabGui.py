@@ -42,6 +42,7 @@ class Ui_Form(object):
         self.adjustZoom.setObjectName("adjustZoom")
         self.runZoom = QtWidgets.QPushButton(Form)
         self.runZoom.setGeometry(QtCore.QRect(280, 530, 99, 30))
+        self.runZoom.setCheckable(True)
         self.runZoom.setObjectName("runZoom")
         self.showEnd = QtWidgets.QPushButton(Form)
         self.showEnd.setGeometry(QtCore.QRect(10, 530, 81, 30))

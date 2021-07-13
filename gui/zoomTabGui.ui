@@ -131,6 +131,9 @@
    <property name="text">
     <string>run zoom</string>
    </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
   </widget>
   <widget class="QPushButton" name="showEnd">
    <property name="geometry">
@@ -394,7 +397,7 @@
   <slot>doShowStart()</slot>
   <slot>showPreview(bool)</slot>
   <slot>doShowEnd()</slot>
-  <slot>doRunZoom()</slot>
+  <slot>doRunZoom(bool)</slot>
   <slot>setZoom(int)</slot>
   <slot>doSetEnd()</slot>
   <slot>printDiag()</slot>
