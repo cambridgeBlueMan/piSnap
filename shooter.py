@@ -15,6 +15,7 @@ import subprocess # allows access to command line
 import signal
 from os import path
 import json
+import math
 import vlc
 import _thread
 import psFunctions
@@ -252,7 +253,7 @@ class Shooter(qtw.QWidget):
                     #sleep(1)
                     """ if self.proc.poll() == 2:
                         raise subprocess.SubprocessError(2,self.cmd) """
-                    _thread.start_new_thread (self.checkAudio(), (self.proc))
+                    #_thread.start_new_thread (self.checkAudio(), (self.proc))
 
                 except subprocess.SubprocessError: # as err:
                     psFunctions.printT(self.window(), "Audio failed!!" )
@@ -269,9 +270,13 @@ class Shooter(qtw.QWidget):
             if self.recordZoom == True:
             #print(self.window().zoomTab)
                 fh = open("diags.txt", "a")
-                fh.write(filename + "," + str(self.camvals["vidres"])
-                +"," + str(self.window().zoomTab.startZoom[:]) + "," 
-                + str(self.window().zoomTab.endZoom[:]) + str(self.camvals["loopSize"])
+                fh.write(filename + "," + str(self.camvals["vidres"]) + "," 
+                #+ str(self.window().zoomTab.startZoom[:]) + "," 
+                #+ str(self.window().zoomTab.endZoom[:]) + ','
+                + str(abs(self.window().zoomTab.endZoom[0] - self.window().zoomTab.startZoom[0])) + ','
+                + str(abs(self.window().zoomTab.endZoom[1] - self.window().zoomTab.startZoom[1])) + ','
+                + str(abs(self.window().zoomTab.endZoom[2] - self.window().zoomTab.startZoom[2])) + ','
+                + str(self.camvals["loopSize"])
                 + "\n")
                 fh.close()
                 self.window().zoomTab.doRunZoom(self.window().zoomTab)
