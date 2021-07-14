@@ -251,6 +251,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         # now add the stuff to the vertical layout
         # first make the settings QTab widget
         self.settingsWidget = qtw.QTabWidget()
+        self.settingsWidget.setObjectName("settingsWidget")
 
         # now make and add ththe terminal window
         self.terminalWidget = qtw.QPlainTextEdit()
@@ -272,7 +273,8 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
 
         # #################################################################
         # make a resolutions tab widget, and pass the settings dictionary to it
-        self.resolutionsTab = ResolutionsTab(self.settings.camvals, self.camera, self.centralWidget)
+        self.zoomTab = ZoomTab(self.settings.camvals, self.camera)
+        self.resolutionsTab = ResolutionsTab(self.settings.camvals, self.camera, self.centralWidget, self.zoomTab)
         # now register it to the settings class
         self.settings.registerWidget(self.resolutionsTab)
         # now add it to the tab
@@ -287,7 +289,6 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
 
         # ##################################################################
         # make a zoomer object
-        self.zoomTab = ZoomTab(self.settings.camvals, self.camera)
         self.zoomTab.setObjectName("zoomTab")
         self.settings.registerWidget(self.zoomTab)
         self.settingsWidget.addTab(self.zoomTab, "Zooming Tool")  

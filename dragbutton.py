@@ -25,7 +25,7 @@ class DragButton(qtw.QPushButton):
         self.containerHeight = y
 
     def setDragButtonSize(self,w,h):
-        #self.setFixedSize(w,h)
+        self.setFixedSize(w,h)
         self.bWidth = w
         self.bHeight = h
 

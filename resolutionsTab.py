@@ -3,6 +3,7 @@ from PyQt5 import QtGui as qtg
 from PyQt5 import QtWidgets as qtw
 
 from gui.resolutionsTabGui import Ui_Form
+from zoomTab import ZoomTab
 from psSettings import PSSettings
 #from gui.zoomTabGui import ZoomTab
 from picamera import PiCamera
@@ -13,10 +14,11 @@ import json
 import math
 #QUERY Should change to say 'video resolutions' trigger activation of viedo tab and vice versa?
 class ResolutionsTab(qtw.QWidget):
-    def __init__(self, camvals, camera, centralWidget):
+    def __init__(self, camvals, camera, centralWidget, zoomTab):
         super().__init__()
         self.comboItemsAdded = False
         self.cw = centralWidget
+        self.zt = zoomTab
         # camvals = None means we are running the code as stand alone
         # so we need to load the settings file
         if camvals == None:
@@ -66,13 +68,11 @@ class ResolutionsTab(qtw.QWidget):
         captureTab widget current index). Finally this method resets the zoom page """
 
         if self.comboItemsAdded == True:
-            #print ("combo items added?: ", self.comboItemsAdded)
             # set new camvals value
             self.camvals["vidres"] = self.resAsTuple[int] 
-            #print("camvals after assignment: ", self.camvals["vidres"])
             # get the shooter object
             aShooter = self.cw.findChild(qtw.QWidget, "mWidget")
-            # what is the current mode
+            # what is the current mode i.e. video mode or stilll mode
             mode = aShooter.ui.captureTab.currentIndex()
             # is the preview currently displaying
             isPreview = aShooter.ui.previewVisible.isChecked()
@@ -92,7 +92,13 @@ class ResolutionsTab(qtw.QWidget):
                 # resize the frame
                 aShooter.ui.imgContainer.resize(width, height)
                 aShooter.setCaptureMode(mode)
-
+            # reset the zoomTab settings
+            #x = self.cw.findChild(qtw.QTabWidget, "settingsWidget")
+            #print("parentage: ", self.parent(), self.parentWidget())
+            #print(x)
+            #print(x.widget(0))
+            self.zt.initControls()
+            #print(self.window()) #.initControls()
     def setStillRes(self,int):
         """ slot triggered by the imgres combo box. updates the camvals dictionary with the new
         still image resolution, and if still is the current setting of the captureTab Tab Widget runs the 

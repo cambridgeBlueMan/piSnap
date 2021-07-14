@@ -43,9 +43,16 @@ class ZoomTab(QtWidgets.QWidget):
         ########################
         self.previewDivider = 3
         # 
+
         self.ui.getZoom.setInvertedAppearance(True)
         self.pixelWidth  = 1/self.sensorWidth
         self.pixelHeight = 1/self.sensorHeight
+
+        self.ui.adjustZoom.setText(u"\u26AB")
+
+        self.initControls()
+
+    def initControls(self):
         # set max value for ui items
         self.zoom = [0,0, self.camvals["vidres"][0] /self.sensorWidth, self.camvals["vidres"][0] /self.sensorWidth]
         self.startZoom = self.zoom[:]
@@ -56,12 +63,14 @@ class ZoomTab(QtWidgets.QWidget):
         self.ui.getSpeed.setValue(self.camvals["loopSize"])
         self.ui.adjustZoom.setDragButtonSize(self.camvals["vidres"][0] /8, self.camvals["vidres"][1] /8)
 
+        self.ui.adjustZoom.move(0,0)
+
         self.camera.zoom = self.zoom
         # now we can set the resolution on the camer itself
         self.camera.resolution = (self.camvals["vidres"][0] , self.camvals["vidres"][1] )
          
     def doSnap(self):
-        self.camera.capture("twattock.jpeg")
+        self.camera.capture("apic.jpeg")
 
     def range(self, value):
         #value = 2028
@@ -71,7 +80,7 @@ class ZoomTab(QtWidgets.QWidget):
 
     def setZoomWithButton(self, x, y):
         """ This is slot connected to posChanged(int,int) signal from the dragButton used to 
-        position the zoomed window within the space of the whole sensor
+        position the zoomed window within the space of the whole sensor 
 
         The values are 1/8 of the actual values, since the frame in which the dragButton 
         operates is 1/8 of full size
