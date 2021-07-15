@@ -316,7 +316,7 @@ class ZoomTab(QtWidgets.QWidget):
             #print("iter")
         print("loop now ended")
         self.ui.runZoom.setText("run zoom")
-        self.abortZoom = True
+        self.abortZoom = False
         #loop now ended 
         if self.camera.recording:
             self.window().mWidget.doStopVid()
