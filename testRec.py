@@ -7,8 +7,7 @@ import signal
 
 #from subprocess import Popen, PIPE
 import subprocess
-global compProc
-_thread.start_new_thread(
+#global compProc
 try:
     # capture_output = True gets stderr and stdout as elements of the returned compProc
     # Exceptions raised in the child process, before the new program has 
@@ -44,7 +43,6 @@ except KeyboardInterrupt:
     print("We had a keyboard interrupt!!!")
 
 
-)
 
 x = input("press space to stop")
 #stderr = proc.communicate()

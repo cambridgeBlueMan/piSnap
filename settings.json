@@ -6,7 +6,7 @@
     "audioActive": "false",
     "audioBitRate": "16",
     "audioFileFormat": "wav",
-    "audioSampleRate": "48000",
+    "audioSampleRate": "44100",
     "awb_gains": [
         0,
         0
@@ -36,13 +36,13 @@
     "exposure_speed": 0,
     "flash_mode": "redeye",
     "framerate": 30,
-    "fileNameFormat": "counter",
+    "fileNameFormat": "time",
     "hflip": false,
     "image_denoise": true,
     "image_effect": "none",
     "image_effect_params": null,
     "iso": 0,
-    "loopSize": 1289,
+    "loopSize": 600,
     "meter_mode": "backlit",
     "mux": "true",
     "overlays": [],
@@ -81,17 +81,17 @@
         1.0
     ],
     "stillFileRoot": "img_",
-    "vidFileRoot": "video_",
+    "vidFileRoot": "guitar5_",
     "stillFormat": "jpeg",
     "videoFormat": "h264",
-    "fileCounter": 89,
+    "fileCounter": 92,
     "vidres": [
-        1600,
-        1200
+        1920,
+        1080
     ],
     "imgres": [
-        1600,
-        1200
+        1920,
+        1080
     ],
     "zStartX": 25,
     "zStartY": 36,
