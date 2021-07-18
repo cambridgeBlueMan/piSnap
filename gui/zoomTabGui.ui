@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>537</width>
-    <height>598</height>
+    <height>653</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>420</y>
+     <y>410</y>
      <width>501</width>
      <height>21</height>
     </rect>
@@ -41,10 +41,10 @@
   <widget class="QPushButton" name="start">
    <property name="geometry">
     <rect>
-     <x>140</x>
-     <y>470</y>
-     <width>71</width>
-     <height>30</height>
+     <x>100</x>
+     <y>430</y>
+     <width>61</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="text">
@@ -55,9 +55,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>470</y>
-     <width>81</width>
-     <height>30</height>
+     <y>430</y>
+     <width>61</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="text">
@@ -80,10 +80,10 @@
   <widget class="QPushButton" name="end">
    <property name="geometry">
     <rect>
-     <x>140</x>
-     <y>530</y>
-     <width>71</width>
-     <height>30</height>
+     <x>90</x>
+     <y>460</y>
+     <width>61</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="text">
@@ -122,10 +122,10 @@
   <widget class="QPushButton" name="runZoom">
    <property name="geometry">
     <rect>
-     <x>280</x>
-     <y>530</y>
-     <width>99</width>
-     <height>30</height>
+     <x>430</x>
+     <y>440</y>
+     <width>71</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="text">
@@ -139,9 +139,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>530</y>
-     <width>81</width>
-     <height>30</height>
+     <y>460</y>
+     <width>61</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="text">
@@ -164,8 +164,8 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>280</x>
-     <y>460</y>
+     <x>190</x>
+     <y>430</y>
      <width>81</width>
      <height>22</height>
     </rect>
@@ -177,8 +177,8 @@
   <widget class="QSlider" name="getSpeed">
    <property name="geometry">
     <rect>
-     <x>280</x>
-     <y>490</y>
+     <x>190</x>
+     <y>450</y>
      <width>221</width>
      <height>26</height>
     </rect>
@@ -199,14 +199,50 @@
   <widget class="QPushButton" name="printDiag">
    <property name="geometry">
     <rect>
-     <x>400</x>
-     <y>530</y>
-     <width>99</width>
-     <height>30</height>
+     <x>430</x>
+     <y>470</y>
+     <width>71</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="text">
     <string>PrintDiag</string>
+   </property>
+  </widget>
+  <widget class="QTableView" name="zoomTableView">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>520</y>
+     <width>501</width>
+     <height>121</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="delRow">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>480</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>del row</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="playRow">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>480</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>play row</string>
    </property>
   </widget>
  </widget>
@@ -238,8 +274,8 @@
    <slot>doSetStart()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>227</x>
-     <y>509</y>
+     <x>160</x>
+     <y>449</y>
     </hint>
     <hint type="destinationlabel">
      <x>348</x>
@@ -254,8 +290,8 @@
    <slot>doShowStart()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>77</x>
-     <y>505</y>
+     <x>70</x>
+     <y>449</y>
     </hint>
     <hint type="destinationlabel">
      <x>21</x>
@@ -270,8 +306,8 @@
    <slot>doShowEnd()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>99</x>
-     <y>553</y>
+     <x>70</x>
+     <y>480</y>
     </hint>
     <hint type="destinationlabel">
      <x>306</x>
@@ -286,8 +322,8 @@
    <slot>doRunZoom()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>594</y>
+     <x>430</x>
+     <y>460</y>
     </hint>
     <hint type="destinationlabel">
      <x>292</x>
@@ -318,8 +354,8 @@
    <slot>doSetEnd()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>207</x>
-     <y>533</y>
+     <x>150</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel">
      <x>164</x>
@@ -366,8 +402,8 @@
    <slot>setSpeed(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>329</x>
-     <y>497</y>
+     <x>239</x>
+     <y>457</y>
     </hint>
     <hint type="destinationlabel">
      <x>463</x>
@@ -382,12 +418,44 @@
    <slot>doPrintDiag()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>435</x>
-     <y>536</y>
+     <x>465</x>
+     <y>476</y>
     </hint>
     <hint type="destinationlabel">
      <x>526</x>
      <y>536</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>delRow</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>deleteSelectedRow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>227</x>
+     <y>496</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>11</x>
+     <y>490</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>playRow</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>playSelectedRow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>290</x>
+     <y>494</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>44</x>
+     <y>496</y>
     </hint>
    </hints>
   </connection>
@@ -405,5 +473,7 @@
   <slot>movePosition()</slot>
   <slot>setSpeed(int)</slot>
   <slot>doPrintDiag()</slot>
+  <slot>deleteSelectedRow()</slot>
+  <slot>playSelectedRow()</slot>
  </slots>
 </ui>

@@ -52,6 +52,12 @@ class ZoomTab(QtWidgets.QWidget):
 
         self.initControls()
 
+        self.initModelStuff()
+
+    def initModelStuff(self):
+        self.model = zoomTableModel()
+        self.ui.zoomTableView.setModel(self.model)
+
     def initControls(self):
         # set max value for ui items
         self.zoom = [0,0, self.camvals["vidres"][0] /self.sensorWidth, self.camvals["vidres"][0] /self.sensorWidth]
@@ -142,6 +148,12 @@ class ZoomTab(QtWidgets.QWidget):
         self.startZoom = self.zoom[:]
         #print ("start zoom: ", self.zoom)
         #self.printDiag(self)
+        # add stuff for model version
+        zdata = [self.zoom[0], self.zoom[1], self.zoom[2], 600, 1]
+        # insert rows (position, numrows, parent, data)
+        self.model.insertRows(0,1, self.model.parent(), zdata)
+
+
 
     def doSetEnd(self,bool):
         self.endZoom = self.zoom[:]
@@ -328,8 +340,34 @@ class ZoomTab(QtWidgets.QWidget):
     def doShowEnd(self, bool):
         self.camera.zoom = self.endZoom[:]
 
+    def deleteSelectedRow(self):
+        print("delete selected row")
+        selected = self.ui.zoomTableView.selectedIndexes()
+        # Errata:  The book contains the following code:
+        #if selected:
+        #    self.model.removeRows(selected[0].row(), len(selected), None)
+
+        # This is incorrect, as len(selected) is the number of *cells* selected,
+        # not the number of *rows* selected.
+
+        # correct approach would look like this:
+        num_rows = len(set(index.row() for index in selected))
+        if selected:
+            self.model.removeRows(selected[0].row(), num_rows, None)
+
     
-        #print(self.camera.zoom)
+
+    def playSelectedRow(self):
+        print("play selected row")
+        #self.ui.zoomTableView.
+        selected = self.ui.zoomTableView.selectedIndexes()
+        # following does the trick
+        print(selected[0].data())
+        #print(selected.index(0, 0, selected[0]))
+
+
+
+    
     def doQuit(self):
         sys.exit()
  
@@ -363,6 +401,107 @@ class ZoomTab(QtWidgets.QWidget):
 #######################################################################################
     #                           END OF CLASS
 #######################################################################################
+
+
+class zoomTableModel(QtCore.QAbstractTableModel):
+
+    def __init__(self):
+        super().__init__()
+        self._headers = ["startX", "startY", "startWidth", "loopSize", "pause"]
+        self._data = [
+            [0,0,0.1,200,1],
+            [0,0,1,300,3],
+            [0,0,0.12345,200,1],
+            [0,0,1,600,5],
+            [0,0,1,200,1]
+        ]
+
+    # Minimum necessary methods:
+    def rowCount(self, parent):
+        return len(self._data)
+
+    def columnCount(self, parent):
+        return len(self._headers)
+
+    def data(self, index, role):
+        # original if statement:
+        # if role == QtCore.Qt.DisplayRole:
+        # Add EditRole so that the cell is not cleared when editing
+        if role in (QtCore.Qt.DisplayRole, QtCore.Qt.EditRole):
+            return self._data[index.row()][index.column()]
+
+    # Additional features methods:
+
+    def headerData(self, section, orientation, role):
+
+        if orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
+            return self._headers[section]
+        else:
+            return super().headerData(section, orientation, role)
+
+    def sort(self, column, order):
+        self.layoutAboutToBeChanged.emit()  # needs to be emitted before a sort
+        self._data.sort(key=lambda x: x[column])
+        if order == QtCore.Qt.DescendingOrder:
+            self._data.reverse()
+        self.layoutChanged.emit()  # needs to be emitted after a sort
+
+    # Methods for Read/Write
+
+    def flags(self, index):
+        return super().flags(index) | QtCore.Qt.ItemIsEditable
+
+    def setData(self, index, value, role):
+        if index.isValid() and role == QtCore.Qt.EditRole:
+            self._data[index.row()][index.column()] = value
+            self.dataChanged.emit(index, index, [role])
+            return True
+        else:
+            return False
+
+    # Methods for inserting or deleting
+    # position is point for insertion
+    # rows is number of rows to insert - 1 in our case
+    # and thee parent mode index - of no interest to us
+
+    def insertRows(self, position, rows, parent, zdata):
+        # following line needed, also see end
+        # parent or QtCore line stays as is
+        print(zdata)
+        self.beginInsertRows(
+            parent or QtCore.QModelIndex(),
+            position,
+            position + rows - 1
+        )
+
+        for i in range(rows):
+            default_row = [''] * len(self._headers)
+            self._data.insert(position, zdata)
+        
+        self.endInsertRows()
+
+    def removeRows(self, position, rows, parent):
+        self.beginRemoveRows(
+            parent or QtCore.QModelIndex(),
+            position,
+            position + rows - 1
+        )
+        for i in range(rows):
+            del(self._data[position])
+        self.endRemoveRows()
+
+    # method for saving
+    def save_data(self):
+        # commented out code below to fix issue with additional lines being added after saving csv file from the window.
+        # with open(self.filename, 'w', encoding='utf-8') as fh:
+        with open(self.filename, 'w', newline='', encoding='utf-8') as fh:
+            writer = csv.writer(fh)
+            writer.writerow(self._headers)
+            writer.writerows(self._data)
+
+
+
+
 if __name__ == "__main__":
     import sys
     # instiantiate an app object from the QApplication class 
