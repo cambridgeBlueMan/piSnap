@@ -163,15 +163,10 @@ class ZoomTab(QtWidgets.QWidget):
     def doRunZoom(self, bool):
         #set the resolution on the camer itself
         #self.camera.resolution = (self.camvals["vidres"][0] , self.camvals["vidres"][1] )
-        """ # LEA 
-        The actual speed of the zoom should be a function of not just the speed control
-        but also the distance to travel
-        To be clear the loopSize is exactly that and not a speed control per se. 
-        It dictates how many times the loop must run
-        so, if a zoom is across a large distance then it makes sense that a larger loopsize
-        should be involved in getting it there
+        # LEA The actual speed of the zoom should be a function of not just the speed control
+        # but also the distance to travel
+        
 
-        """
         """ if bool == True
         set button text to "abort zoom"
         start the zoom
@@ -196,79 +191,19 @@ class ZoomTab(QtWidgets.QWidget):
             _thread.start_new_thread(self.runZoomLoop, (loopSize, deltaX, deltaY, deltaZ, xInc, yInc, zInc))
             self.ui.runZoom.setText("abort zoom")
             self.abortZoom = False
+            #self.ui.runZoom.toggle()
         else:
             self.ui.runZoom.setText("run zoom")
             self.abortZoom = True
-        """ 
-        for j in range(loopSize):
-            #print(j)
-            sleep(1/self.framerate)
-            
-            # if start and end zoom dimension are equal then do nothing
-            if self.startZoom[0] == self.endZoom[0]:
-                pass
-            # if start is smaller than end then we start low and are increasing
-            elif self.startZoom[0] < self.endZoom[0]:
-                deltaX  = deltaX + xInc
-                if self.startZoom[0] + deltaX >= self.endZoom[0]:
-                    break
-                self.zoom[0] = self.startZoom[0] + deltaX
-            # otherwise we start high and are decreasing
-            else:
-                deltaX = deltaX + xInc
-                if self.startZoom[0] - deltaX <= self.endZoom[0]:
-                    break
-                self.zoom[0] = self.startZoom[0] - deltaX
-
-            # if start = end then do nothing
-            if self.startZoom[1] == self.endZoom[1]:
-                pass
-            # if start is smaller than end then we start low and are increasing
-            elif self.startZoom[1] < self.endZoom[1]:
-                deltaY = deltaY + yInc
-                if self.startZoom[1] + deltaY >= self.endZoom[1]:
-                    break
-                self.zoom[1] = self.startZoom[1] + deltaY
-            # otherwise we start high and are decreasing
-            else:
-                deltaY = deltaY + yInc
-                if self.startZoom[1] - deltaY <= self.endZoom[1]:
-                    break
-                self.zoom[1] = self.startZoom[1] - deltaY
-
-            # if start and end are equal then do nothing
-            if self.startZoom[2] == self.endZoom[2]:
-                pass
-            # if start is smaller than end then we start low and are increasing
-            elif self.startZoom[2] < self.endZoom[2]:
-                deltaZ = deltaZ + zInc
-                if self.startZoom[2] + deltaX >= self.endZoom[2]:
-                    break
-                self.zoom[2] = self.startZoom[2] + deltaZ
-                self.zoom[3] = self.startZoom[3] + deltaZ
-            # otherwise we start high and are decreasing
-            else:
-                deltaZ = deltaZ + zInc
-                if self.startZoom[2] - deltaZ <= self.endZoom[2]:
-                    break
-                self.zoom[2] = self.startZoom[2] - deltaZ
-                self.zoom[3] = self.startZoom[3] - deltaZ
-
-
-            self.camera.zoom = self.zoom[:]
-            #print("iter")
-        print("loop now ended")
-        #loop now ended 
-        if self.camera.recording:
-            self.window().mWidget.doStopVid()
-            print("now in if")
-         """
+        
 
     def runZoomLoop(self, loopSize, deltaX, deltaY, deltaZ, xInc, yInc, zInc):
         #j = 0
         print ("in thread")
         for j in range(loopSize):
             if self.abortZoom == True:
+                self.abortZoom = False
+                self.ui.runZoom.setChecked(True)
                 break
             print(j)
             sleep(1/self.framerate)
@@ -328,7 +263,8 @@ class ZoomTab(QtWidgets.QWidget):
             #print("iter")
         print("loop now ended")
         self.ui.runZoom.setText("run zoom")
-        self.abortZoom = False
+        self.ui.runZoom.toggle() #abortZoom = False
+
         #loop now ended 
         if self.camera.recording:
             self.window().mWidget.doStopVid()
@@ -360,12 +296,147 @@ class ZoomTab(QtWidgets.QWidget):
     def playSelectedRow(self):
         print("play selected row")
         #self.ui.zoomTableView.
+        # TODO deal with no rows selcted case
         selected = self.ui.zoomTableView.selectedIndexes()
+        # don't quite understand how the following line works
+        # but it does!!!!
+        num_rows = len(set(index.row() for index in selected))
+        if num_rows == 0:
+            psFunctions.printT(self.window(),"No rows are currently selected!!")
+        elif num_rows == 1:
+            psFunctions.printT (self.window(),"just one row")
+            print("This is start row: ",selected[0].row())
+            print("and this is the row: ", self.ui.zoomTableView.rowAt(selected[0].row()))
+            #pass
+        else:
+            psFunctions.printT(self.window(),"more than 1 row")
+            print("This is start row: ",selected[0].row())
+            # this is what we have to pass
+            #runZoomLoop(self, loopSize, deltaX, deltaY, deltaZ, xInc, yInc, zInc):
+
+            startRow = selected[0].row()
+            deltaX = 0
+            deltaY = 0
+            deltaZ = 0
+            # increment for each step
+            print("startRow", self.model._data[startRow])
+            print("nextRow", self.model._data[startRow+1])
+            loopSize = self.model._data[startRow][3] 
+            pause = self.model._data[startRow][4]
+            xInc = abs(self.model._data[startRow][0] - self.model._data[(startRow + 1)][0])/loopSize
+            yInc = abs(self.model._data[startRow][1] - self.model._data[(startRow + 1)][1])/loopSize
+            zInc = abs(self.model._data[startRow][2] - self.model._data[(startRow + 1)][2])/loopSize
+            #define startZoom and endZoom here!!!
+            startZoom = [
+                self.model._data[startRow][0], 
+                self.model._data[startRow][1], 
+                self.model._data[startRow][2], 
+                self.model._data[startRow][2]
+            ]
+            endZoom = [
+                self.model._data[startRow+1][0], 
+                self.model._data[startRow+1][1], 
+                self.model._data[startRow+1][2], 
+                self.model._data[startRow+1][2]
+            ]
+
+
+            print("incs: ",xInc,yInc,zInc)
+            #if bool == True:
+            #_thread.start_new_thread(
+            self.runMultiZoomLoop(xInc, yInc, zInc, startZoom, endZoom, loopSize, pause) #)
+            #    self.ui.runZoom.setText("abort zoom")
+            #    self.abortZoom = False
+            #    #self.ui.runZoom.toggle()
+            #else:
+            #    self.ui.runZoom.setText("run zoom")
+            #    self.abortZoom = True
+            #pass
+
+        print("this is data: ", self.model._data)
+        
         # following does the trick
-        print(selected[0].data())
-        #print(selected.index(0, 0, selected[0]))
+        #print(selected[0].data(), selected[1].data(), selected[2].data())
 
 
+    def runMultiZoomLoop(self,xInc, yInc, zInc, startZoom, endZoom, loopSize, pause):
+        print ("in thread")
+        deltaX = 0
+        deltaY = 0
+        deltaZ = 0
+        startZoom = startZoom[:]
+        endZoom = endZoom[:]
+
+        for j in range(loopSize):
+            """ if self.abortZoom == True:
+                self.abortZoom = False
+                self.ui.runZoom.setChecked(True)
+                break """
+            print(j)
+            sleep(1/self.framerate)
+            
+            # if start and end zoom dimension are equal then do nothing
+            if startZoom[0] == endZoom[0]:
+                pass
+            # if start is smaller than end then we start low and are increasing
+            elif startZoom[0] < endZoom[0]:
+                deltaX  = deltaX + xInc
+                if startZoom[0] + deltaX >= endZoom[0]:
+                    break
+                self.zoom[0] = startZoom[0] + deltaX
+            # otherwise we start high and are decreasing
+            else:
+                deltaX = deltaX + xInc
+                if startZoom[0] - deltaX <= endZoom[0]:
+                    break
+                self.zoom[0] = startZoom[0] - deltaX
+
+            # if start = end then do nothing
+            if startZoom[1] == endZoom[1]:
+                pass
+            # if start is smaller than end then we start low and are increasing
+            elif startZoom[1] < endZoom[1]:
+                deltaY = deltaY + yInc
+                if startZoom[1] + deltaY >= endZoom[1]:
+                    break
+                self.zoom[1] = startZoom[1] + deltaY
+            # otherwise we start high and are decreasing
+            else:
+                deltaY = deltaY + yInc
+                if startZoom[1] - deltaY <= endZoom[1]:
+                    break
+                self.zoom[1] = startZoom[1] - deltaY
+
+            # if start and end are equal then do nothing
+            if startZoom[2] == endZoom[2]:
+                pass
+            # if start is smaller than end then we start low and are increasing
+            elif startZoom[2] < endZoom[2]:
+                deltaZ = deltaZ + zInc
+                if startZoom[2] + deltaX >= endZoom[2]:
+                    break
+                self.zoom[2] = startZoom[2] + deltaZ
+                self.zoom[3] = startZoom[3] + deltaZ
+            # otherwise we start high and are decreasing
+            else:
+                deltaZ = deltaZ + zInc
+                if startZoom[2] - deltaZ <= endZoom[2]:
+                    break
+                self.zoom[2] = startZoom[2] - deltaZ
+                self.zoom[3] = startZoom[3] - deltaZ
+
+
+            self.camera.zoom = self.zoom[:]
+            #print("iter")
+        print("loop now ended")
+        self.ui.runZoom.setText("run zoom")
+        self.ui.runZoom.toggle() #abortZoom = False
+
+        #loop now ended 
+        if self.camera.recording:
+            self.window().mWidget.doStopVid()
+            print("now in if")
+        
 
     
     def doQuit(self):
@@ -378,9 +449,6 @@ class ZoomTab(QtWidgets.QWidget):
         else:
             self.camera.stop_preview()
         pass
-
-    def twattock(self):
-        print("hello everybody!!!")
 
     def resetZoomStuff(self):
         print("in reset zoom stuff")
@@ -407,15 +475,15 @@ class zoomTableModel(QtCore.QAbstractTableModel):
 
     def __init__(self):
         super().__init__()
-        self._headers = ["startX", "startY", "startWidth", "loopSize", "pause"]
-        self._data = [
-            [0,0,0.1,200,1],
+        self._headers = ["X", "Y", "Width", "speed", "pause"]
+        self._data = []
+        """  [0,0,0.1,200,1],
             [0,0,1,300,3],
             [0,0,0.12345,200,1],
             [0,0,1,600,5],
             [0,0,1,200,1]
         ]
-
+        """
     # Minimum necessary methods:
     def rowCount(self, parent):
         return len(self._data)
