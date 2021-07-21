@@ -189,7 +189,7 @@ class ZoomTab(QtWidgets.QWidget):
         zInc = abs(self.startZoom[2]-self.endZoom[2])/loopSize
         if bool == True:
             _thread.start_new_thread(self.runZoomLoop, (loopSize, deltaX, deltaY, deltaZ, xInc, yInc, zInc))
-            self.ui.runZoom.setText("abort zoom")
+            #self.ui.runZoom.setText("abort zoom")
             self.abortZoom = False
             #self.ui.runZoom.toggle()
         else:
@@ -199,7 +199,7 @@ class ZoomTab(QtWidgets.QWidget):
 
     def runZoomLoop(self, loopSize, deltaX, deltaY, deltaZ, xInc, yInc, zInc):
         #j = 0
-        print ("in thread")
+        #print ("in thread")
         for j in range(loopSize):
             if self.abortZoom == True:
                 self.abortZoom = False
@@ -293,9 +293,11 @@ class ZoomTab(QtWidgets.QWidget):
 
     
 
-    def playSelectedRow(self):
+    def playSelectedRow(self, bool):
         #self.ui.zoomTableView.
         # TODO deal with no rows selcted case
+        # TODO weird thing with x value on first moevement. position of 
+        # navigator button on screen space appears to affect the first movement(s)
         selected = self.ui.zoomTableView.selectedIndexes()
         # gather rows in a set and then see how many you got
         num_rows = len(set(index.row() for index in selected))
@@ -311,53 +313,66 @@ class ZoomTab(QtWidgets.QWidget):
             psFunctions.printT(self.window(),"more than 1 row")
             #print("This is start row: ",selected[0].row())
             startRow = selected[0].row()
+            _thread.start_new_thread(self.runZoomLoops, (startRow, num_rows))
 
-            for ix in range(startRow, (startRow + num_rows)):
-                # increment for each step
-                print("ix", self.model._data[ix])
-                print("nextRow", self.model._data[ix+1])
-                loopSize = self.model._data[ix][3] 
-                pause = self.model._data[ix][4]
-                xInc = abs(self.model._data[ix][0] - self.model._data[(ix + 1)][0])/loopSize
-                yInc = abs(self.model._data[ix][1] - self.model._data[(ix + 1)][1])/loopSize
-                zInc = abs(self.model._data[ix][2] - self.model._data[(ix + 1)][2])/loopSize
-                #define startZoom and endZoom here!!!
-                startZoom = [
-                    self.model._data[ix][0], 
-                    self.model._data[ix][1], 
-                    self.model._data[ix][2], 
-                    self.model._data[ix][2]
-                ]
-                endZoom = [
-                    self.model._data[ix+1][0], 
-                    self.model._data[ix+1][1], 
-                    self.model._data[ix+1][2], 
-                    self.model._data[ix+1][2]
-                ]
+    def runZoomLoops(self, startRow, num_rows):        
 
+        for ix in range(startRow, (startRow + num_rows)):
+            # increment for each step
+            print("ix", self.model._data[ix])
+            print("nextRow", self.model._data[ix+1])
+            loopSize = self.model._data[ix][3] 
+            pause = self.model._data[ix][4]
+            xInc = abs(self.model._data[ix][0] - self.model._data[(ix + 1)][0])/loopSize
+            yInc = abs(self.model._data[ix][1] - self.model._data[(ix + 1)][1])/loopSize
+            zInc = abs(self.model._data[ix][2] - self.model._data[(ix + 1)][2])/loopSize
+            #define startZoom and endZoom here!!!
+            startZoom = [
+                self.model._data[ix][0], 
+                self.model._data[ix][1], 
+                self.model._data[ix][2], 
+                self.model._data[ix][2]
+            ]
+            startZoom = startZoom[:]
+            endZoom = [
+                self.model._data[ix+1][0], 
+                self.model._data[ix+1][1], 
+                self.model._data[ix+1][2], 
+                self.model._data[ix+1][2]
+            ]
+            endZoom = endZoom[:]
 
-                print("incs: ",xInc,yInc,zInc)
-                #if bool == True:
-                #_thread.start_new_thread(
-                self.runMultiZoomLoop (xInc, yInc, zInc, startZoom, endZoom, loopSize, pause) # )
-                #    self.ui.runZoom.setText("abort zoom")
-                #    self.abortZoom = False
-                #    #self.ui.runZoom.toggle()
-                #else:
-                #    self.ui.runZoom.setText("run zoom")
-                #    self.abortZoom = True
-                #pass
-                # there would be a wait(pause) here
-                # and then the loop would have ended
+            print("incs: ",xInc,yInc,zInc)
+            print("startZoom: ", startZoom)
+            print("endZoom: ", endZoom)
+
+            #if bool == True:
+            #_thread.start_new_thread(
+            self.runMultiZoomLoop (xInc, yInc, zInc, startZoom, endZoom, loopSize, pause) # )
+            #    self.ui.runZoom.setText("abort zoom")
+            #    self.abortZoom = False
+            #    #self.ui.runZoom.toggle()
+            #else:
+            #    self.ui.runZoom.setText("run zoom")
+            #    self.abortZoom = True
+            #pass
+            # there would be a wait(pause) here
+            # and then the loop would have ended
 
         print("this is data: ", self.model._data)
+         #loop now ended 
+        if self.camera.recording:
+            self.window().mWidget.doStopVid()
+            print("now in if")
+        
+
         
         # following does the trick
         #print(selected[0].data(), selected[1].data(), selected[2].data())
 
 
     def runMultiZoomLoop(self,xInc, yInc, zInc, startZoom, endZoom, loopSize, pause):
-        print ("in thread")
+        #print ("in thread")
         deltaX = 0
         deltaY = 0
         deltaZ = 0
@@ -369,7 +384,7 @@ class ZoomTab(QtWidgets.QWidget):
                 self.abortZoom = False
                 self.ui.runZoom.setChecked(True)
                 break """
-            print(j)
+            #print(j)
             sleep(1/self.framerate)
             
             # if start and end zoom dimension are equal then do nothing
@@ -426,16 +441,16 @@ class ZoomTab(QtWidgets.QWidget):
             self.camera.zoom = self.zoom[:]
             #print("iter")
         sleep(pause)
-        print("loop now ended")
-        self.ui.runZoom.setText("run zoom")
-        self.ui.runZoom.toggle() #abortZoom = False
+        #print("loop now ended")
+        #self.ui.runZoom.setText("run zoom")
+        #self.ui.runZoom.toggle() #abortZoom = False
 
-        #loop now ended 
+        """  #loop now ended 
         if self.camera.recording:
             self.window().mWidget.doStopVid()
             print("now in if")
         
-
+        """
     
     def doQuit(self):
         sys.exit()

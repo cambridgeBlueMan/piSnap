@@ -279,7 +279,7 @@ class Shooter(qtw.QWidget):
                 + str(self.camvals["loopSize"])
                 + "\n")
                 fh.close()
-                self.window().zoomTab.doRunZoom(True)
+                self.window().zoomTab.playSelectedRow(True)
             psFunctions.printT(self.window(),"Camera currently recording!")
                 #self.window().terminalWidget.setPlainText("Camera currently recording!")
 
