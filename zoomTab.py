@@ -151,7 +151,7 @@ class ZoomTab(QtWidgets.QWidget):
         # add stuff for model version
         zdata = [self.zoom[0], self.zoom[1], self.zoom[2], 600, 1]
         # insert rows (position, numrows, parent, data)
-        self.model.insertRows(0,1, self.model.parent(), zdata)
+        self.model.insertRows(self.model.rowCount(None),1, self.model.parent(), zdata)
 
 
 
@@ -294,64 +294,61 @@ class ZoomTab(QtWidgets.QWidget):
     
 
     def playSelectedRow(self):
-        print("play selected row")
         #self.ui.zoomTableView.
         # TODO deal with no rows selcted case
         selected = self.ui.zoomTableView.selectedIndexes()
-        # don't quite understand how the following line works
-        # but it does!!!!
+        # gather rows in a set and then see how many you got
         num_rows = len(set(index.row() for index in selected))
         if num_rows == 0:
             psFunctions.printT(self.window(),"No rows are currently selected!!")
         elif num_rows == 1:
-            psFunctions.printT (self.window(),"just one row")
+            psFunctions.printT (self.window(),"you need more than just one row to run a zoom")
             print("This is start row: ",selected[0].row())
             print("and this is the row: ", self.ui.zoomTableView.rowAt(selected[0].row()))
             #pass
         else:
+            # run a zoom
             psFunctions.printT(self.window(),"more than 1 row")
-            print("This is start row: ",selected[0].row())
-            # this is what we have to pass
-            #runZoomLoop(self, loopSize, deltaX, deltaY, deltaZ, xInc, yInc, zInc):
-
+            #print("This is start row: ",selected[0].row())
             startRow = selected[0].row()
-            deltaX = 0
-            deltaY = 0
-            deltaZ = 0
-            # increment for each step
-            print("startRow", self.model._data[startRow])
-            print("nextRow", self.model._data[startRow+1])
-            loopSize = self.model._data[startRow][3] 
-            pause = self.model._data[startRow][4]
-            xInc = abs(self.model._data[startRow][0] - self.model._data[(startRow + 1)][0])/loopSize
-            yInc = abs(self.model._data[startRow][1] - self.model._data[(startRow + 1)][1])/loopSize
-            zInc = abs(self.model._data[startRow][2] - self.model._data[(startRow + 1)][2])/loopSize
-            #define startZoom and endZoom here!!!
-            startZoom = [
-                self.model._data[startRow][0], 
-                self.model._data[startRow][1], 
-                self.model._data[startRow][2], 
-                self.model._data[startRow][2]
-            ]
-            endZoom = [
-                self.model._data[startRow+1][0], 
-                self.model._data[startRow+1][1], 
-                self.model._data[startRow+1][2], 
-                self.model._data[startRow+1][2]
-            ]
+
+            for ix in range(startRow, (startRow + num_rows)):
+                # increment for each step
+                print("ix", self.model._data[ix])
+                print("nextRow", self.model._data[ix+1])
+                loopSize = self.model._data[ix][3] 
+                pause = self.model._data[ix][4]
+                xInc = abs(self.model._data[ix][0] - self.model._data[(ix + 1)][0])/loopSize
+                yInc = abs(self.model._data[ix][1] - self.model._data[(ix + 1)][1])/loopSize
+                zInc = abs(self.model._data[ix][2] - self.model._data[(ix + 1)][2])/loopSize
+                #define startZoom and endZoom here!!!
+                startZoom = [
+                    self.model._data[ix][0], 
+                    self.model._data[ix][1], 
+                    self.model._data[ix][2], 
+                    self.model._data[ix][2]
+                ]
+                endZoom = [
+                    self.model._data[ix+1][0], 
+                    self.model._data[ix+1][1], 
+                    self.model._data[ix+1][2], 
+                    self.model._data[ix+1][2]
+                ]
 
 
-            print("incs: ",xInc,yInc,zInc)
-            #if bool == True:
-            #_thread.start_new_thread(
-            self.runMultiZoomLoop(xInc, yInc, zInc, startZoom, endZoom, loopSize, pause) #)
-            #    self.ui.runZoom.setText("abort zoom")
-            #    self.abortZoom = False
-            #    #self.ui.runZoom.toggle()
-            #else:
-            #    self.ui.runZoom.setText("run zoom")
-            #    self.abortZoom = True
-            #pass
+                print("incs: ",xInc,yInc,zInc)
+                #if bool == True:
+                #_thread.start_new_thread(
+                self.runMultiZoomLoop (xInc, yInc, zInc, startZoom, endZoom, loopSize, pause) # )
+                #    self.ui.runZoom.setText("abort zoom")
+                #    self.abortZoom = False
+                #    #self.ui.runZoom.toggle()
+                #else:
+                #    self.ui.runZoom.setText("run zoom")
+                #    self.abortZoom = True
+                #pass
+                # there would be a wait(pause) here
+                # and then the loop would have ended
 
         print("this is data: ", self.model._data)
         
@@ -428,6 +425,7 @@ class ZoomTab(QtWidgets.QWidget):
 
             self.camera.zoom = self.zoom[:]
             #print("iter")
+        sleep(pause)
         print("loop now ended")
         self.ui.runZoom.setText("run zoom")
         self.ui.runZoom.toggle() #abortZoom = False
@@ -531,7 +529,8 @@ class zoomTableModel(QtCore.QAbstractTableModel):
     # position is point for insertion
     # rows is number of rows to insert - 1 in our case
     # and thee parent mode index - of no interest to us
-
+    # The rowCount() and columnCount() functions 
+    # #return the dimensions of the table
     def insertRows(self, position, rows, parent, zdata):
         # following line needed, also see end
         # parent or QtCore line stays as is

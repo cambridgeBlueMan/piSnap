@@ -51,19 +51,6 @@
     <string>Set start</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="showStart">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>430</y>
-     <width>61</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Show start</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
@@ -80,8 +67,8 @@
   <widget class="QPushButton" name="end">
    <property name="geometry">
     <rect>
-     <x>90</x>
-     <y>460</y>
+     <x>20</x>
+     <y>430</y>
      <width>61</width>
      <height>21</height>
     </rect>
@@ -119,35 +106,6 @@
     </property>
    </widget>
   </widget>
-  <widget class="QPushButton" name="runZoom">
-   <property name="geometry">
-    <rect>
-     <x>430</x>
-     <y>440</y>
-     <width>71</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>run zoom</string>
-   </property>
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="showEnd">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>460</y>
-     <width>61</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Show end</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
@@ -164,7 +122,7 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>190</x>
+     <x>180</x>
      <y>430</y>
      <width>81</width>
      <height>22</height>
@@ -177,9 +135,9 @@
   <widget class="QSlider" name="getSpeed">
    <property name="geometry">
     <rect>
-     <x>190</x>
-     <y>450</y>
-     <width>221</width>
+     <x>260</x>
+     <y>430</y>
+     <width>131</width>
      <height>26</height>
     </rect>
    </property>
@@ -196,34 +154,21 @@
     <enum>Qt::Horizontal</enum>
    </property>
   </widget>
-  <widget class="QPushButton" name="printDiag">
-   <property name="geometry">
-    <rect>
-     <x>430</x>
-     <y>470</y>
-     <width>71</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>PrintDiag</string>
-   </property>
-  </widget>
   <widget class="QTableView" name="zoomTableView">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>520</y>
+     <y>470</y>
      <width>501</width>
-     <height>121</height>
+     <height>181</height>
     </rect>
    </property>
   </widget>
   <widget class="QPushButton" name="delRow">
    <property name="geometry">
     <rect>
-     <x>200</x>
-     <y>480</y>
+     <x>460</x>
+     <y>440</y>
      <width>51</width>
      <height>21</height>
     </rect>
@@ -235,8 +180,8 @@
   <widget class="QPushButton" name="playRow">
    <property name="geometry">
     <rect>
-     <x>280</x>
-     <y>480</y>
+     <x>400</x>
+     <y>430</y>
      <width>51</width>
      <height>21</height>
     </rect>
@@ -280,54 +225,6 @@
     <hint type="destinationlabel">
      <x>348</x>
      <y>490</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>showStart</sender>
-   <signal>clicked()</signal>
-   <receiver>Form</receiver>
-   <slot>doShowStart()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>70</x>
-     <y>449</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>21</x>
-     <y>451</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>showEnd</sender>
-   <signal>clicked()</signal>
-   <receiver>Form</receiver>
-   <slot>doShowEnd()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>70</x>
-     <y>480</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>306</x>
-     <y>527</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>runZoom</sender>
-   <signal>clicked()</signal>
-   <receiver>Form</receiver>
-   <slot>doRunZoom()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>430</x>
-     <y>460</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>292</x>
-     <y>591</y>
     </hint>
    </hints>
   </connection>
@@ -408,22 +305,6 @@
     <hint type="destinationlabel">
      <x>463</x>
      <y>547</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>printDiag</sender>
-   <signal>clicked()</signal>
-   <receiver>Form</receiver>
-   <slot>doPrintDiag()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>465</x>
-     <y>476</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>526</x>
-     <y>536</y>
     </hint>
    </hints>
   </connection>
