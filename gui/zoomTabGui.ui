@@ -41,7 +41,7 @@
   <widget class="QPushButton" name="start">
    <property name="geometry">
     <rect>
-     <x>100</x>
+     <x>20</x>
      <y>430</y>
      <width>61</width>
      <height>20</height>
@@ -62,19 +62,6 @@
    </property>
    <property name="text">
     <string>zoom</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="end">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>430</y>
-     <width>61</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Set end</string>
    </property>
   </widget>
   <widget class="QFrame" name="frame">
@@ -122,7 +109,7 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>180</x>
+     <x>90</x>
      <y>430</y>
      <width>81</width>
      <height>22</height>
@@ -135,7 +122,7 @@
   <widget class="QSlider" name="getSpeed">
    <property name="geometry">
     <rect>
-     <x>260</x>
+     <x>170</x>
      <y>430</y>
      <width>131</width>
      <height>26</height>
@@ -167,8 +154,8 @@
   <widget class="QPushButton" name="delRow">
    <property name="geometry">
     <rect>
-     <x>460</x>
-     <y>440</y>
+     <x>430</x>
+     <y>430</y>
      <width>51</width>
      <height>21</height>
     </rect>
@@ -177,17 +164,20 @@
     <string>del row</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="playRow">
+  <widget class="QPushButton" name="playRows">
    <property name="geometry">
     <rect>
-     <x>400</x>
+     <x>320</x>
      <y>430</y>
-     <width>51</width>
+     <width>81</width>
      <height>21</height>
     </rect>
    </property>
    <property name="text">
-    <string>play row</string>
+    <string>play rows</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
    </property>
   </widget>
  </widget>
@@ -219,7 +209,7 @@
    <slot>doSetStart()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>160</x>
+     <x>80</x>
      <y>449</y>
     </hint>
     <hint type="destinationlabel">
@@ -241,22 +231,6 @@
     <hint type="destinationlabel">
      <x>305</x>
      <y>438</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>end</sender>
-   <signal>clicked()</signal>
-   <receiver>Form</receiver>
-   <slot>doSetEnd()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>150</x>
-     <y>463</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>164</x>
-     <y>434</y>
     </hint>
    </hints>
   </connection>
@@ -299,8 +273,8 @@
    <slot>setSpeed(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>239</x>
-     <y>457</y>
+     <x>170</x>
+     <y>455</y>
     </hint>
     <hint type="destinationlabel">
      <x>463</x>
@@ -315,8 +289,8 @@
    <slot>deleteSelectedRow()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>227</x>
-     <y>496</y>
+     <x>430</x>
+     <y>450</y>
     </hint>
     <hint type="destinationlabel">
      <x>11</x>
@@ -325,14 +299,14 @@
    </hints>
   </connection>
   <connection>
-   <sender>playRow</sender>
-   <signal>clicked()</signal>
+   <sender>playRows</sender>
+   <signal>clicked(bool)</signal>
    <receiver>Form</receiver>
-   <slot>playSelectedRow()</slot>
+   <slot>playSelectedRows(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>290</x>
-     <y>494</y>
+     <x>320</x>
+     <y>450</y>
     </hint>
     <hint type="destinationlabel">
      <x>44</x>
@@ -355,6 +329,6 @@
   <slot>setSpeed(int)</slot>
   <slot>doPrintDiag()</slot>
   <slot>deleteSelectedRow()</slot>
-  <slot>playSelectedRow()</slot>
+  <slot>playSelectedRows(bool)</slot>
  </slots>
 </ui>
