@@ -62,7 +62,6 @@ class Ui_Form(object):
         self.start.clicked.connect(Form.doSetStart)
         self.getZoom.valueChanged['int'].connect(Form.setZoom)
         self.adjustZoom.posChanged['int','int'].connect(Form.setZoomWithButton)
-        self.adjustZoom.released.connect(Form.movePosition)
         self.getSpeed.sliderMoved['int'].connect(Form.setSpeed)
         self.delRow.clicked.connect(Form.deleteSelectedRow)
         self.playRows.clicked['bool'].connect(Form.playSelectedRows)
@@ -71,7 +70,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.start.setText(_translate("Form", "Set start"))
+        self.start.setText(_translate("Form", "set point"))
         self.label_3.setText(_translate("Form", "zoom"))
         self.adjustZoom.setText(_translate("Form", "b"))
         self.label.setText(_translate("Form", "Set Zoom"))

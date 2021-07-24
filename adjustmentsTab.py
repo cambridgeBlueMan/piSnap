@@ -135,6 +135,7 @@ class Adjustments(qtw.QWidget):
             #print("Unknown control!")
 
     def doColorEffect(self,value):
+        # TODO this isn't working
         #get the name of the sending control
         control = self.sender().objectName()
         #if we find the control is to set the u value

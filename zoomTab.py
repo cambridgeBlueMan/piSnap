@@ -45,6 +45,7 @@ class ZoomTab(QtWidgets.QWidget):
         # 
 
         self.ui.getZoom.setInvertedAppearance(True)
+        # TODO dont think the next two lines are used?
         self.pixelWidth  = 1/self.sensorWidth
         self.pixelHeight = 1/self.sensorHeight
 
@@ -55,30 +56,37 @@ class ZoomTab(QtWidgets.QWidget):
         self.initModelStuff()
 
     def initModelStuff(self):
+        # zoomTableModel is subclassed from QAbstractTableModel, and is at end of this file
         self.model = zoomTableModel()
+        # associate the zoomTableView widget with the model
         self.ui.zoomTableView.setModel(self.model)
 
     def initControls(self):
         # set max value for ui items
+
         self.zoom = [0,0, self.camvals["vidres"][0] /self.sensorWidth, self.camvals["vidres"][0] /self.sensorWidth]
         self.startZoom = self.zoom[:]
         self.endZoom = self.zoom[:]
+        #  minimum is set in designer at 1920 (HD) , max is set in designer at 3470 
         self.ui.getZoom.setMinimum(self.camvals["vidres"][0] )
+        # QUERY should the following be set to max rather than min?
         self.ui.getZoom.setValue(self.camvals["vidres"][0] )
         #get the name pf the speed object and set its vaue to the camvals value as per above
         self.ui.getSpeed.setValue(self.camvals["loopSize"])
+        # dragbutton size varies according to the current res
         self.ui.adjustZoom.setDragButtonSize(self.camvals["vidres"][0] /8, self.camvals["vidres"][1] /8)
+        # QUERY if previous QUERY is set to max then drag button size should be the following
+        #self.ui.adjustZoom.setDragButtonSize(self.sensorWidth/8, self.sensorHeight/8)
 
         self.ui.adjustZoom.move(0,0)
-
+        # QUERY do we want to set the actual camera zoom here, same with line after
+        # set camera zoom!!!
         self.camera.zoom = self.zoom
         # now we can set the resolution on the camer itself
         self.camera.resolution = (self.camvals["vidres"][0] , self.camvals["vidres"][1] )
-         
-    def doSnap(self):
-        self.camera.capture("apic.jpeg")
 
-    def range(self, value):
+    def mapXToY(self, value):
+        # TODO describe this method
         #value = 2028
         toRange = self.camvals["vidres"][1] 
         fromRange = self.camvals["vidres"][0] 
@@ -92,52 +100,30 @@ class ZoomTab(QtWidgets.QWidget):
         operates is 1/8 of full size
 
         """
-        #print(x,y)
-        #if x*8  > self.ui.getXOrigin.value():
-        #   x = self.ui.getXOrigin.value()/8
-        self.setXOrigin(x*8)
-        y = self.range(y)
-        self.setYOrigin(y*8)
-        #self.ui.getYOrigin.setMaximum((1-val/self.sensorWidth)*self.sensorWidth)
-        #self.ui.getXOrigin.setMaximum((1-val/self.sensorWidth)*self.sensorWidth)
-
-    def movePosition(self):
-        pass
-        #print ("position moved") 
-
-    def AnotherMethod(self):
-        pass
-        #print(self)
+        self.setXZoom(x*8)
+        y = self.mapXToY(y)
+        self.setYZoom(y*8)
         
-    def setXOrigin(self, val):
+    def setXZoom(self, val):
         self.zoom[0] = val/self.sensorWidth
-        self.camera.zoom = self.zoom 
+        # set camera zoom!!!
+        self.camera.zoom = self.zoom[:]
 
-    def setYOrigin(self, val):
+    def setYZoom(self, val):
         self.zoom[1] = val/self.sensorWidth
-        self.camera.zoom = self.zoom 
-
-    def doPrintDiag(self, bool):
-        print("startZoom: ", self.startZoom)
-        print("endZoom: ", self.endZoom)
-        psFunctions.printT(self.window(), "startZoom: " + str(self.startZoom ))
-        psFunctions.printT(self.window(), "endZoom: " + str(self.endZoom ))
+        # set camera zoom!!!
+        self.camera.zoom = self.zoom[:]
 
     def setZoom(self, val):
-        #print(val)
         self.zoom[2] = val/self.sensorWidth
         self.zoom[3] = val/self.sensorWidth
-        #self.ui.getYOrigin.setMaximum((1-val/self.sensorWidth)*self.sensorWidth)
-        #self.ui.getXOrigin.setMaximum((1-val/self.sensorWidth)*self.sensorWidth)
-        #print("max: ", self.ui.getYOrigin.setMaximum((1-val/self.sensorWidth)*self.sensorWidth))
-        # 
-        height = self.range(val)
-        #print("height: ", height)
+        height = self.mapXToY(val)
         self.ui.adjustZoom.setDragButtonSize(val/8, height/8)
 
        
-        self.camera.zoom = self.zoom 
+        self.camera.zoom = self.zoom[:]
         # we need also to reset the ranges of the getYOrigin and getXOrigin sliders
+
     def setSpeed(self,val):
         self.camvals["loopSize"] = val 
         #pass
@@ -153,13 +139,21 @@ class ZoomTab(QtWidgets.QWidget):
         # insert rows (position, numrows, parent, data)
         self.model.insertRows(self.model.rowCount(None),1, self.model.parent(), zdata)
 
-  
-
     def playSelectedRows(self, bool):
         #self.ui.zoomTableView.
         # TODO deal with no rows selcted case
         # TODO weird thing with x value on first moevement. position of 
         # navigator button on screen space appears to affect the first movement(s)
+        modifiers = QtWidgets.QApplication.keyboardModifiers()
+        if modifiers == QtCore.Qt.ShiftModifier:
+            print('Shift+Click')
+        elif modifiers == QtCore.Qt.ControlModifier:
+            print('Control+Click')
+        elif modifiers == (QtCore.Qt.ControlModifier |
+                           QtCore.Qt.ShiftModifier):
+            print('Control+Shift+Click')
+        else:
+            print('Click')
         psFunctions.printT(self.window(), "bool is:" + str(bool))
         #if bool == True:
         selected = self.ui.zoomTableView.selectedIndexes()
@@ -177,7 +171,7 @@ class ZoomTab(QtWidgets.QWidget):
             psFunctions.printT(self.window(),"more than 1 row")
             #print("This is start row: ",selected[0].row())
             startRow = selected[0].row()
-            self.ui.playRows.setText("Cancel!")
+            #self.ui.playRows.setText("Cancel!")
             _thread.start_new_thread(self.runZoomLoops, (startRow, num_rows))
         #else:
         #    self.abortZoom = True
@@ -416,7 +410,7 @@ class zoomTableModel(QtCore.QAbstractTableModel):
         if role in (QtCore.Qt.DisplayRole, QtCore.Qt.EditRole):
             return self._data[index.row()][index.column()]
 
-    # Additional features methods:
+    # Additional features methods: 
 
     def headerData(self, section, orientation, role):
 

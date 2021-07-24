@@ -4,9 +4,9 @@
     "annotate_frame_num": false,
     "annotate_text_size": 32,
     "audioActive": "false",
-    "audioBitRate": "16",
+    "audioBitRate": "24",
     "audioFileFormat": "wav",
-    "audioSampleRate": "44100",
+    "audioSampleRate": "48000",
     "awb_gains": [
         0,
         0
@@ -16,8 +16,8 @@
     "clock_mode": "reset",
     "closed": false,
     "color_effects": [
-        128,
-        128
+        149,
+        133
     ],
     "contrast": 3,
     "crop": [
@@ -84,7 +84,7 @@
     "vidFileRoot": "multizoom_",
     "stillFormat": "jpeg",
     "videoFormat": "h264",
-    "fileCounter": 92,
+    "fileCounter": 93,
     "vidres": [
         1920,
         1080

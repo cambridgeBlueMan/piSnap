@@ -1,6 +1,7 @@
 # import necessary modules
 import sys
 import json
+import pickle
 from PyQt5 import QtWidgets as qtw 
 from PyQt5 import QtGui as qtg 
 from PyQt5 import QtCore as qtc 
@@ -35,26 +36,48 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         ##################################### APP FOCUS
         app.focusChanged.connect(self.on_focusChanged)
 
-    def on_focusChanged(self):
+    def on_focusChanged(self, then, now):
         """
         mewthod to turn on or off the preview depending on whether the app has focus 
         anded with whether preview is active 
         """
-        print(self.isActiveWindow())  
-        if self.isActiveWindow():
-            # check whether preview is currently displayed
-            # and if it is then show it
-            #else:
-            # if preview isn't displayed then you don't 
-            # need to do anything
-            if self.mWidget.ui.previewVisible.isChecked:
-                self.mWidget.showPreview(True)
-        else:
-            #if preview is currently active you need to hide it
-            # if it isnt yuou don't need to do anythinhg
-            if self.mWidget.ui.previewVisible.isChecked:
-                self.mWidget.showPreview(False)
+        #print(self.isActiveWindow())  
+        #print("state of previewVisible: ", self.mWidget.ui.previewVisible.isChecked())
+        #print("state of previewVisible: ", self.mWidget.ui.previewVisible.isChecked)
+        if then == None or now == None:
+            if self.isActiveWindow():
+                print ("piSnap is active window")
+                print("preview on?: ", self.mWidget.ui.previewVisible.isChecked())
+                print("then, now: ", then, now)
+                #if then == None: 
+                    # check whether preview is currently displayed
+                    # and if it is then show it
+                    #else:
+                    # if preview isn't displayed then you don't 
+                    # need to do anything
+                if self.mWidget.ui.previewVisible.isChecked():
+                    print("active window, preview visible, set preview visible state to true")
+                    self.mWidget.showPreview(True)
+                    """ self.previewVisibleState = True
+                    else:
+                    print("active window, set preview visible state to false")
+                    self.previewVisibleState = False """
+            else:
+                #if preview is currently active you need to hide it
+                # if it isnt yuou don't need to do anythinhg
+                
+                print("piSnap no longer active window")
+                print("preview on?: ", self.mWidget.ui.previewVisible.isChecked())
+                print("then, now: ", then, now)
+                if now == None:
+                    print("********************* None *********************************")
+                    if self.mWidget.ui.previewVisible.isChecked():
+                        self.mWidget.camera.stop_preview()   
 
+                """
+                if self.previewVisibleState == True:
+                    self.mWidget.showPreview(False)
+                """
     def moveEvent(self, e):
         # if the preview is currently visibe
         #print("is checked?", self.statusBarPreviewCheckBox.isChecked())
@@ -122,15 +145,29 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
 
     def makeMenu(self): #create menu
         #create actions for file menu
-        openAction = qtw.QAction('&Open', self)
+        openAction = qtw.QAction('Open', self)
         openAction.setShortcut('Ctrl+O')
         openAction.triggered.connect(lambda:qtw.QFileDialog.getOpenFileName(self))
+        
         saveAction = qtw.QAction('&Save', self)
         saveAction.setShortcut('Ctrl+S')
         saveAction.triggered.connect(self.doSave)
+        
         saveAsAction = qtw.QAction('Save As', self)
         saveAsAction.setShortcut('Ctrl+Shift+S')
         saveAsAction.triggered.connect(self.doSaveAs)
+
+        saveZoomAction = qtw.QAction('Save &zoom', self)
+        saveZoomAction.setShortcut('Ctrl+Z')
+        saveZoomAction.triggered.connect(self.doSaveZoom)
+
+        openZoomAction = qtw.QAction('&Open zoom', self)
+        openZoomAction.setShortcut('Ctrl+Shift+Z')
+        openZoomAction.triggered.connect(self.doOpenZoom)
+
+    
+
+        
         exitAction = qtw.QAction('&Exit', self)
         exitAction.setShortcut('Ctrl+Q')
         exitAction.triggered.connect(self.close)
@@ -148,6 +185,8 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         fileMenu.addAction(openAction)
         fileMenu.addAction(saveAction)
         fileMenu.addAction(saveAsAction)
+        fileMenu.addAction(openZoomAction)
+        fileMenu.addAction(saveZoomAction)
         fileMenu.addAction(exitAction)
 
         #create edit menu and add actions
@@ -188,6 +227,45 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.prefs.show()
         print(self.prefs)
 
+    def doOpenZoom(self):
+        filename = qtw.QFileDialog.getOpenFileName(
+            self,
+            "Open a zoom file...",
+            qtc.QDir.homePath(),
+            "Zoom Files (*.zoom)"
+        )
+        #print(filename)
+        # zdata = [self.startZoom[0], self.startZoom[1], self.startZoom[2], 600, 1.0]
+        # insert rows (position, numrows, parent, data)
+        # self.model.insertRows(self.model.rowCount(None),1, self.model.parent(), zdata)
+
+        with open(filename[0], "rb") as fp:   # Unpickling
+            zoomData = pickle.load(fp)
+        print("length of zoomData: ", len(zoomData))
+        #self.zoomTab.model.insertRows(self.zoomTab.model.rowCount(None),len(zoomData), self.zoomTab.model.parent(), zoomData)
+        for item in zoomData:
+            # insert rows (position, numrows, parent, data)
+            self.zoomTab.model.insertRows(self.zoomTab.model.rowCount(None),1, self.zoomTab.model.parent(), item)
+
+    def doSaveZoom(self):
+        filename, _ = qtw.QFileDialog.getSaveFileName(
+            self,
+            "Select the file to save to…",
+            qtc.QDir.homePath(),
+            'Text Files (*.txt) ;;Python Files (*.py) ;;All Files (*)'
+        )
+        if filename:
+            try:
+                with open(filename, "wb") as fp:   #Pickling
+                    pickle.dump(self.zoomTab.model._data, fp)
+            except Exception as e:
+                # Errata:  Book contains this line:
+                #qtw.QMessageBox.critical(f"Could not save file: {e}")
+                # It should read like this:
+                qtw.QMessageBox.critical(self, f"Could not load file: {e}")
+        #with open("test.zoom", "wb") as fp:   #Pickling
+        #    pickle.dump(self.zoomTab.model._data, fp)
+        
 
     def doSave(self):
         print('Save code here')

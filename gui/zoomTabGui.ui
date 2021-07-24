@@ -48,7 +48,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Set start</string>
+    <string>set point</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">
@@ -251,22 +251,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>adjustZoom</sender>
-   <signal>released()</signal>
-   <receiver>Form</receiver>
-   <slot>movePosition()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>196</x>
-     <y>259</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>472</x>
-     <y>510</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>getSpeed</sender>
    <signal>sliderMoved(int)</signal>
    <receiver>Form</receiver>
@@ -325,7 +309,6 @@
   <slot>doSetEnd()</slot>
   <slot>printDiag()</slot>
   <slot>setZoomWithButton(int,int)</slot>
-  <slot>movePosition()</slot>
   <slot>setSpeed(int)</slot>
   <slot>doPrintDiag()</slot>
   <slot>deleteSelectedRow()</slot>
