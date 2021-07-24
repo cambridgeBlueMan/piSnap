@@ -41,43 +41,15 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         mewthod to turn on or off the preview depending on whether the app has focus 
         anded with whether preview is active 
         """
-        #print(self.isActiveWindow())  
-        #print("state of previewVisible: ", self.mWidget.ui.previewVisible.isChecked())
-        #print("state of previewVisible: ", self.mWidget.ui.previewVisible.isChecked)
         if then == None or now == None:
             if self.isActiveWindow():
-                print ("piSnap is active window")
-                print("preview on?: ", self.mWidget.ui.previewVisible.isChecked())
-                print("then, now: ", then, now)
-                #if then == None: 
-                    # check whether preview is currently displayed
-                    # and if it is then show it
-                    #else:
-                    # if preview isn't displayed then you don't 
-                    # need to do anything
                 if self.mWidget.ui.previewVisible.isChecked():
-                    print("active window, preview visible, set preview visible state to true")
                     self.mWidget.showPreview(True)
-                    """ self.previewVisibleState = True
-                    else:
-                    print("active window, set preview visible state to false")
-                    self.previewVisibleState = False """
             else:
-                #if preview is currently active you need to hide it
-                # if it isnt yuou don't need to do anythinhg
-                
-                print("piSnap no longer active window")
-                print("preview on?: ", self.mWidget.ui.previewVisible.isChecked())
-                print("then, now: ", then, now)
                 if now == None:
-                    print("********************* None *********************************")
                     if self.mWidget.ui.previewVisible.isChecked():
                         self.mWidget.camera.stop_preview()   
 
-                """
-                if self.previewVisibleState == True:
-                    self.mWidget.showPreview(False)
-                """
     def moveEvent(self, e):
         # if the preview is currently visibe
         #print("is checked?", self.statusBarPreviewCheckBox.isChecked())
