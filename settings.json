@@ -4,9 +4,9 @@
     "annotate_frame_num": false,
     "annotate_text_size": 32,
     "audioActive": "true",
-    "audioBitRate": "16",
+    "audioBitRate": "24",
     "audioFileFormat": "wav",
-    "audioSampleRate": "44100",
+    "audioSampleRate": "48000",
     "awb_gains": [
         0,
         0
@@ -84,7 +84,7 @@
     "vidFileRoot": "cutaway",
     "stillFormat": "jpeg",
     "videoFormat": "h264",
-    "fileCounter": 92,
+    "fileCounter": 93,
     "vidres": [
         1920,
         1080

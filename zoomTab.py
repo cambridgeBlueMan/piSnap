@@ -257,6 +257,7 @@ class ZoomTab(QtWidgets.QWidget):
         print ("in thread")
         for j in range(loopSize):
             if self.abortZoom == True:
+                self.abortZoom = False
                 break
             print(j)
             sleep(1/self.framerate)
