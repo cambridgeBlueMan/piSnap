@@ -240,23 +240,23 @@ class Shooter(qtw.QWidget):
                 """ 
                 self.cmd = ["rec",  "-r", self.camvals["audioSampleRate"], "-b", self.camvals["audioBitRate"], \
                         (self.camvals["defaultVideoPath"] + "/" + self.vidRoot + self.camvals["audioFileFormat"]),]
-                try:
-                    # try to start recording the audio
-                    self.proc = subprocess.Popen(self.cmd, \
-                            stdout = subprocess.PIPE, stderr = subprocess.PIPE, text=True) ## Run program
-                    # communicate holds two element tuple of form (stdout, stderr)
-                    """   procRet = self.proc.communicate()
-                    #therefore, if we have some stderr raise an error
-                    if procRet[1] > "":
-                        psFunctions.printT(self.window(), procRet[1])
-                        psFunctions.printT(self.window(), str(self.proc.poll())) """
-                    #sleep(1)
-                    """ if self.proc.poll() == 2:
-                        raise subprocess.SubprocessError(2,self.cmd) """
-                    #_thread.start_new_thread (self.checkAudio(), (self.proc))
+                #try:
+                # try to start recording the audio
+                self.proc = subprocess.Popen(self.cmd, \
+                        stdout = subprocess.PIPE, stderr = subprocess.PIPE, text=True) ## Run program
+                # communicate holds two element tuple of form (stdout, stderr)
+                """   procRet = self.proc.communicate()
+                #therefore, if we have some stderr raise an error
+                if procRet[1] > "":
+                    psFunctions.printT(self.window(), procRet[1])
+                    psFunctions.printT(self.window(), str(self.proc.poll())) """
+                #sleep(1)
+                """ if self.proc.poll() == 2:
+                    raise subprocess.SubprocessError(2,self.cmd) """
+                #_thread.start_new_thread (self.checkAudio(), (self.proc))
 
-                except subprocess.SubprocessError: # as err:
-                    psFunctions.printT(self.window(), "Audio failed!!" )
+                #except subprocess.SubprocessError: # as err:
+                #    psFunctions.printT(self.window(), "Audio failed!!" )
                     #psFunctions.printT(self.window(), str(err) , True)
                     #self.camvals["audioActive"]="false"
             # you could capture here a small still
