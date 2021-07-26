@@ -54,9 +54,14 @@ class Ui_Form(object):
         self.delRow.setGeometry(QtCore.QRect(430, 430, 51, 21))
         self.delRow.setObjectName("delRow")
         self.playRows = QtWidgets.QPushButton(Form)
-        self.playRows.setGeometry(QtCore.QRect(320, 430, 81, 21))
-        self.playRows.setCheckable(True)
+        self.playRows.setGeometry(QtCore.QRect(320, 430, 31, 31))
+        self.playRows.setWhatsThis("")
+        self.playRows.setCheckable(False)
         self.playRows.setObjectName("playRows")
+        self.nextZoom = QtWidgets.QPushButton(Form)
+        self.nextZoom.setGeometry(QtCore.QRect(370, 430, 31, 30))
+        self.nextZoom.setWhatsThis("")
+        self.nextZoom.setObjectName("nextZoom")
 
         self.retranslateUi(Form)
         self.start.clicked.connect(Form.doSetStart)
@@ -65,6 +70,7 @@ class Ui_Form(object):
         self.getSpeed.sliderMoved['int'].connect(Form.setSpeed)
         self.delRow.clicked.connect(Form.deleteSelectedRow)
         self.playRows.clicked['bool'].connect(Form.playSelectedRows)
+        self.nextZoom.clicked.connect(Form.doNextZoom)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -76,7 +82,10 @@ class Ui_Form(object):
         self.label.setText(_translate("Form", "Set Zoom"))
         self.label_2.setText(_translate("Form", "Set Speed"))
         self.delRow.setText(_translate("Form", "del row"))
-        self.playRows.setText(_translate("Form", "play rows"))
+        self.playRows.setToolTip(_translate("Form", "play or abandon zoom"))
+        self.playRows.setText(_translate("Form", "*"))
+        self.nextZoom.setToolTip(_translate("Form", "while playing move to next zoom"))
+        self.nextZoom.setText(_translate("Form", "*"))
 
 from dragbutton import DragButton
 from keyboardslider import KeyboardSlider

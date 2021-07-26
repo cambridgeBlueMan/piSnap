@@ -43,14 +43,21 @@ class ZoomTab(QtWidgets.QWidget):
         ########################
         self.previewDivider = 3
         # 
+        # set text tplayer controls
 
         self.ui.getZoom.setInvertedAppearance(True)
         # TODO dont think the next two lines are used?
         self.pixelWidth  = 1/self.sensorWidth
         self.pixelHeight = 1/self.sensorHeight
 
+        #set to bullet point
         self.ui.adjustZoom.setText(u"\u26AB")
 
+        self.ui.playRows.setText(u"\u23F5")
+        self.ui.nextZoom.setText(u"\u23ED")
+        # initialise flags for playRows
+        self.nextZoom = False
+        self.abortZoom = False
         self.initControls()
 
         self.initModelStuff()
@@ -139,76 +146,55 @@ class ZoomTab(QtWidgets.QWidget):
         # insert rows (position, numrows, parent, data)
         self.model.insertRows(self.model.rowCount(None),1, self.model.parent(), zdata)
 
-    def playSelectedRows(self, bool):
-        #self.ui.zoomTableView.
-        # TODO deal with no rows selcted case
-        # TODO weird thing with x value on first moevement. position of 
-        # navigator button on screen space appears to affect the first movement(s)
-        modifiers = QtWidgets.QApplication.keyboardModifiers()
-        if modifiers == QtCore.Qt.ShiftModifier:
-            print('Shift+Click')
-        elif modifiers == QtCore.Qt.ControlModifier:
-            print('Control+Click')
-        elif modifiers == (QtCore.Qt.ControlModifier |
-                           QtCore.Qt.ShiftModifier):
-            print('Control+Shift+Click')
+    def doNextZoom(self):
+        print ("in next zoom")
+        self.nextZoom = True
+    
+    
+        # get the currently selected rows from the table
+    def playSelectedRows(self):
+        """ runs a series of zooms defined with the adjustZoom, setZoom and speed control widgets"""
+        print ("&&&&&&&&&&&&&&&&&&&", self.ui.playRows.text())
+        if self.ui.playRows.text() == u"\u23F5":
+            selected = self.ui.zoomTableView.selectedIndexes()
+            # gather rows in a set and then see how many you got
+            num_rows = len(set(index.row() for index in selected))
+            if num_rows == 0:
+                psFunctions.printT(self.window(),"No rows are currently selected!!")
+            elif num_rows == 1:
+                psFunctions.printT (self.window(),"you need more than just one row to run a zoom")
+            else:
+                # run the zoom in a new thread
+                startRow = selected[0].row()
+                # change from play icon to stop icon
+                self.ui.playRows.setText(u"\u23F9")
+                print("££££££££££££££££££££££££££££££££££££")   
+                # pass start row and number of rows to new thread
+                _thread.start_new_thread(self.runZoomLoops, (startRow, num_rows))
         else:
-            print('Click')
-        psFunctions.printT(self.window(), "bool is:" + str(bool))
-        #if bool == True:
-        selected = self.ui.zoomTableView.selectedIndexes()
-        # gather rows in a set and then see how many you got
-        num_rows = len(set(index.row() for index in selected))
-        if num_rows == 0:
-            psFunctions.printT(self.window(),"No rows are currently selected!!")
-        elif num_rows == 1:
-            psFunctions.printT (self.window(),"you need more than just one row to run a zoom")
-            #print("This is start row: ",selected[0].row())
-            #print("and this is the row: ", self.ui.zoomTableView.rowAt(selected[0].row()))
-            #pass
-        else:
-            # run a zoom
-            psFunctions.printT(self.window(),"more than 1 row")
-            #print("This is start row: ",selected[0].row())
-            startRow = selected[0].row()
-            #self.ui.playRows.setText("Cancel!")
-            _thread.start_new_thread(self.runZoomLoops, (startRow, num_rows))
-        #else:
-        #    self.abortZoom = True
+            self.ui.playRows.setText(u"\u23F5")
+            self.abortZoom = True
 
-    def runZoomLoops(self, startRow, num_rows):        
+
+    def runZoomLoops(self, startRow, num_rows):  
+        """ holds the outer loop that iterates through the rows, then passes off the actual zoom loop
+        to the method runMultiZoomLoop """      
 
         for ix in range(startRow, (startRow + num_rows)):
+            if self.abortZoom == True:
+                break
+
             # increment for each step
-            print("actual ix: ", ix)
-            print("ix", self.model._data[ix])
-            print("nextRow", self.model._data[ix+1])
+            #print("actual ix: ", ix)
+            #print("ix", self.model._data[ix])
+            #print("nextRow", self.model._data[ix+1])
             loopSize = self.model._data[ix][3] 
             pause = self.model._data[ix][4]
-            xDiff = abs(self.model._data[ix][0] - self.model._data[(ix + 1)][0])
-            yDiff = abs(self.model._data[ix][1] - self.model._data[(ix + 1)][1])
-            zDiff = abs(self.model._data[ix][2] - self.model._data[(ix + 1)][2])
-
-            """ xDiff = xDiff/0.52667
-            yDiff = yDiff/0.27182
-            zDiff = zDiff/0.382150
             
-            if xDiff > yDiff and xDiff > zDiff:
-                pass
-            if yDiff > xDiff and yDiff > zDiff:
-                # some multiplier
-                loopSize=math.floor(loopSize*0.5)
-            if zDiff > xDiff and zDiff > yDiff:
-                # some multiplier
-                loopSize = math.floor(loopSize*0.8)
-            print("loopSize: ", loopSize) """
+            xInc = abs(self.model._data[ix][0] - self.model._data[(ix + 1)][0])/loopSize
+            yInc = abs(self.model._data[ix][1] - self.model._data[(ix + 1)][1])/loopSize
+            zInc = abs(self.model._data[ix][2] - self.model._data[(ix + 1)][2])/loopSize
 
-            xInc = xDiff/loopSize
-            yInc = yDiff/loopSize
-            zInc = zDiff/loopSize
-
-            #biggestInc = max(set(xDiff,yDiff,zDiff))
-            #define startZoom and endZoom here!!!
             startZoom = [
                 self.model._data[ix][0], 
                 self.model._data[ix][1], 
@@ -216,6 +202,7 @@ class ZoomTab(QtWidgets.QWidget):
                 self.model._data[ix][2]
             ]
             startZoom = startZoom[:]
+
             endZoom = [
                 self.model._data[ix+1][0], 
                 self.model._data[ix+1][1], 
@@ -224,37 +211,16 @@ class ZoomTab(QtWidgets.QWidget):
             ]
             endZoom = endZoom[:]
 
-            print("incs: ",xInc,yInc,zInc)
-            print("startZoom: ", startZoom)
-            print("endZoom: ", endZoom)
-
-            #if bool == True:
-            #_thread.start_new_thread(
             self.runMultiZoomLoop (xInc, yInc, zInc, startZoom, endZoom, loopSize, pause) # )
-            #    self.ui.runZoom.setText("abort zoom")
-            #    self.abortZoom = False
-            #    #self.ui.runZoom.toggle()
-            #else:
-            #    self.ui.runZoom.setText("run zoom")
-            #    self.abortZoom = True
-            #pass
-            # there would be a wait(pause) here
-            # and then the loop would have ended
 
-        print("this is data: ", self.model._data)
-         #loop now ended 
+        # outer loop now ended 
+        self.ui.playRows.setText(u"\u23F5")
+        
         if self.camera.recording:
             self.window().mWidget.doStopVid()
             print("now in if")
-        
-
-        
-        # following does the trick
-        #print(selected[0].data(), selected[1].data(), selected[2].data())
-
 
     def runMultiZoomLoop(self,xInc, yInc, zInc, startZoom, endZoom, loopSize, pause):
-        #print ("in thread")
         deltaX = 0
         deltaY = 0
         deltaZ = 0
@@ -263,11 +229,12 @@ class ZoomTab(QtWidgets.QWidget):
         self.camera.zoom = startZoom
 
         for j in range(loopSize):
-            """ if self.abortZoom == True:
-                self.abortZoom = False
-                self.ui.playRows.setChecked(True)
-                self.ui.playRows.setText("play rows")
-                break """
+            if self.abortZoom == True:
+                break
+            if self.nextZoom == True:
+                self.nextZoom = False
+                psFunctions.printT(self.window(), "Moving to next zoom point")
+                break
             #print(j)
             sleep(1/self.framerate)
             
