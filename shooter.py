@@ -287,7 +287,7 @@ class Shooter(qtw.QWidget):
             #    #print("hello!!!", err)
             #    self.window().terminalWidget.clear()
             #    txt = "Recording could not be started: " + str(err)
-            #    self.window().terminalWidget.setPlainText(txt)
+            #    self.window().terminalWidget.setPlainText(txt)   
 
     def doStopVid(self):
          # if camera is playing then stop playing  
