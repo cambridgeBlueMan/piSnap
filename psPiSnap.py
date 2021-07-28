@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # import necessary modules
 import sys
 import json

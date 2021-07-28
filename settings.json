@@ -84,14 +84,14 @@
     "vidFileRoot": "multizoom_",
     "stillFormat": "jpeg",
     "videoFormat": "h264",
-    "fileCounter": 93,
+    "fileCounter": 96,
     "vidres": [
         1920,
         1080
     ],
     "imgres": [
-        1920,
-        1080
+        800,
+        600
     ],
     "zStartX": 25,
     "zStartY": 36,
