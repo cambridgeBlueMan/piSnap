@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(537, 598)
+        Form.resize(537, 584)
         self.getZoom = KeyboardSlider(Form)
         self.getZoom.setGeometry(QtCore.QRect(0, 420, 501, 21))
         self.getZoom.setMinimum(1920)
@@ -68,13 +68,13 @@ class Ui_Form(object):
         self.start.clicked.connect(Form.doSetStart)
         self.showStart.clicked.connect(Form.doShowStart)
         self.showEnd.clicked.connect(Form.doShowEnd)
-        self.runZoom.clicked.connect(Form.doRunZoom)
         self.getZoom.valueChanged['int'].connect(Form.setZoom)
         self.end.clicked.connect(Form.doSetEnd)
         self.adjustZoom.posChanged['int','int'].connect(Form.setZoomWithButton)
         self.adjustZoom.released.connect(Form.movePosition)
         self.getSpeed.sliderMoved['int'].connect(Form.setSpeed)
         self.printDiag.clicked.connect(Form.doPrintDiag)
+        self.runZoom.clicked['bool'].connect(Form.doRunZoom)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):

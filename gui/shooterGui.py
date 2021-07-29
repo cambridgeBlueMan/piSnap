@@ -157,6 +157,9 @@ class Ui_Form(object):
         self.isCounter.setGeometry(QtCore.QRect(20, 850, 119, 27))
         self.isCounter.setChecked(True)
         self.isCounter.setObjectName("isCounter")
+        self.clearImgContainer = QtWidgets.QPushButton(Form)
+        self.clearImgContainer.setGeometry(QtCore.QRect(170, 620, 21, 20))
+        self.clearImgContainer.setObjectName("clearImgContainer")
 
         self.retranslateUi(Form)
         self.captureTab.setCurrentIndex(1)
@@ -182,6 +185,7 @@ class Ui_Form(object):
         self.acceptStillRootUpdate.clicked.connect(Form.updateStillRoot)
         self.acceptVideoRootUpdate.clicked.connect(Form.updateVideoRoot)
         self.unlockPreview.clicked['bool'].connect(Form.setPreviewLockState)
+        self.clearImgContainer.clicked.connect(Form.doClearImgContainer)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -209,6 +213,7 @@ class Ui_Form(object):
         self.unlockPreview.setText(_translate("Form", "Unlock Preview"))
         self.isDatestamp.setText(_translate("Form", "Datestamp"))
         self.isCounter.setText(_translate("Form", "Counter "))
+        self.clearImgContainer.setText(_translate("Form", "i"))
 
 from dragbutton import DragButton
 import resource_rc

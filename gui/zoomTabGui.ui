@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>537</width>
-    <height>598</height>
+    <height>584</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -280,22 +280,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>runZoom</sender>
-   <signal>clicked()</signal>
-   <receiver>Form</receiver>
-   <slot>doRunZoom()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>248</x>
-     <y>594</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>292</x>
-     <y>591</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>getZoom</sender>
    <signal>valueChanged(int)</signal>
    <receiver>Form</receiver>
@@ -388,6 +372,22 @@
     <hint type="destinationlabel">
      <x>526</x>
      <y>536</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>runZoom</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>Form</receiver>
+   <slot>doRunZoom(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>299</x>
+     <y>558</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>342</x>
+     <y>580</y>
     </hint>
    </hints>
   </connection>

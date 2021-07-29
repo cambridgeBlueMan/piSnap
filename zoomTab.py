@@ -317,7 +317,9 @@ class ZoomTab(QtWidgets.QWidget):
             #print("iter")
         print("loop now ended")
         self.ui.runZoom.setText("run zoom")
+        self.ui.runZoom.setChecked
         self.abortZoom = False
+
         #loop now ended 
         if self.camera.recording:
             self.window().mWidget.doStopVid()
@@ -341,9 +343,6 @@ class ZoomTab(QtWidgets.QWidget):
         else:
             self.camera.stop_preview()
         pass
-
-    def twattock(self):
-        print("hello everybody!!!")
 
     def resetZoomStuff(self):
         print("in reset zoom stuff")

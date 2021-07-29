@@ -157,7 +157,7 @@ class Shooter(qtw.QWidget):
     def imgToStream(self):
         """ uses camera to take a still picture and returns that in a stream/buffer object """
         stream = BytesIO()
-        ##issue
+        ##issue 
         """
         all of the camera settings should be being made elsewhere and they shuld therefore be in place 
         ready for when a shot is taken
@@ -308,10 +308,10 @@ class Shooter(qtw.QWidget):
                 self.proc.send_signal(signal.SIGINT) ## Send interrupt signal
                 procRet  = self.proc.communicate()
                 psFunctions.printT(self.window(), str(procRet[0]))
-                if procRet[0] == b'':
-                    psFunctions.printT(self.window(),"audio recording terminated succesfully!", True)
-                else:
-                    psFunctions.printT(self.window(),"There was a problem with the audio recording", True)
+                #if procRet[0] == b'':
+                psFunctions.printT(self.window(),"audio recording terminated succesfully!", True)
+                #else:
+                #    psFunctions.printT(self.window(),"There was a problem with the audio recording", True)
                 vidInput = self.camvals["defaultVideoPath"] + "/" +self.vidRoot + self.camvals["videoFormat"]
                 audioInput = self.camvals["defaultVideoPath"] + "/" +self.vidRoot + self.camvals["audioFileFormat"]
                 output = self.camvals["defaultVideoPath"] + "/" +self.vidRoot + "mp4"
@@ -321,7 +321,7 @@ class Shooter(qtw.QWidget):
             self.mediaplayer.set_xwindow(int(self.ui.imgContainer.winId()))
 
             #self.mediaplayer.set_position(0)
-            self.addToMediaList()
+            self.addToMediaList(output)
             ################################################
             #filename = self.camvals["defaultVideoPath"] + "/" + self.vidRoot + self.camvals["videoFormat"]
             #self.myIcon = qtg.QIcon(filename) 
@@ -338,6 +338,9 @@ class Shooter(qtw.QWidget):
         self.mediaplayer.play()      
         self.timer.start()
         # play the current video
+    
+    def doClearImgContainer(self):
+        self.ui.imgContainer.clear()
         
     def doPauseVid(self, test):
         if self.mediaplayer.is_playing():
@@ -356,7 +359,7 @@ class Shooter(qtw.QWidget):
         # called from vid pos slider
         self.timer.stop()
         self.mediaplayer.set_position(pos / 1000.0)
-        self.timer.start()
+        self.timer.start() 
 
     
     def updateVidPosSlider(self):
@@ -528,7 +531,7 @@ class Shooter(qtw.QWidget):
     def setPreviewSize(*args):
         pass 
     
-    def addToMediaList(self):
+    def addToMediaList(self, output):
         """ 
         Use ffmpegthumbnailer to create a thumbnail image to represent the video
         and display the thumbnail and file name in a ListWidget
@@ -550,7 +553,9 @@ class Shooter(qtw.QWidget):
         self.thumb = (self.camvals["defaultVideoPath"] + "/"  + self.vidRoot + self.camvals["stillFormat"]) 
         self.myIcon = qtg.QIcon(self.thumb) 
         self.myItem = qtw.QListWidgetItem(self.myIcon, self.camvals["defaultVideoPath"] + "/"  
-        + self.vidRoot + self.camvals["videoFormat"], self.ui.thumbnails)        
+        + output,
+        #+ self.vidRoot + self.camvals["videoFormat"], 
+        self.ui.thumbnails)        
         # then add it to the widget
 
 

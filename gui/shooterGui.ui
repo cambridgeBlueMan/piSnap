@@ -437,6 +437,19 @@
     <bool>true</bool>
    </property>
   </widget>
+  <widget class="QPushButton" name="clearImgContainer">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>620</y>
+     <width>21</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>i</string>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
@@ -808,6 +821,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>clearImgContainer</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>doClearImgContainer()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>172</x>
+     <y>325</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>9</x>
+     <y>344</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>signal1()</signal>
@@ -836,5 +865,6 @@
   <slot>updateStillRoot()</slot>
   <slot>updateVideoRoot()</slot>
   <slot>setPreviewLockState(bool)</slot>
+  <slot>doClearImgContainer()</slot>
  </slots>
 </ui>
