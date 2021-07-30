@@ -130,7 +130,7 @@ class Ui_Form(object):
         self.resizePreview.setOrientation(QtCore.Qt.Horizontal)
         self.resizePreview.setObjectName("resizePreview")
         self.previewVisible = QtWidgets.QCheckBox(Form)
-        self.previewVisible.setGeometry(QtCore.QRect(240, 620, 101, 27))
+        self.previewVisible.setGeometry(QtCore.QRect(260, 620, 91, 27))
         self.previewVisible.setObjectName("previewVisible")
         self.imgContainer = QtWidgets.QLabel(Form)
         self.imgContainer.setGeometry(QtCore.QRect(190, 10, 800, 600))
@@ -158,8 +158,11 @@ class Ui_Form(object):
         self.isCounter.setChecked(True)
         self.isCounter.setObjectName("isCounter")
         self.clearImgContainer = QtWidgets.QPushButton(Form)
-        self.clearImgContainer.setGeometry(QtCore.QRect(170, 620, 21, 20))
+        self.clearImgContainer.setGeometry(QtCore.QRect(110, 620, 21, 20))
         self.clearImgContainer.setObjectName("clearImgContainer")
+        self.showOverlay = QtWidgets.QCheckBox(Form)
+        self.showOverlay.setGeometry(QtCore.QRect(160, 620, 101, 27))
+        self.showOverlay.setObjectName("showOverlay")
 
         self.retranslateUi(Form)
         self.captureTab.setCurrentIndex(1)
@@ -186,6 +189,7 @@ class Ui_Form(object):
         self.acceptVideoRootUpdate.clicked.connect(Form.updateVideoRoot)
         self.unlockPreview.clicked['bool'].connect(Form.setPreviewLockState)
         self.clearImgContainer.clicked.connect(Form.doClearImgContainer)
+        self.showOverlay.clicked['bool'].connect(Form.doShowOverlay)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -213,7 +217,8 @@ class Ui_Form(object):
         self.unlockPreview.setText(_translate("Form", "Unlock Preview"))
         self.isDatestamp.setText(_translate("Form", "Datestamp"))
         self.isCounter.setText(_translate("Form", "Counter "))
-        self.clearImgContainer.setText(_translate("Form", "i"))
+        self.clearImgContainer.setText(_translate("Form", "c"))
+        self.showOverlay.setText(_translate("Form", "overlay"))
 
 from dragbutton import DragButton
 import resource_rc

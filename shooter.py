@@ -140,9 +140,10 @@ class Shooter(qtw.QWidget):
     
     def showImage(self, filename):
         """ displays a graphic file in the picture window """
-        pixmap = qtg.QPixmap(filename)
-        pixmapResized = pixmap.scaled(self.camvals["imgres"][0]/2, self.camvals["imgres"][1]/2, qtc.Qt.KeepAspectRatio)
-        self.ui.imgContainer.setPixmap(pixmapResized) #.scaled(size,Qt.keepAspectRatio))
+        # no longer sure we want the following behavour
+        #pixmap = qtg.QPixmap(filename)
+        #pixmapResized = pixmap.scaled(self.camvals["imgres"][0]/2, self.camvals["imgres"][1]/2, qtc.Qt.KeepAspectRatio)
+        #self.ui.imgContainer.setPixmap(pixmapResized) #.scaled(size,Qt.keepAspectRatio))
 
         # then add it to the selector widget
         self.myIcon = qtg.QIcon(filename) 
@@ -387,19 +388,36 @@ class Shooter(qtw.QWidget):
     def doThumbnailClicked(self,vid):
         # get the dimensions of the media
         # TODO when thumbnail is clicked it should turn the preview off, if necessary
+        # get rid of the preview
+        self.showPreview(False)
+        # get the filename from the list item
         vid = vid.text()
+        # now get the dimensions of the file
         dimensions = self.getVideoDimensions(vid)
         # resize the imgContainer
         self.ui.imgContainer.resize(dimensions[0]/self.resDivider, dimensions[1]/self.resDivider)
+        
         # set the x window
-        self.mediaplayer.set_xwindow(int(self.ui.imgContainer.winId()))
-        self.mediaplayer.set_position(0)
-        # start playing the selected video
-        # put the file name to the video player?
-        self.media = self.vlcObj.media_new(vid)
-        self.mediaplayer.set_media(self.media)
-        self.mediaplayer.play()    
-        self.timer.start()
+        ## if its a video
+        #psFunctions.printT(self.window(), vid[-4:])
+        if vid[-3:] == "peg":
+            psFunctions.printT(self.window(), vid[-4:])
+            pixmap = qtg.QPixmap(vid)
+            pixmapResized = pixmap.scaled(self.camvals["imgres"][0]/2, self.camvals["imgres"][1]/2, qtc.Qt.KeepAspectRatio)
+            self.ui.imgContainer.setPixmap(pixmapResized) #.scaled(size,Qt.keepAspectRatio))
+        else:
+            self.mediaplayer.set_xwindow(int(self.ui.imgContainer.winId()))
+            self.mediaplayer.set_position(0)
+            # start playing the selected video
+            # put the file name to the video player?
+            self.media = self.vlcObj.media_new(vid)
+            self.mediaplayer.set_media(self.media)
+            self.mediaplayer.play()    
+            self.timer.start()
+
+        # on the other hand if its a still
+
+
 
     def getVideoDimensions(self, vid):
         """ 
@@ -527,7 +545,10 @@ class Shooter(qtw.QWidget):
         # to be implemented
         pass
 
-
+    def doShowOverlay(self, bool):
+        if bool == True:
+            #self.addOverlay = 
+            self.camera.show_overlay()
     def setPreviewSize(*args):
         pass 
     
@@ -538,8 +559,9 @@ class Shooter(qtw.QWidget):
 
         """
 
-        # ffmpeg -i twat.h264 -frames:v 1 -f image2 frame.png
-
+        # ffmpeg -i avid.h264 -frames:v 1 -f image2 frame.png
+        # output is the full file name and path  
+        # the subprocess is working and assembling the file ames from constituents
         makeThumbnail = subprocess.Popen(["ffmpeg",  "-loglevel",  "warning",  "-i" ,  
         (self.camvals["defaultVideoPath"] + "/" + self.vidRoot + self.camvals["videoFormat"]),
         "-frames:v", "1",  "-f",  "image2",   (self.camvals["defaultVideoPath"] + "/" 
@@ -552,9 +574,7 @@ class Shooter(qtw.QWidget):
         sleep(2)
         self.thumb = (self.camvals["defaultVideoPath"] + "/"  + self.vidRoot + self.camvals["stillFormat"]) 
         self.myIcon = qtg.QIcon(self.thumb) 
-        self.myItem = qtw.QListWidgetItem(self.myIcon, self.camvals["defaultVideoPath"] + "/"  
-        + output,
-        #+ self.vidRoot + self.camvals["videoFormat"], 
+        self.myItem = qtw.QListWidgetItem(self.myIcon, output,
         self.ui.thumbnails)        
         # then add it to the widget
 
