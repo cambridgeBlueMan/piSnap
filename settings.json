@@ -3,7 +3,7 @@
     "annotate_background": null,
     "annotate_frame_num": false,
     "annotate_text_size": 32,
-    "audioActive": "false",
+    "audioActive": "true",
     "audioBitRate": "24",
     "audioFileFormat": "wav",
     "audioSampleRate": "48000",
@@ -19,7 +19,7 @@
         128,
         128
     ],
-    "contrast": -3,
+    "contrast": 0,
     "crop": [
         0.0,
         0.0,
@@ -59,7 +59,7 @@
         1080
     ],
     "rotation": 0,
-    "saturation": 33,
+    "saturation": 0,
     "sensor_mode": 0,
     "sensorWidth": 4056,
     "sensorHeight": 3040,
@@ -84,10 +84,10 @@
     "vidFileRoot": "cutaway",
     "stillFormat": "jpeg",
     "videoFormat": "h264",
-    "fileCounter": 124,
+    "fileCounter": 140,
     "vidres": [
-        1600,
-        1200
+        1920,
+        1080
     ],
     "imgres": [
         1600,
