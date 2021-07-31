@@ -155,6 +155,7 @@ class ZoomTab(QtWidgets.QWidget):
     def playSelectedRows(self):
         """ runs a series of zooms defined with the adjustZoom, setZoom and speed control widgets"""
         print ("&&&&&&&&&&&&&&&&&&&", self.ui.playRows.text())
+        # if icon is 'play' icon
         if self.ui.playRows.text() == u"\u23F5":
             selected = self.ui.zoomTableView.selectedIndexes()
             # gather rows in a set and then see how many you got
@@ -182,6 +183,7 @@ class ZoomTab(QtWidgets.QWidget):
 
         for ix in range(startRow, (startRow + num_rows)):
             if self.abortZoom == True:
+                self.abortZoom = False
                 break
 
             # increment for each step
