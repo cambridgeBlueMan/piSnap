@@ -303,6 +303,8 @@ class Shooter(qtw.QWidget):
             psFunctions.printT(self.window(),"Camera stopped recording!", True)
             #if self.getAudio == True:
             if self.camvals["audioActive"]=="true":
+                # TODO the current frames/sec needs to be passed to the ffmpeg convesion below
+                # frame rate is -r
                 # TODO note that the val of audioActive could possible currently change while the video is recording
                 # a fair amount of stuff needs cornering out here, I suspect
                 self.proc.send_signal(signal.SIGINT) ## Send interrupt signal
