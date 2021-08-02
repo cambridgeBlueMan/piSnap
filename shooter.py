@@ -537,7 +537,7 @@ class Shooter(qtw.QWidget):
 
         """
 
-        # ffmpeg -i twat.h264 -frames:v 1 -f image2 frame.png
+        # ffmpeg -i somefile.h264 -frames:v 1 -f image2 frame.png
 
         makeThumbnail = subprocess.Popen(["ffmpeg",  "-loglevel",  "warning",  "-i" ,  
         (self.camvals["defaultVideoPath"] + "/" + self.vidRoot + self.camvals["videoFormat"]),
