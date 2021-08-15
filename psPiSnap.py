@@ -80,15 +80,19 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         quit.setModal(True)
         quit.show() """
         reply = qtw.QMessageBox.question(self, 'Window Close', 'Do you want to save the settings file?',
-                                     qtw.QMessageBox.Yes | qtw.QMessageBox.No, qtw.QMessageBox.Yes)
+                                     qtw.QMessageBox.Cancel | qtw.QMessageBox.Yes | qtw.QMessageBox.No, qtw.QMessageBox.Yes)
 
         if reply == qtw.QMessageBox.Yes:
             x = json.dumps(self.camvals, indent=4)
             with open('settings.json', 'w') as f:
                 f.write(x)
                 f.close() 
-        event.accept()
-
+                event.accept()
+        if reply == qtw.QMessageBox.No:
+                event.accept()
+        if reply == qtw.QMessageBox.Cancel:
+                event.ignore()
+        
       
 
     def initUI(self):
