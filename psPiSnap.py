@@ -1,6 +1,8 @@
+#!/usr/bin/python3
 # import necessary modules
 import sys
 import json
+import pickle
 from PyQt5 import QtWidgets as qtw 
 from PyQt5 import QtGui as qtg 
 from PyQt5 import QtCore as qtc 
@@ -49,7 +51,6 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
                     if self.mWidget.ui.previewVisible.isChecked():
                         self.mWidget.camera.stop_preview()   
 
-
     def moveEvent(self, e):
         # if the preview is currently visibe
         #print("is checked?", self.statusBarPreviewCheckBox.isChecked())
@@ -79,15 +80,19 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         quit.setModal(True)
         quit.show() """
         reply = qtw.QMessageBox.question(self, 'Window Close', 'Do you want to save the settings file?',
-                                     qtw.QMessageBox.Yes | qtw.QMessageBox.No, qtw.QMessageBox.Yes)
+                                     qtw.QMessageBox.Cancel | qtw.QMessageBox.Yes | qtw.QMessageBox.No, qtw.QMessageBox.Yes)
 
         if reply == qtw.QMessageBox.Yes:
             x = json.dumps(self.camvals, indent=4)
             with open('settings.json', 'w') as f:
                 f.write(x)
                 f.close() 
-        event.accept()
-
+                event.accept()
+        if reply == qtw.QMessageBox.No:
+                event.accept()
+        if reply == qtw.QMessageBox.Cancel:
+                event.ignore()
+        
       
 
     def initUI(self):
@@ -117,15 +122,29 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
 
     def makeMenu(self): #create menu
         #create actions for file menu
-        openAction = qtw.QAction('&Open', self)
+        openAction = qtw.QAction('Open', self)
         openAction.setShortcut('Ctrl+O')
         openAction.triggered.connect(lambda:qtw.QFileDialog.getOpenFileName(self))
+        
         saveAction = qtw.QAction('&Save', self)
         saveAction.setShortcut('Ctrl+S')
         saveAction.triggered.connect(self.doSave)
+        
         saveAsAction = qtw.QAction('Save As', self)
         saveAsAction.setShortcut('Ctrl+Shift+S')
         saveAsAction.triggered.connect(self.doSaveAs)
+
+        saveZoomAction = qtw.QAction('Save &zoom', self)
+        saveZoomAction.setShortcut('Ctrl+Z')
+        saveZoomAction.triggered.connect(self.doSaveZoom)
+
+        openZoomAction = qtw.QAction('&Open zoom', self)
+        openZoomAction.setShortcut('Ctrl+Shift+Z')
+        openZoomAction.triggered.connect(self.doOpenZoom)
+
+    
+
+        
         exitAction = qtw.QAction('&Exit', self)
         exitAction.setShortcut('Ctrl+Q')
         exitAction.triggered.connect(self.close)
@@ -143,6 +162,8 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         fileMenu.addAction(openAction)
         fileMenu.addAction(saveAction)
         fileMenu.addAction(saveAsAction)
+        fileMenu.addAction(openZoomAction)
+        fileMenu.addAction(saveZoomAction)
         fileMenu.addAction(exitAction)
 
         #create edit menu and add actions
@@ -183,6 +204,45 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.prefs.show()
         print(self.prefs)
 
+    def doOpenZoom(self):
+        filename = qtw.QFileDialog.getOpenFileName(
+            self,
+            "Open a zoom file...",
+            qtc.QDir.homePath(),
+            "Zoom Files (*.zoom)"
+        )
+        #print(filename)
+        # zdata = [self.startZoom[0], self.startZoom[1], self.startZoom[2], 600, 1.0]
+        # insert rows (position, numrows, parent, data)
+        # self.model.insertRows(self.model.rowCount(None),1, self.model.parent(), zdata)
+
+        with open(filename[0], "rb") as fp:   # Unpickling
+            zoomData = pickle.load(fp)
+        print("length of zoomData: ", len(zoomData))
+        #self.zoomTab.model.insertRows(self.zoomTab.model.rowCount(None),len(zoomData), self.zoomTab.model.parent(), zoomData)
+        for item in zoomData:
+            # insert rows (position, numrows, parent, data)
+            self.zoomTab.model.insertRows(self.zoomTab.model.rowCount(None),1, self.zoomTab.model.parent(), item)
+
+    def doSaveZoom(self):
+        filename, _ = qtw.QFileDialog.getSaveFileName(
+            self,
+            "Select the file to save to…",
+            qtc.QDir.homePath(),
+            'Text Files (*.txt) ;;Python Files (*.py) ;;All Files (*)'
+        )
+        if filename:
+            try:
+                with open(filename, "wb") as fp:   #Pickling
+                    pickle.dump(self.zoomTab.model._data, fp)
+            except Exception as e:
+                # Errata:  Book contains this line:
+                #qtw.QMessageBox.critical(f"Could not save file: {e}")
+                # It should read like this:
+                qtw.QMessageBox.critical(self, f"Could not load file: {e}")
+        #with open("test.zoom", "wb") as fp:   #Pickling
+        #    pickle.dump(self.zoomTab.model._data, fp)
+        
 
     def doSave(self):
         print('Save code here')

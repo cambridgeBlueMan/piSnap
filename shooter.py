@@ -52,6 +52,7 @@ class Shooter(qtw.QWidget):
         # set text to medium bullet
         self.ui.previewButton.setText(u"\u26AB")
 
+
         self.resDivider = 2
         
         # next line assumes that video is the chosen default in the designer class
@@ -191,7 +192,7 @@ class Shooter(qtw.QWidget):
         self.camera.framerate = int(myvar)
         self.camvals["framerate"] = int(myvar)
     
-    def updateTerminalWidgetWhileRecording(self, camera):
+    def updateTerminalWidgetWhileRecording(self, camera, str):
         while camera.recording == True: #camera.recording:
             try:
                 self.window().terminalWidget.moveCursor(qtg.QTextCursor.End)
@@ -242,9 +243,8 @@ class Shooter(qtw.QWidget):
                 self.cmd = ["rec",  "-r", self.camvals["audioSampleRate"], "-b", self.camvals["audioBitRate"], \
                         (self.camvals["defaultVideoPath"] + "/" + self.vidRoot + self.camvals["audioFileFormat"]),]
                 #try:
-                # try to start recording the audio
-                self.proc = subprocess.Popen(self.cmd, \
-                        stdout = subprocess.PIPE, stderr = subprocess.PIPE, text=True) ## Run program
+                    # try to start recording the audio
+                self.proc = subprocess.Popen(self.cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, text=True) ## Run program
                 # communicate holds two element tuple of form (stdout, stderr)
                 """   procRet = self.proc.communicate()
                 #therefore, if we have some stderr raise an error
@@ -267,7 +267,7 @@ class Shooter(qtw.QWidget):
             #try:
             self.camera.start_recording(filename, bitrate=int(self.camvals["videoBitRate"]))
             sleep(1)
-            _thread.start_new_thread (self.updateTerminalWidgetWhileRecording, (self.camera, str ))
+            _thread.start_new_thread (self.updateTerminalWidgetWhileRecording, (self.camera, str))
             if self.recordZoom == True:
             #print(self.window().zoomTab)
                 fh = open("diags.txt", "a")
@@ -280,7 +280,7 @@ class Shooter(qtw.QWidget):
                 + str(self.camvals["loopSize"])
                 + "\n")
                 fh.close()
-                self.window().zoomTab.doRunZoom(True) #self.window().zoomTab, True)
+                self.window().zoomTab.playSelectedRows()
             psFunctions.printT(self.window(),"Camera currently recording!")
                 #self.window().terminalWidget.setPlainText("Camera currently recording!")
 
@@ -288,7 +288,7 @@ class Shooter(qtw.QWidget):
             #    #print("hello!!!", err)
             #    self.window().terminalWidget.clear()
             #    txt = "Recording could not be started: " + str(err)
-            #    self.window().terminalWidget.setPlainText(txt)
+            #    self.window().terminalWidget.setPlainText(txt)   
 
     def doStopVid(self):
          # if camera is playing then stop playing  
@@ -304,6 +304,8 @@ class Shooter(qtw.QWidget):
             psFunctions.printT(self.window(),"Camera stopped recording!", True)
             #if self.getAudio == True:
             if self.camvals["audioActive"]=="true":
+                # TODO the current frames/sec needs to be passed to the ffmpeg convesion below
+                # frame rate is -r
                 # TODO note that the val of audioActive could possible currently change while the video is recording
                 # a fair amount of stuff needs cornering out here, I suspect
                 self.proc.send_signal(signal.SIGINT) ## Send interrupt signal
