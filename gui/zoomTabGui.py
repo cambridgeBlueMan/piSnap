@@ -11,11 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-<<<<<<< HEAD
-        Form.resize(537, 584)
-=======
         Form.resize(537, 653)
->>>>>>> multizoom
         self.getZoom = KeyboardSlider(Form)
         self.getZoom.setGeometry(QtCore.QRect(0, 410, 501, 21))
         self.getZoom.setMinimum(1920)
