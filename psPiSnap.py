@@ -27,7 +27,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
     def __init__(self):  #first initialize the super class QWidget
         super().__init__() 
         # get the settings
-        # TODO put try statement in to catch lack of a camera!
+        # VICKY put try statement in to catch lack of a camera!
         self.camera = PiCamera()
         # pass the main window and camera objects to a settings object
         self.settings = PSSettings(self, self.camera)

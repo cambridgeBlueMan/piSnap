@@ -135,7 +135,6 @@ class Adjustments(qtw.QWidget):
             #print("Unknown control!")
 
     def doColorEffect(self,value):
-        # TODO this isn't working
         #get the name of the sending control
         control = self.sender().objectName()
         #if we find the control is to set the u value
@@ -143,7 +142,7 @@ class Adjustments(qtw.QWidget):
         if control == "color_effects_u":
             self.camvals["color_effects"][0] = value
             #if "color effects" is set to none in the GUI 
-            if self.ui.color_effects_none.isChecked:
+            if self.ui.color_effects_none.isChecked():
                 pass #don't do anything
             else: #otherwise set the "color effects" to the value held in the color effects element of the settings dictionary
                 #note that this dictionary item is a 2 element python list although the camera expects a 2 element tuple
@@ -151,12 +150,12 @@ class Adjustments(qtw.QWidget):
                 self.camera.color_effects = self.camvals["color_effects"]
         if control == "color_effects_v":
             self.camvals["color_effects"][1] = value
-            if self.ui.color_effects_none.isChecked:
+            if self.ui.color_effects_none.isChecked():
                 pass
             else:
                 self.camera.color_effects = self.camvals["color_effects"]
         if control =="color_effects_none":
-            #print(value)
+            print(value)
             if value == 2: # note the 2 here :)   
                 self.camera.color_effects = None
             else:

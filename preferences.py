@@ -2,12 +2,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from gui.preferencesGui import *
 from picamera import PiCamera
 import json
+import os
 camera = PiCamera
-#TODO Make this dailog box an addition to the tabbed widget
-#TODO aslteratively keep this where it is, but widen the dialog box so it is big
-# enough to hold the full path
-# TODO need to chekc whether the folder exists and if it doesn't then 
-# set to some standard default (pi/Videos etc)
+#VICKY make like adobe premiere see notes
 class Preferences(QtWidgets.QDialog):
     def __init__(self, win, camvals, camera):
         super().__init__()
@@ -23,9 +20,22 @@ class Preferences(QtWidgets.QDialog):
             self.camera = camera
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
-        self.ui.defaultFilePath.setText(self.camvals["defaultFilePath"]) 
-        self.ui.defaultPhotoPath.setText(self.camvals["defaultPhotoPath"]) 
-        self.ui.defaultVideoPath.setText(self.camvals["defaultVideoPath"]) 
+
+      
+        if os.path.isdir(self.camvals["defaultFilePath"]):
+            self.ui.defaultFilePath.setText(self.camvals["defaultFilePath"]) 
+        else:
+            self.ui.defaultFilePath.setText("/home/pi/Documents")
+
+        if os.path.isdir(self.camvals["defaultPhotoPath"]) == True:
+            self.ui.defaultPhotoPath.setText(self.camvals["defaultPhotoPath"]) 
+        else:
+            self.ui.defaultPhotoPath.setText("/home/pi/Photos")
+
+        if os.path.isdir(self.camvals["defaultVideoPath"]) == True:
+            self.ui.defaultVideoPath.setText(self.camvals["defaultVideoPath"]) 
+        else:
+            self.ui.defaultViedoPath.setText("/home/pi/Videos")
 
     def setDefaultFilePath(self):        
         directory = QtWidgets.QFileDialog.getExistingDirectory(self, "Set Default File Directory", self.ui.defaultFilePath.text())
