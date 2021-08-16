@@ -6,6 +6,8 @@ import pickle
 from PyQt5 import QtWidgets as qtw 
 from PyQt5 import QtGui as qtg 
 from PyQt5 import QtCore as qtc 
+from PyQt5.QtMultimedia import *
+from PyQt5.QtMultimediaWidgets import *
 
 from qualityTab import QualityTab
 from adjustmentsTab import Adjustments
@@ -25,6 +27,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
     def __init__(self):  #first initialize the super class QWidget
         super().__init__() 
         # get the settings
+        # TODO put try statement in to catch lack of a camera!
         self.camera = PiCamera()
         # pass the main window and camera objects to a settings object
         self.settings = PSSettings(self, self.camera)
@@ -34,13 +37,14 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.setObjectName("pisnapApp")
         ####################################
         self.initUI()
-        ##################################### APP FOCUS
+        # if focus changes then deal with the preview appropriately
         app.focusChanged.connect(self.on_focusChanged)
 
     def on_focusChanged(self, then, now):
         """
-        mewthod to turn on or off the preview depending on whether the app has focus 
-        anded with whether preview is active 
+        turn on or off the preview depending on whether the app has focus 
+        and whether preview is active 
+
         """
         if then == None or now == None:
             if self.isActiveWindow():
@@ -53,7 +57,6 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
 
     def moveEvent(self, e):
         # if the preview is currently visibe
-        #print("is checked?", self.statusBarPreviewCheckBox.isChecked())
         if self.statusBarPreviewCheckBox.isChecked():
             # stop it!
             self.mWidget.showPreview(False)
@@ -366,6 +369,24 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
 #run the program
 if __name__=='__main__':
     app = qtw.QApplication(sys.argv)
+    app.setStyle('Fusion')
+    palette = qtg.QPalette()
+    palette.setColor(qtg.QPalette.Window, qtg.QColor(53, 53, 53))
+    palette.setColor(qtg.QPalette.WindowText, qtc.Qt.white)
+    palette.setColor(qtg.QPalette.Base, qtg.QColor(25, 25, 25))
+    palette.setColor(qtg.QPalette.AlternateBase, qtg.QColor(53, 53, 53))
+    palette.setColor(qtg.QPalette.ToolTipBase, qtc.Qt.white)
+    palette.setColor(qtg.QPalette.ToolTipText, qtc.Qt.white)
+    palette.setColor(qtg.QPalette.Text, qtc.Qt.white)
+    palette.setColor(qtg.QPalette.Button, qtg.QColor(53, 53, 53))
+    palette.setColor(qtg.QPalette.ButtonText, qtc.Qt.white)
+    palette.setColor(qtg.QPalette.BrightText, qtc.Qt.red)
+    palette.setColor(qtg.QPalette.Link, qtg.QColor(42, 130, 218))
+    palette.setColor(qtg.QPalette.Highlight, qtg.QColor(42, 130, 218))
+    palette.setColor(qtg.QPalette.HighlightedText, qtc.Qt.black)
+    app.setPalette(palette)
+    app.setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }")
+
     window = PiSnap()
     
     sys.exit(app.exec_())
