@@ -340,18 +340,18 @@
    </hints>
   </connection>
   <connection>
-   <sender>runZoom</sender>
-   <signal>clicked(bool)</signal>
+   <sender>zoomTableView</sender>
+   <signal>clicked(QModelIndex)</signal>
    <receiver>Form</receiver>
-   <slot>doRunZoom(bool)</slot>
+   <slot>showThisZoomStart(QModelIndex)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>299</x>
-     <y>558</y>
+     <x>509</x>
+     <y>490</y>
     </hint>
     <hint type="destinationlabel">
-     <x>342</x>
-     <y>580</y>
+     <x>521</x>
+     <y>487</y>
     </hint>
    </hints>
   </connection>
@@ -372,5 +372,6 @@
   <slot>playSelectedRows(bool)</slot>
   <slot>doNextZoom()</slot>
   <slot>slot2()</slot>
+  <slot>showThisZoomStart(QModelIndex)</slot>
  </slots>
 </ui>

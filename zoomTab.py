@@ -176,6 +176,25 @@ class ZoomTab(QtWidgets.QWidget):
             self.ui.playRows.setText(u"\u23F5")
             self.abortZoom = True
 
+    def showStartPoint(self, ix):
+        print(self.model._data[ix][0],self.model._data[ix][1],self.model._data[ix][2])
+        #self.ui.adjustZoom.x = self.model._data[ix][0]
+        #self.ui.adjustZoom.y = self.model._data[ix][1]
+        #self.ui.getZoom.setValue(self.model._data[ix][2])
+        self.camera.zoom = (
+            self.model._data[ix][0],
+            self.model._data[ix][1],
+            self.model._data[ix][2],
+            self.model._data[ix][2]
+        )
+    def showEndPoint(self, ix):
+        self.camera.zoom = (
+        self.model._data[ix+1][0],
+        self.model._data[ix+1][1],
+        self.model._data[ix+1][2],
+        self.model._data[ix+1][2]
+        )
+        
 
     def runZoomLoops(self, startRow, num_rows):  
         """ holds the outer loop that iterates through the rows, then passes off the actual zoom loop
@@ -347,6 +366,26 @@ class ZoomTab(QtWidgets.QWidget):
         self.camera.resolution = (self.camvals["vidres"][0] , self.camvals["vidres"][1] )
 
 
+    def showThisZoomStart(self, ix):
+        modifiers = QtWidgets.QApplication.keyboardModifiers()
+        if modifiers == QtCore.Qt.ShiftModifier:
+            #print('Shift+Click')
+            self.showStartPoint(ix.row())
+            #print(ix.row()
+        elif modifiers == QtCore.Qt.ControlModifier:
+            #print('Control+Click')
+        #elif modifiers == QtCore.Qt.AlternateModifier:
+        #    print('Alternate+Click')
+        
+        elif modifiers == (QtCore.Qt.ControlModifier |
+                           QtCore.Qt.ShiftModifier):
+            #print('Control+Shift+Click')
+            if ix.row()+1 < len(self.model._data):
+                self.showStartPoint(ix.row()+1)
+            else:
+                psFunctions.printT(self.window(), "No end set yet for this zoom")
+        #else:
+        #    print('Click')
 
 #######################################################################################
     #                           END OF CLASS

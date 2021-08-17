@@ -71,6 +71,7 @@ class Ui_Form(object):
         self.delRow.clicked.connect(Form.deleteSelectedRow)
         self.playRows.clicked['bool'].connect(Form.playSelectedRows)
         self.nextZoom.clicked.connect(Form.doNextZoom)
+        self.zoomTableView.clicked['QModelIndex'].connect(Form.showThisZoomStart)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
