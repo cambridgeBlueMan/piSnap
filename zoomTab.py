@@ -16,8 +16,8 @@ import math
 class ZoomTab(QtWidgets.QWidget):
     def __init__(self, camvals, camera):
         super().__init__()
-        # Ui_Form is the main designer generated class. so instantiate one. Precede the variable name with
-        # the word 'self'
+        # following lines only used if the widget is being used stand alone
+        # otherwise both camvals and camera should exist
         if camvals == None:
             with open("settings.json", "r") as settings:
                 self.camvals = json.load(settings)
@@ -27,12 +27,11 @@ class ZoomTab(QtWidgets.QWidget):
             self.camera = PiCamera()
         else:
             self.camera = camera
+        # Ui_Form is the main designer generated class. so instantiate one. 
         self.ui = Ui_Form()
-        # now pass the main window object to it so that the setupUi method can draw all
-        # the widgets into the window
+        # now pass the main window object to the setupUi method 
         self.ui.setupUi(self)
         #self.show()
-        #self.ui.getXOrigin.keyPressEvent(self,event)
         # are these two values available from PiCamera
         self.sensorWidth = self.camvals["sensorWidth"]
         self.sensorHeight = self.camvals["sensorHeight"]
@@ -43,8 +42,7 @@ class ZoomTab(QtWidgets.QWidget):
         ########################
         self.previewDivider = 3
         # 
-        # set text tplayer controls
-
+        # 
         self.ui.getZoom.setInvertedAppearance(True)
         # TODO dont think the next two lines are used?
         self.pixelWidth  = 1/self.sensorWidth
@@ -53,23 +51,28 @@ class ZoomTab(QtWidgets.QWidget):
         #set to bullet point
         self.ui.adjustZoom.setText(u"\u26AB")
 
+        # set to player control chars
         self.ui.playRows.setText(u"\u23F5")
         self.ui.nextZoom.setText(u"\u23ED")
+
         # initialise flags for playRows
         self.nextZoom = False
         self.abortZoom = False
         self.initControls()
-
         self.initModelStuff()
 
     def initModelStuff(self):
         # zoomTableModel is subclassed from QAbstractTableModel, and is at end of this file
         self.model = zoomTableModel()
-        # associate the zoomTableView widget with the model
+        # associate the zoomTableView widget created in designer with the model
         self.ui.zoomTableView.setModel(self.model)
 
     def initControls(self):
-        # set max value for ui items
+        # TODO There are some assumptions here that aqll the zoom stuff is for 
+        # videos, although it could have some application with stills
+        # set max value for ui items.
+        # it kind of woreks, but really the resolution button should map to the still
+        # resolution if wea re dealing witt a still
 
         self.zoom = [0,0, self.camvals["vidres"][0] /self.sensorWidth, self.camvals["vidres"][0] /self.sensorWidth]
         self.startZoom = self.zoom[:]
@@ -88,7 +91,7 @@ class ZoomTab(QtWidgets.QWidget):
         self.ui.adjustZoom.move(0,0)
         # QUERY do we want to set the actual camera zoom here, same with line after
         # set camera zoom!!!
-        self.camera.zoom = self.zoom
+        self.camera.zoom = self.zoom[:]
         # now we can set the resolution on the camer itself
         self.camera.resolution = (self.camvals["vidres"][0] , self.camvals["vidres"][1] )
 
@@ -154,7 +157,7 @@ class ZoomTab(QtWidgets.QWidget):
         # get the currently selected rows from the table
     def playSelectedRows(self):
         """ runs a series of zooms defined with the adjustZoom, setZoom and speed control widgets"""
-        print ("&&&&&&&&&&&&&&&&&&&", self.ui.playRows.text())
+        #print ("&&&&&&&&&&&&&&&&&&&", self.ui.playRows.text())
         # if icon is 'play' icon
         if self.ui.playRows.text() == u"\u23F5":
             selected = self.ui.zoomTableView.selectedIndexes()
@@ -169,33 +172,14 @@ class ZoomTab(QtWidgets.QWidget):
                 startRow = selected[0].row()
                 # change from play icon to stop icon
                 self.ui.playRows.setText(u"\u23F9")
-                print("££££££££££££££££££££££££££££££££££££")   
+                #print("££££££££££££££££££££££££££££££££££££")   
                 # pass start row and number of rows to new thread
                 _thread.start_new_thread(self.runZoomLoops, (startRow, num_rows))
         else:
             self.ui.playRows.setText(u"\u23F5")
             self.abortZoom = True
 
-    def showStartPoint(self, ix):
-        print(self.model._data[ix][0],self.model._data[ix][1],self.model._data[ix][2])
-        #self.ui.adjustZoom.x = self.model._data[ix][0]
-        #self.ui.adjustZoom.y = self.model._data[ix][1]
-        #self.ui.getZoom.setValue(self.model._data[ix][2])
-        self.camera.zoom = (
-            self.model._data[ix][0],
-            self.model._data[ix][1],
-            self.model._data[ix][2],
-            self.model._data[ix][2]
-        )
-    def showEndPoint(self, ix):
-        self.camera.zoom = (
-        self.model._data[ix+1][0],
-        self.model._data[ix+1][1],
-        self.model._data[ix+1][2],
-        self.model._data[ix+1][2]
-        )
-        
-
+    
     def runZoomLoops(self, startRow, num_rows):  
         """ holds the outer loop that iterates through the rows, then passes off the actual zoom loop
         to the method runMultiZoomLoop """      
@@ -365,6 +349,27 @@ class ZoomTab(QtWidgets.QWidget):
         # now we can set the resolution on the camer itself
         self.camera.resolution = (self.camvals["vidres"][0] , self.camvals["vidres"][1] )
 
+    def showStartPoint(self, ix):
+        print(self.model._data[ix][0],self.model._data[ix][1],self.model._data[ix][2])
+        #self.ui.adjustZoom.x = self.model._data[ix][0]
+        #self.ui.adjustZoom.y = self.model._data[ix][1]
+        #self.ui.getZoom.setValue(self.model._data[ix][2])
+        self.camera.zoom = (
+            self.model._data[ix][0],
+            self.model._data[ix][1],
+            self.model._data[ix][2],
+            self.model._data[ix][2]
+        )
+
+    def showEndPoint(self, ix):
+        self.camera.zoom = (
+        self.model._data[ix+1][0],
+        self.model._data[ix+1][1],
+        self.model._data[ix+1][2],
+        self.model._data[ix+1][2]
+        )
+        
+
 
     def showThisZoomStart(self, ix):
         modifiers = QtWidgets.QApplication.keyboardModifiers()
@@ -374,6 +379,7 @@ class ZoomTab(QtWidgets.QWidget):
             #print(ix.row()
         elif modifiers == QtCore.Qt.ControlModifier:
             #print('Control+Click')
+            pass
         #elif modifiers == QtCore.Qt.AlternateModifier:
         #    print('Alternate+Click')
         

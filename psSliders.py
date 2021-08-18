@@ -30,15 +30,24 @@ class PSCompositeSlider(qtw.QAbstractSlider):
 
         # make spinbox, set size
         self.spinBox = qtw.QSpinBox(self)
-        self.spinBox.setFixedSize((qtc.QSize(50, 48)))
+        self.spinBox.setFixedSize((qtc.QSize(45, 30)))
         # position it
-        self.spinBox.move(190, 7)
+        self.spinBox.move(200, 10)
+        # set font
+        font = qtg.QFont()
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
+        self.spinBox.setFont(font)
         # name it. necessary?
         self.spinBox.setObjectName("spinBox")
         # make a button
         self.button = qtw.QPushButton('r', self)
-        self.button.setFixedSize(qtc.QSize(20,45))
-        self.button.move(245, 7)
+        self.button.setFixedSize(qtc.QSize(15,30))
+        self.button.move(250, 10)
+        # set font
+        self.button.setFont(font)
 
         # connect internal signals and slots
         self.slider.valueChanged['int'].connect(self.spinBox.setValue)
@@ -98,5 +107,5 @@ if __name__ == '__main__':
     app = qtw.QApplication(sys.argv)
     # it's required to save a reference to MainWindow.
     # if it goes out of scope, it will be destroyed.
-    mw = CompositeSlider()
+    mw = PSCompositeSlider(parent)
     sys.exit(app.exec())
