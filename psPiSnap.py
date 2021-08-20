@@ -17,7 +17,8 @@ from adjustmentsTab import Adjustments
 from zoomTab import ZoomTab
 from keyboardslider import KeyboardSlider
 from psSettings import PSSettings
-from picamera import PiCamera
+#from picamera import PiCamera
+import picamera
 from quit import Quit
 from preferences import Preferences
 import psFunctions
@@ -28,7 +29,20 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         super().__init__() 
         # get the settings
         # VICKY put try statement in to catch lack of a camera!
-        self.camera = PiCamera()
+        try:
+            self.camera = picamera.PiCamera()
+        except picamera.PiCameraError as err:
+            print(err)
+            print('======================================================================')
+            print('This error can be caused if no camera is attached to the Raspberry Pi!')
+            print('======================================================================')
+            sys.exit()
+        except picamera.PiCameraMMALError:
+            print('======================================================================')
+            print('Camera already in use! Please close relevant application and try again')
+            print('======================================================================')
+            
+            sys.exit()
         # pass the main window and camera objects to a settings object
         self.settings = PSSettings(self, self.camera)
         self.camvals = self.settings.camvals

@@ -108,11 +108,13 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 
 class QDoublePushButton(QPushButton):
+    *** add straight after declaration
     doubleClicked = pyqtSignal()
     clicked = pyqtSignal()
 
     def __init__(self, *args, **kwargs):
         QPushButton.__init__(self, *args, **kwargs)
+        *** add shortly after initialisation
         self.timer = QTimer()
         self.timer.setSingleShot(True)
         self.timer.timeout.connect(self.clicked.emit)

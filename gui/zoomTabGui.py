@@ -42,8 +42,8 @@ class Ui_Form(object):
         self.label_2.setObjectName("label_2")
         self.getSpeed = QtWidgets.QSlider(Form)
         self.getSpeed.setGeometry(QtCore.QRect(170, 430, 131, 26))
-        self.getSpeed.setMinimum(600)
-        self.getSpeed.setMaximum(1800)
+        self.getSpeed.setMinimum(100)
+        self.getSpeed.setMaximum(900)
         self.getSpeed.setProperty("value", 600)
         self.getSpeed.setOrientation(QtCore.Qt.Horizontal)
         self.getSpeed.setObjectName("getSpeed")
@@ -77,7 +77,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.start.setText(_translate("Form", "set point"))
+        self.start.setText(_translate("Form", "add"))
         self.label_3.setText(_translate("Form", "zoom"))
         self.adjustZoom.setText(_translate("Form", "b"))
         self.label.setText(_translate("Form", "Set Zoom"))
