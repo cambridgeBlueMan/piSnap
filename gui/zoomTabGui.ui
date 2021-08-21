@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>537</width>
+    <width>531</width>
     <height>653</height>
    </rect>
   </property>
@@ -215,6 +215,7 @@
     <signal>xChanged(int)</signal>
     <signal>yChanged(int)</signal>
     <signal>posChanged(int,int)</signal>
+    <signal>doubleClicked()</signal>
     <slot>movePreviewX(int)</slot>
     <slot>movePreviewPos(list)</slot>
    </slots>
@@ -308,22 +309,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>playRows</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>Form</receiver>
-   <slot>playSelectedRows(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>320</x>
-     <y>450</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>44</x>
-     <y>496</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>nextZoom</sender>
    <signal>clicked()</signal>
    <receiver>Form</receiver>
@@ -334,7 +319,7 @@
      <y>435</y>
     </hint>
     <hint type="destinationlabel">
-     <x>518</x>
+     <x>498</x>
      <y>391</y>
     </hint>
    </hints>
@@ -350,8 +335,40 @@
      <y>490</y>
     </hint>
     <hint type="destinationlabel">
-     <x>521</x>
+     <x>498</x>
      <y>487</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>adjustZoom</sender>
+   <signal>doubleClicked()</signal>
+   <receiver>Form</receiver>
+   <slot>doSetStart()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>8</x>
+     <y>12</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>498</x>
+     <y>71</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>playRows</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>playSelectedRows()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>350</x>
+     <y>449</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>498</x>
+     <y>290</y>
     </hint>
    </hints>
   </connection>
@@ -369,7 +386,7 @@
   <slot>setSpeed(int)</slot>
   <slot>doPrintDiag()</slot>
   <slot>deleteSelectedRow()</slot>
-  <slot>playSelectedRows(bool)</slot>
+  <slot>playSelectedRows()</slot>
   <slot>doNextZoom()</slot>
   <slot>slot2()</slot>
   <slot>showThisZoomStart(QModelIndex)</slot>

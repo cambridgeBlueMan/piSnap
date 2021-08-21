@@ -139,7 +139,7 @@ class ZoomTab(QtWidgets.QWidget):
         #pass
         print(val)
 
-    def doSetStart(self,bool):
+    def doSetStart(self):
         #print(args)
         self.startZoom = self.zoom[:]
         #print ("start zoom: ", self.zoom)
@@ -174,13 +174,14 @@ class ZoomTab(QtWidgets.QWidget):
                 self.ui.playRows.setText(u"\u23F9")
                 #print("££££££££££££££££££££££££££££££££££££")   
                 # pass start row and number of rows to new thread
-                _thread.start_new_thread(self.runZoomLoops, (startRow, num_rows))
+                _thread.start_new_thread(self.outerZoomLoop, (startRow, num_rows))
         else:
+            # if it is stop icon then change to play and stop zoom
             self.ui.playRows.setText(u"\u23F5")
             self.abortZoom = True
 
     
-    def runZoomLoops(self, startRow, num_rows):  
+    def outerZoomLoop(self, startRow, num_rows):  
         """ holds the outer loop that iterates through the rows, then passes off the actual zoom loop
         to the method runMultiZoomLoop """      
 
@@ -216,7 +217,7 @@ class ZoomTab(QtWidgets.QWidget):
             ]
             endZoom = endZoom[:]
 
-            self.runMultiZoomLoop (xInc, yInc, zInc, startZoom, endZoom, loopSize, pause) # )
+            self.innerZoomLoop (xInc, yInc, zInc, startZoom, endZoom, loopSize, pause) # )
 
         # outer loop now ended 
         self.ui.playRows.setText(u"\u23F5")
@@ -225,11 +226,13 @@ class ZoomTab(QtWidgets.QWidget):
             self.window().mWidget.doStopVid()
             print("now in if")
 
-    def runMultiZoomLoop(self,xInc, yInc, zInc, startZoom, endZoom, loopSize, pause):
+    def innerZoomLoop(self,xInc, yInc, zInc, startZoom, endZoom, loopSize, pause):
         deltaX = 0
         deltaY = 0
         deltaZ = 0
         startZoom = startZoom[:]
+        print(startZoom)
+        print(endZoom)
         endZoom = endZoom[:]
         self.camera.zoom = startZoom
 
@@ -418,12 +421,18 @@ class zoomTableModel(QtCore.QAbstractTableModel):
     def columnCount(self, parent):
         return len(self._headers)
 
-    def data(self, index, role):
+    # handles requests from the view for data
+    def data(self, index, role=QtCore.Qt.DisplayRole):
         # original if statement:
         # if role == QtCore.Qt.DisplayRole:
         # Add EditRole so that the cell is not cleared when editing
         if role in (QtCore.Qt.DisplayRole, QtCore.Qt.EditRole):
-            return self._data[index.row()][index.column()]
+
+            value = self._data[index.row()][index.column()]
+            if isinstance(value,float):
+                return "%.6f" % value
+            else:
+                return value
 
     # Additional features methods: 
 

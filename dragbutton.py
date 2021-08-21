@@ -5,6 +5,9 @@ from PyQt5 import QtWidgets as qtw
 # there is code at bottom to implement a double click functionality
 class DragButton(qtw.QPushButton):
     posChanged = qtc.pyqtSignal(int,int)
+    # signals for doubleclick
+    doubleClicked = qtc.pyqtSignal()
+    clicked = qtc.pyqtSignal()
     global newPos
     def __init__(self, win, bWidth = 22, bHeight = 22):
         # win is the containing window
@@ -20,6 +23,21 @@ class DragButton(qtw.QPushButton):
         self.containerWidth = win.frameGeometry().width()
         self.containerHeight = win.frameGeometry().height()
         qtc.QMetaObject.connectSlotsByName(self)
+        ### double click stuff timer
+        self.timer = qtc.QTimer()
+        self.timer.setSingleShot(True)
+        self.timer.timeout.connect(self.clicked.emit)
+        super().clicked.connect(self.checkDoubleClick)
+
+    # moe double click
+    #@pyqtSlot()
+    def checkDoubleClick(self):
+        if self.timer.isActive():
+            print('in double click')
+            self.doubleClicked.emit()
+            self.timer.stop()
+        else:
+            self.timer.start(350)
 
     def setContainerSize(self, x, y):
         self.containerWidth = x
