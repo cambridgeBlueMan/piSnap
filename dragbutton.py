@@ -33,7 +33,6 @@ class DragButton(qtw.QPushButton):
     #@pyqtSlot()
     def checkDoubleClick(self):
         if self.timer.isActive():
-            print('in double click')
             self.doubleClicked.emit()
             self.timer.stop()
         else:
