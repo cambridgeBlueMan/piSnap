@@ -62,10 +62,10 @@ class ZoomTab(QtWidgets.QWidget):
         self.initModelStuff()
 
     def initModelStuff(self):
-        # zoomTableModel is subclassed from QAbstractTableModel, and is at end of this file
-        self.model = zoomTableModel()
-        # associate the zoomTableView widget created in designer with the model
-        self.ui.zoomTableView.setModel(self.model)
+        # ZoomTableModel is subclassed from QAbstractTableModel, and is at end of this file
+        self.zTblModel = ZoomTableModel()
+        # associate the zTblView widget created in designer with the zTblModel
+        self.ui.zTblView.setModel(self.zTblModel)
 
     def initControls(self):
         # TODO There are some assumptions here that aqll the zoom stuff is for 
@@ -144,10 +144,10 @@ class ZoomTab(QtWidgets.QWidget):
         self.startZoom = self.zoom[:]
         #print ("start zoom: ", self.zoom)
         #self.printDiag(self)
-        # add stuff for model version
+        # add stuff for zTblModel version
         zdata = [self.startZoom[0], self.startZoom[1], self.startZoom[2], 600, 1.0]
         # insert rows (position, numrows, parent, data)
-        self.model.insertRows(self.model.rowCount(None),1, self.model.parent(), zdata)
+        self.zTblModel.insertRows(self.zTblModel.rowCount(None),1, self.zTblModel.parent(), zdata)
 
     def doNextZoom(self):
         print ("in next zoom")
@@ -160,7 +160,7 @@ class ZoomTab(QtWidgets.QWidget):
         #print ("&&&&&&&&&&&&&&&&&&&", self.ui.playRows.text())
         # if icon is 'play' icon
         if self.ui.playRows.text() == u"\u23F5":
-            selected = self.ui.zoomTableView.selectedIndexes()
+            selected = self.ui.zTblView.selectedIndexes()
             # gather rows in a set and then see how many you got
             num_rows = len(set(index.row() for index in selected))
             if num_rows == 0:
@@ -169,52 +169,58 @@ class ZoomTab(QtWidgets.QWidget):
                 psFunctions.printT (self.window(),"you need more than just one row to run a zoom")
             else:
                 # run the zoom in a new thread
-                startRow = selected[0].row()
+                #startRow = selected[0].row()
                 # change from play icon to stop icon
                 self.ui.playRows.setText(u"\u23F9")
                 #print("££££££££££££££££££££££££££££££££££££")   
                 # pass start row and number of rows to new thread
-                _thread.start_new_thread(self.outerZoomLoop, (startRow, num_rows))
+                _thread.start_new_thread(self.outerZoomLoop, (selected[0], num_rows))
         else:
             # if it is stop icon then change to play and stop zoom
             self.ui.playRows.setText(u"\u23F5")
             self.abortZoom = True
 
     
-    def outerZoomLoop(self, startRow, num_rows):  
+    def outerZoomLoop(self, startIx, num_rows):  
         """ holds the outer loop that iterates through the rows, then passes off the actual zoom loop
         to the method runMultiZoomLoop """      
 
-        for ix in range(startRow, (startRow + num_rows)):
+        for i in range(startIx.row(), (startIx.row() + num_rows - 1)):
             if self.abortZoom == True:
                 self.abortZoom = False
                 break
 
             # increment for each step
             #print("actual ix: ", ix)
-            #print("ix", self.model._data[ix])
-            #print("nextRow", self.model._data[ix+1])
-            loopSize = self.model._data[ix][3] 
-            pause = self.model._data[ix][4]
+            #print("ix", self.zTblModel._data[ix])
+            #print("nextRow", self.zTblModel._data[ix+1])
+
+            myData = self.zTblModel.getZoomData(i)
+            print("myData: ", myData)
+            loopSize = myData[3]
+            pause = myData[4]
+
             
-            xInc = abs(self.model._data[ix][0] - self.model._data[(ix + 1)][0])/loopSize
-            yInc = abs(self.model._data[ix][1] - self.model._data[(ix + 1)][1])/loopSize
-            zInc = abs(self.model._data[ix][2] - self.model._data[(ix + 1)][2])/loopSize
+            xInc = abs(myData[0] - myData[5])/loopSize
+            yInc = abs(myData[1] - myData[6])/loopSize
+            zInc = abs(myData[2] - myData[7])/loopSize
 
             startZoom = [
-                self.model._data[ix][0], 
-                self.model._data[ix][1], 
-                self.model._data[ix][2], 
-                self.model._data[ix][2]
+                myData[0], 
+                myData[1], 
+                myData[2], 
+                myData[2]
             ]
+            print("startZoom: ", startZoom)
             startZoom = startZoom[:]
 
             endZoom = [
-                self.model._data[ix+1][0], 
-                self.model._data[ix+1][1], 
-                self.model._data[ix+1][2], 
-                self.model._data[ix+1][2]
+                myData[5], 
+                myData[6], 
+                myData[7], 
+                myData[7]
             ]
+            print("endZoom: ", endZoom)
             endZoom = endZoom[:]
 
             self.innerZoomLoop (xInc, yInc, zInc, startZoom, endZoom, loopSize, pause) # )
@@ -230,10 +236,11 @@ class ZoomTab(QtWidgets.QWidget):
         deltaX = 0
         deltaY = 0
         deltaZ = 0
-        startZoom = startZoom[:]
         print(startZoom)
         print(endZoom)
         endZoom = endZoom[:]
+        startZoom = startZoom[:]
+        zoom = startZoom[:]
         self.camera.zoom = startZoom
 
         for j in range(loopSize):
@@ -255,13 +262,13 @@ class ZoomTab(QtWidgets.QWidget):
                 deltaX  = deltaX + xInc
                 if startZoom[0] + deltaX >= endZoom[0]:
                     break
-                self.zoom[0] = startZoom[0] + deltaX
+                zoom[0] = startZoom[0] + deltaX
             # otherwise we start high and are decreasing
             else:
                 deltaX = deltaX + xInc
                 if startZoom[0] - deltaX <= endZoom[0]:
                     break
-                self.zoom[0] = startZoom[0] - deltaX
+                zoom[0] = startZoom[0] - deltaX
 
             # if start = end then do nothing
             if startZoom[1] == endZoom[1]:
@@ -271,13 +278,13 @@ class ZoomTab(QtWidgets.QWidget):
                 deltaY = deltaY + yInc
                 if startZoom[1] + deltaY >= endZoom[1]:
                     break
-                self.zoom[1] = startZoom[1] + deltaY
+                zoom[1] = startZoom[1] + deltaY
             # otherwise we start high and are decreasing
             else:
                 deltaY = deltaY + yInc
                 if startZoom[1] - deltaY <= endZoom[1]:
                     break
-                self.zoom[1] = startZoom[1] - deltaY
+                zoom[1] = startZoom[1] - deltaY
 
             # if start and end are equal then do nothing
             if startZoom[2] == endZoom[2]:
@@ -287,18 +294,18 @@ class ZoomTab(QtWidgets.QWidget):
                 deltaZ = deltaZ + zInc
                 if startZoom[2] + deltaX >= endZoom[2]:
                     break
-                self.zoom[2] = startZoom[2] + deltaZ
-                self.zoom[3] = startZoom[3] + deltaZ
+                zoom[2] = startZoom[2] + deltaZ
+                zoom[3] = startZoom[3] + deltaZ
             # otherwise we start high and are decreasing
             else:
                 deltaZ = deltaZ + zInc
                 if startZoom[2] - deltaZ <= endZoom[2]:
                     break
-                self.zoom[2] = startZoom[2] - deltaZ
-                self.zoom[3] = startZoom[3] - deltaZ
+                zoom[2] = startZoom[2] - deltaZ
+                zoom[3] = startZoom[3] - deltaZ
 
 
-            self.camera.zoom = self.zoom[:]
+            self.camera.zoom = zoom[:]
             #print("iter")
         sleep(pause)
         #print("loop now ended")
@@ -313,10 +320,10 @@ class ZoomTab(QtWidgets.QWidget):
         """
     def deleteSelectedRow(self):
         print("delete selected row")
-        selected = self.ui.zoomTableView.selectedIndexes()
+        selected = self.ui.zTblView.selectedIndexes()
         # Errata:  The book contains the following code:
         #if selected:
-        #    self.model.removeRows(selected[0].row(), len(selected), None)
+        #    self.zTblModel.removeRows(selected[0].row(), len(selected), None)
 
         # This is incorrect, as len(selected) is the number of *cells* selected,
         # not the number of *rows* selected.
@@ -324,7 +331,7 @@ class ZoomTab(QtWidgets.QWidget):
         # correct approach would look like this:
         num_rows = len(set(index.row() for index in selected))
         if selected:
-            self.model.removeRows(selected[0].row(), num_rows, None)
+            self.zTblModel.removeRows(selected[0].row(), num_rows, None)
 
 
     def doQuit(self):
@@ -352,56 +359,40 @@ class ZoomTab(QtWidgets.QWidget):
         # now we can set the resolution on the camer itself
         self.camera.resolution = (self.camvals["vidres"][0] , self.camvals["vidres"][1] )
 
-    def showStartPoint(self, ix):
-        print(self.model._data[ix][0],self.model._data[ix][1],self.model._data[ix][2])
-        #self.ui.adjustZoom.x = self.model._data[ix][0]
-        #self.ui.adjustZoom.y = self.model._data[ix][1]
-        #self.ui.getZoom.setValue(self.model._data[ix][2])
+    def showStartPoint(self, row):
+        myData = self.zTblModel.getZoomData(row, True)
+        myData = myData[:]
         self.camera.zoom = (
-            self.model._data[ix][0],
-            self.model._data[ix][1],
-            self.model._data[ix][2],
-            self.model._data[ix][2]
+            myData[0],
+            myData[1],
+            myData[2],
+            myData[2]
         )
-
-    def showEndPoint(self, ix):
-        self.camera.zoom = (
-        self.model._data[ix+1][0],
-        self.model._data[ix+1][1],
-        self.model._data[ix+1][2],
-        self.model._data[ix+1][2]
-        )
-        
-
 
     def showThisZoomStart(self, ix):
         modifiers = QtWidgets.QApplication.keyboardModifiers()
         if modifiers == QtCore.Qt.ShiftModifier:
-            #print('Shift+Click')
+            print('Shift+Click')
             self.showStartPoint(ix.row())
-            #print(ix.row()
+            print(ix.row())
         elif modifiers == QtCore.Qt.ControlModifier:
-            #print('Control+Click')
-            pass
-        #elif modifiers == QtCore.Qt.AlternateModifier:
-        #    print('Alternate+Click')
-        
-        elif modifiers == (QtCore.Qt.ControlModifier |
+            print('Control+Click')
+        """ elif modifiers == (QtCore.Qt.ControlModifier |
                            QtCore.Qt.ShiftModifier):
-            #print('Control+Shift+Click')
-            if ix.row()+1 < len(self.model._data):
+            print('Control+Shift+Click')
+            if ix.row()+1 < self.zTblModel.rowCount():
                 self.showStartPoint(ix.row()+1)
             else:
                 psFunctions.printT(self.window(), "No end set yet for this zoom")
-        #else:
-        #    print('Click')
+        else:
+            print('Click') """
 
 #######################################################################################
     #                           END OF CLASS
 #######################################################################################
 
 
-class zoomTableModel(QtCore.QAbstractTableModel):
+class ZoomTableModel(QtCore.QAbstractTableModel):
 
     def __init__(self):
         super().__init__()
@@ -435,6 +426,20 @@ class zoomTableModel(QtCore.QAbstractTableModel):
                 return value
 
     # Additional features methods: 
+
+    def getZoomData(self, row, startOnly=False):
+        # we need x,y,w,loopsize,pause,next x, next y, next w i.e 8 items
+        thisLoop = []
+        for n in range(0,5):
+            thisLoop.append(self._data[row][n])
+            #print(thisLoop)
+        if startOnly == False:
+            for n in range(0,3):
+                thisLoop.append(self._data[row + 1][n])
+                #print(thisLoop)
+        
+        return tuple(thisLoop)
+
 
     def headerData(self, section, orientation, role):
 

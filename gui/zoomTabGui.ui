@@ -141,7 +141,7 @@
     <enum>Qt::Horizontal</enum>
    </property>
   </widget>
-  <widget class="QTableView" name="zoomTableView">
+  <widget class="QTableView" name="zTblView">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -325,7 +325,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>zoomTableView</sender>
+   <sender>zTblView</sender>
    <signal>clicked(QModelIndex)</signal>
    <receiver>Form</receiver>
    <slot>showThisZoomStart(QModelIndex)</slot>
