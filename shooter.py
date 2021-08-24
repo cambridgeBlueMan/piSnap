@@ -277,7 +277,7 @@ class Shooter(qtw.QWidget):
                 + str(abs(self.window().zoomTab.endZoom[0] - self.window().zoomTab.startZoom[0])) + ','
                 + str(abs(self.window().zoomTab.endZoom[1] - self.window().zoomTab.startZoom[1])) + ','
                 + str(abs(self.window().zoomTab.endZoom[2] - self.window().zoomTab.startZoom[2])) + ','
-                + str(self.camvals["loopSize"])
+                + str(self.camvals["zoomSpeed"])
                 + "\n")
                 fh.close()
                 self.window().zoomTab.playSelectedRows()

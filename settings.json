@@ -42,7 +42,7 @@
     "image_effect": "none",
     "image_effect_params": null,
     "iso": 0,
-    "loopSize": 755,
+    "zoomSpeed": 55,
     "meter_mode": "backlit",
     "mux": "true",
     "overlays": [],

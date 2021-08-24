@@ -82,7 +82,7 @@ class ZoomTab(QtWidgets.QWidget):
         # QUERY should the following be set to max rather than min?
         self.ui.getZoom.setValue(self.camvals["vidres"][0] )
         #get the name pf the speed object and set its vaue to the camvals value as per above
-        self.ui.getSpeed.setValue(self.camvals["loopSize"])
+        self.ui.getSpeed.setValue(self.camvals["zoomSpeed"])
         # dragbutton size varies according to the current res
         self.ui.adjustZoom.setDragButtonSize(self.camvals["vidres"][0] /8, self.camvals["vidres"][1] /8)
         # QUERY if previous QUERY is set to max then drag button size should be the following
@@ -95,6 +95,8 @@ class ZoomTab(QtWidgets.QWidget):
         # now we can set the resolution on the camer itself
         self.camera.resolution = (self.camvals["vidres"][0] , self.camvals["vidres"][1] )
 
+    def convertZoomSpeedToLoopSize(self, zoomSpeed):
+        return 100 + (8*zoomSpeed)
     def mapXToY(self, value):
         # TODO describe this method
         #value = 2028
@@ -134,7 +136,8 @@ class ZoomTab(QtWidgets.QWidget):
         # we need also to reset the ranges of the getYOrigin and getXOrigin sliders
 
     def setSpeed(self,val):
-        self.camvals["loopSize"] = val 
+        self.camvals["zoomSpeed"] = val
+        self.loopSize = self.convertZoomSpeedToLoopSize(val) 
         #pass
         print(val)
 
@@ -144,7 +147,8 @@ class ZoomTab(QtWidgets.QWidget):
         #print ("start zoom: ", self.zoom)
         #self.printDiag(self)
         # add stuff for zTblModel version
-        zdata = [self.startZoom[0], self.startZoom[1], self.startZoom[2], 600, 1.0]
+
+        zdata = [self.startZoom[0], self.startZoom[1], self.startZoom[2], self.camvals["zoomSpeed"], 1.0]
         # insert rows (position, numrows, parent, data)
         self.zTblModel.insertRows(self.zTblModel.rowCount(None),1, self.zTblModel.parent(), zdata)
 
@@ -186,13 +190,13 @@ class ZoomTab(QtWidgets.QWidget):
                 break
 
             myData = self.zTblModel.getZoomData(i)
-            loopSize = myData[3]
+            self.loopSize = self.convertZoomSpeedToLoopSize(myData[3])
             pause = myData[4]
 
             # set increments
-            xInc = abs(myData[0] - myData[5])/loopSize
-            yInc = abs(myData[1] - myData[6])/loopSize
-            zInc = abs(myData[2] - myData[7])/loopSize
+            xInc = abs(myData[0] - myData[5])/self.loopSize
+            yInc = abs(myData[1] - myData[6])/self.loopSize
+            zInc = abs(myData[2] - myData[7])/self.loopSize
 
             startZoom = [
                 myData[0], 
@@ -210,11 +214,12 @@ class ZoomTab(QtWidgets.QWidget):
             ]
             endZoom = endZoom[:]
             # pass on
-            self.innerZoomLoop (xInc, yInc, zInc, startZoom, endZoom, loopSize, pause) # )
+            self.innerZoomLoop (xInc, yInc, zInc, startZoom, endZoom, self.loopSize, pause) # )
 
         # outer loop now ended 
         self.ui.playRows.setText(u"\u23F5")
-        
+        self.abortZoom = False
+    
         if self.camera.recording:
             self.window().mWidget.doStopVid()
 
@@ -226,8 +231,9 @@ class ZoomTab(QtWidgets.QWidget):
         startZoom = startZoom[:]
         zoom = startZoom[:]
         self.camera.zoom = startZoom
-
+        print(loopSize)
         for j in range(loopSize):
+
             if self.abortZoom == True:
                 self.ui.playRows.setText(u"\u23F5")
                 break
@@ -373,7 +379,7 @@ class ZoomTableModel(QtCore.QAbstractTableModel):
 
     # Additional features methods: 
     def getZoomData(self, row, startOnly=False):
-        # we need x,y,w,loopsize,pause,next x, next y, next w i.e 8 items
+        # we need x,y,w,zoomSpeed,pause,next x, next y, next w i.e 8 items
         thisLoop = []
         for n in range(0,5):
             thisLoop.append(self._data[row][n])
