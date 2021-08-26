@@ -79,7 +79,7 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="DragButton" name="adjustZoom">
+   <widget class="DragButton" name="adjustZoomXYPos">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -154,8 +154,8 @@
   <widget class="QPushButton" name="delRow">
    <property name="geometry">
     <rect>
-     <x>430</x>
-     <y>430</y>
+     <x>450</x>
+     <y>440</y>
      <width>51</width>
      <height>21</height>
     </rect>
@@ -167,7 +167,7 @@
   <widget class="QPushButton" name="playRows">
    <property name="geometry">
     <rect>
-     <x>320</x>
+     <x>370</x>
      <y>430</y>
      <width>31</width>
      <height>31</height>
@@ -189,7 +189,7 @@
   <widget class="QPushButton" name="nextZoom">
    <property name="geometry">
     <rect>
-     <x>370</x>
+     <x>410</x>
      <y>430</y>
      <width>31</width>
      <height>30</height>
@@ -200,6 +200,19 @@
    </property>
    <property name="whatsThis">
     <string/>
+   </property>
+   <property name="text">
+    <string>*</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="restartZoom">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>430</y>
+     <width>31</width>
+     <height>30</height>
+    </rect>
    </property>
    <property name="text">
     <string>*</string>
@@ -261,7 +274,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>adjustZoom</sender>
+   <sender>adjustZoomXYPos</sender>
    <signal>posChanged(int,int)</signal>
    <receiver>Form</receiver>
    <slot>setZoomWithButton(int,int)</slot>
@@ -299,8 +312,8 @@
    <slot>deleteSelectedRow()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>430</x>
-     <y>450</y>
+     <x>450</x>
+     <y>460</y>
     </hint>
     <hint type="destinationlabel">
      <x>11</x>
@@ -315,7 +328,7 @@
    <slot>doNextZoom()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>399</x>
+     <x>439</x>
      <y>435</y>
     </hint>
     <hint type="destinationlabel">
@@ -341,7 +354,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>adjustZoom</sender>
+   <sender>adjustZoomXYPos</sender>
    <signal>doubleClicked()</signal>
    <receiver>Form</receiver>
    <slot>doSetStart()</slot>
@@ -363,12 +376,28 @@
    <slot>playSelectedRows()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>350</x>
+     <x>400</x>
      <y>449</y>
     </hint>
     <hint type="destinationlabel">
      <x>498</x>
      <y>290</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>restartZoom</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>doRestartZoom()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>325</x>
+     <y>443</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>12</x>
+     <y>441</y>
     </hint>
    </hints>
   </connection>
@@ -390,5 +419,6 @@
   <slot>doNextZoom()</slot>
   <slot>slot2()</slot>
   <slot>showThisZoomStart(QModelIndex)</slot>
+  <slot>doRestartZoom()</slot>
  </slots>
 </ui>

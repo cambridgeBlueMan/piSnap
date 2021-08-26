@@ -290,6 +290,9 @@ class Shooter(qtw.QWidget):
             #    txt = "Recording could not be started: " + str(err)
             #    self.window().terminalWidget.setPlainText(txt)   
 
+    def endRecWithZoom(self,bool):
+        self.window().zoomTab.endRecWithZoom = bool
+
     def doStopVid(self):
          # if camera is playing then stop playing  
         if self.mediaplayer.is_playing() == 1:

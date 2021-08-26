@@ -16,87 +16,91 @@ import math
 class ZoomTab(QtWidgets.QWidget):
     def __init__(self, camvals, camera):
         super().__init__()
-        # following lines only used if the widget is being used stand alone
-        # otherwise both camvals and camera should exist
-        if camvals == None:
-            with open("settings.json", "r") as settings:
-                self.camvals = json.load(settings)
-        else:
-            self.camvals = camvals
-        if camera == None:
-            self.camera = PiCamera()
-        else:
-            self.camera = camera
-        # Ui_Form is the main designer generated class. so instantiate one. 
+        
+        self.camvals = camvals
+        self.camera = camera
+ 
         self.ui = Ui_Form()
-        # now pass the main window object to the setupUi method 
         self.ui.setupUi(self)
-        #self.show()
+
         # are these two values available from PiCamera
         self.sensorWidth = self.camvals["sensorWidth"]
         self.sensorHeight = self.camvals["sensorHeight"]
-        # this shouldn't be set here. is avalable as camval
-        self.framerate = self.camvals["framerate"]
+
         ########################
         # what to do with this?
         ########################
         self.previewDivider = 3
         # 
-        # 
         self.ui.getZoom.setInvertedAppearance(True)
         # TODO dont think the next two lines are used?
-        self.pixelWidth  = 1/self.sensorWidth
-        self.pixelHeight = 1/self.sensorHeight
+        #self.pixelWidth  = 1/self.sensorWidth
+        #self.pixelHeight = 1/self.sensorHeight
 
         #set to bullet point
-        self.ui.adjustZoom.setText(u"\u26AB")
+        self.ui.adjustZoomXYPos.setText(u"\u26AB")
 
         # set to player control chars
         self.ui.playRows.setText(u"\u23F5")
         self.ui.nextZoom.setText(u"\u23ED")
+        self.ui.restartZoom.setText(u"\u23EA")
 
         # initialise flags for playRows
         self.nextZoom = False
         self.abortZoom = False
+        self.restartZoom = False
+        self.endRecWithZoom = False
         self.initControls()
         self.initModelStuff()
 
     def initModelStuff(self):
-        # ZoomTableModel is subclassed from QAbstractTableModel, and is at end of this file
+        # ZoomTableModel is subclassed from QAbstractTableModel
         self.zTblModel = ZoomTableModel()
         # associate the zTblView widget created in designer with the zTblModel
         self.ui.zTblView.setModel(self.zTblModel)
 
     def initControls(self):
-        # TODO There are some assumptions here that aqll the zoom stuff is for 
-        # videos, although it could have some application with stills
-        # set max value for ui items.
-        # it kind of woreks, but really the resolution button should map to the still
-        # resolution if wea re dealing witt a still
+        # TODO limited functionality for stills, including disabling stuff
 
+        """ we make the zoom the maximum possible for the given resolution """
         self.zoom = [0,0, self.camvals["vidres"][0] /self.sensorWidth, self.camvals["vidres"][0] /self.sensorWidth]
         self.startZoom = self.zoom[:]
         self.endZoom = self.zoom[:]
-        #  minimum is set in designer at 1920 (HD) , max is set in designer at 3470 
+        """ 
+        getZoom is a slider
+        minimum is set in designer at 1920 (HD) , 
+        max is set in designer at 3470, I'm not sure where that figure comes from?
+        but i am sure  that it is a good figue !!!!! 
+        represents 0.855 of sensor size. This may have to do with modes?
+        
+        """
+
         self.ui.getZoom.setMinimum(self.camvals["vidres"][0] )
+
         # QUERY should the following be set to max rather than min?
         self.ui.getZoom.setValue(self.camvals["vidres"][0] )
-        #get the name pf the speed object and set its vaue to the camvals value as per above
-        self.ui.getSpeed.setValue(self.camvals["zoomSpeed"])
-        # dragbutton size varies according to the current res
-        self.ui.adjustZoom.setDragButtonSize(self.camvals["vidres"][0] /8, self.camvals["vidres"][1] /8)
-        # QUERY if previous QUERY is set to max then drag button size should be the following
-        #self.ui.adjustZoom.setDragButtonSize(self.sensorWidth/8, self.sensorHeight/8)
 
-        self.ui.adjustZoom.move(0,0)
+        # dragbutton size varies according to the current res
+        # QUERY if previous QUERY is set to max then drag button size should be set accordingly
+        self.ui.adjustZoomXYPos.setDragButtonSize(self.camvals["vidres"][0] /8, self.camvals["vidres"][1] /8)
+
+        # initialise to top left
+        self.ui.adjustZoomXYPos.move(0,0)
+        
+        # set speed 
+        self.ui.getSpeed.setValue(self.camvals["zoomSpeed"])
+        
+
         # QUERY do we want to set the actual camera zoom here, same with line after
         # set camera zoom!!!
         self.camera.zoom = self.zoom[:]
-        # now we can set the resolution on the camer itself
+
+        # now we can set the resolution on the camera itself
         self.camera.resolution = (self.camvals["vidres"][0] , self.camvals["vidres"][1] )
 
     def convertZoomSpeedToLoopSize(self, zoomSpeed):
         return 100 + (8*zoomSpeed)
+
     def mapXToY(self, value):
         # TODO describe this method
         #value = 2028
@@ -130,10 +134,9 @@ class ZoomTab(QtWidgets.QWidget):
         self.zoom[2] = val/self.sensorWidth
         self.zoom[3] = val/self.sensorWidth
         height = self.mapXToY(val)
-        self.ui.adjustZoom.setDragButtonSize(val/8, height/8)
+        self.ui.adjustZoomXYPos.setDragButtonSize(val/8, height/8)
  
         self.camera.zoom = self.zoom[:]
-        # we need also to reset the ranges of the getYOrigin and getXOrigin sliders
 
     def setSpeed(self,val):
         self.camvals["zoomSpeed"] = val
@@ -142,24 +145,20 @@ class ZoomTab(QtWidgets.QWidget):
         print(val)
 
     def doSetStart(self):
-        #print(args)
         self.startZoom = self.zoom[:]
-        #print ("start zoom: ", self.zoom)
-        #self.printDiag(self)
-        # add stuff for zTblModel version
-
         zdata = [self.startZoom[0], self.startZoom[1], self.startZoom[2], self.camvals["zoomSpeed"], 1.0]
         # insert rows (position, numrows, parent, data)
         self.zTblModel.insertRows(self.zTblModel.rowCount(None),1, self.zTblModel.parent(), zdata)
 
     def doNextZoom(self):
-        print ("in next zoom")
+        """ flag to say break from inner zoom loop """
         self.nextZoom = True
+
+    def doRestartZoom(self):
+        self.restartZoom = True
     
-    
-        # get the currently selected rows from the table
     def playSelectedRows(self):
-        """ runs a series of zooms defined with the adjustZoom, setZoom and speed control widgets"""
+        """ runs a series of zooms defined with the adjustZoomXYPos, setZoom and speed control widgets"""
         # if icon is 'play' icon
         if self.ui.playRows.text() == u"\u23F5":
             selected = self.ui.zTblView.selectedIndexes()
@@ -187,6 +186,10 @@ class ZoomTab(QtWidgets.QWidget):
         for i in range(startIx.row(), (startIx.row() + num_rows - 1)):
             if self.abortZoom == True:
                 self.abortZoom = False
+                break
+            if self.restartZoom == True:
+                self.restartZoom = False
+                i = i-1
                 break
 
             myData = self.zTblModel.getZoomData(i)
@@ -220,10 +223,11 @@ class ZoomTab(QtWidgets.QWidget):
         self.ui.playRows.setText(u"\u23F5")
         self.abortZoom = False
     
-        if self.camera.recording:
+        if self.camera.recording and self.endRecWithZoom == True:
             self.window().mWidget.doStopVid()
 
     def innerZoomLoop(self,xInc, yInc, zInc, startZoom, endZoom, loopSize, pause):
+        """ iterates a zoom """
         deltaX = 0
         deltaY = 0
         deltaZ = 0
@@ -232,7 +236,8 @@ class ZoomTab(QtWidgets.QWidget):
         zoom = startZoom[:]
         self.camera.zoom = startZoom
         print(loopSize)
-        for j in range(loopSize):
+        j = 0
+        while j < loopSize-1:
 
             if self.abortZoom == True:
                 self.ui.playRows.setText(u"\u23F5")
@@ -241,8 +246,21 @@ class ZoomTab(QtWidgets.QWidget):
                 self.nextZoom = False
                 psFunctions.printT(self.window(), "Moving to next zoom point")
                 break
+            if self.restartZoom == True:
+                self.restartZoom = False
+                psFunctions.printT(self.window(), "Restarting this zoom")
+                deltaX = 0
+                deltaY = 0
+                deltaZ = 0
+                endZoom = endZoom[:]
+                startZoom = startZoom[:]
+                zoom = startZoom[:]
+                self.camera.zoom = startZoom
+                print(loopSize)
+                j = 0
+
             # pause for a bit
-            sleep(1/self.framerate)
+            sleep(1/self.camvals["framerate"])
             
             # if start and end zoom dimension are equal then do nothing
             if startZoom[0] == endZoom[0]:
@@ -296,53 +314,38 @@ class ZoomTab(QtWidgets.QWidget):
 
 
             self.camera.zoom = zoom[:]
+        j = j + 1
         sleep(pause)
 
     def deleteSelectedRow(self):
-        print("delete selected row")
         selected = self.ui.zTblView.selectedIndexes()
         num_rows = len(set(index.row() for index in selected))
         if selected:
             self.zTblModel.removeRows(selected[0].row(), num_rows, None)
 
-    def doQuit(self):
-        sys.exit()
+    """ def doQuit(self):
+        sys.exit() """
  
-    def showPreview(self):
+    """ def showPreview(self):
         if self.ui.showPreview.isChecked():
             self.camera.start_preview(fullscreen = False, window = (int(self.camvals["vidres"][0] /self.previewDivider),0,
                                                                 int(self.camvals["vidres"][0] /self.previewDivider), int(self.camvals["vidres"][1] /self.previewDivider)))
         else:
             self.camera.stop_preview()
-        pass
-
-    def resetZoomStuff(self):
-        self.zoom = [0,0, self.camvals["vidres"][0] /self.sensorWidth, self.camvals["vidres"][0] /self.sensorWidth]
-        self.startZoom = self.zoom[:]
-        self.endZoom = self.zoom[:]
-        self.ui.getZoom.setMinimum(self.camvals["vidres"][0] )
-        self.ui.getZoom.setValue(self.camvals["vidres"][0] )
-        #
-        self.ui.adjustZoom.setDragButtonSize(self.camvals["vidres"][0] /8, self.camvals["vidres"][1] /8)
-
-        self.camera.zoom = self.zoom
-        # now we can set the resolution on the camer itself
-        self.camera.resolution = (self.camvals["vidres"][0] , self.camvals["vidres"][1] )
-
-    def showStartPoint(self, row):
-        myData = self.zTblModel.getZoomData(row, True)
-        myData = myData[:]
-        self.camera.zoom = (
-            myData[0],
-            myData[1],
-            myData[2],
-            myData[2]
-        )
+        pass """
 
     def showThisZoomStart(self, ix):
+        """ moves the preview to show the start of the shift-clicked zoom row """
         modifiers = QtWidgets.QApplication.keyboardModifiers()
         if modifiers == QtCore.Qt.ShiftModifier:
-            self.showStartPoint(ix.row())
+            myData = self.zTblModel.getZoomData(ix.row(), True)
+            myData = myData[:]
+            self.camera.zoom = (
+                myData[0],
+                myData[1],
+                myData[2],
+                myData[2]
+            )
     
 #######################################################################################
     #                           END OF CLASS

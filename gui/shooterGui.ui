@@ -181,7 +181,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>90</y>
+       <y>70</y>
        <width>181</width>
        <height>27</height>
       </rect>
@@ -286,6 +286,19 @@
      </property>
      <property name="text">
       <string>Update</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="endRecWhenZoomEnds">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>100</y>
+       <width>231</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>End record when Zoom ends</string>
      </property>
     </widget>
    </widget>
@@ -473,6 +486,7 @@
     <signal>xChanged(int)</signal>
     <signal>yChanged(int)</signal>
     <signal>posChanged(int,int)</signal>
+    <signal>doubleClicked()</signal>
     <slot>movePreviewX(int)</slot>
     <slot>movePreviewPos(list)</slot>
    </slots>
@@ -745,8 +759,8 @@
    <slot>setRecordZoomFlag(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>306</x>
-     <y>791</y>
+     <x>308</x>
+     <y>782</y>
     </hint>
     <hint type="destinationlabel">
      <x>119</x>
@@ -866,6 +880,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>endRecWhenZoomEnds</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>Form</receiver>
+   <slot>endRecWithZoom(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>253</x>
+     <y>802</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>8</x>
+     <y>574</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>signal1()</signal>
@@ -896,5 +926,6 @@
   <slot>setPreviewLockState(bool)</slot>
   <slot>doClearImgContainer()</slot>
   <slot>doShowOverlay(bool)</slot>
+  <slot>endRecWithZoom(bool)</slot>
  </slots>
 </ui>

@@ -42,7 +42,7 @@
     "image_effect": "none",
     "image_effect_params": null,
     "iso": 0,
-    "zoomSpeed": 55,
+    "zoomSpeed": 0,
     "meter_mode": "backlit",
     "mux": "true",
     "overlays": [],
