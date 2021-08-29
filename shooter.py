@@ -49,10 +49,6 @@ class Shooter(qtw.QWidget):
         # do we want to record zoom?
         self.recordZoom = False
 
-        # set text to medium bullet
-        self.ui.previewButton.setText(u"\u26AB")
-
-
         self.resDivider = 2
         
         # next line assumes that video is the chosen default in the designer class
@@ -616,10 +612,10 @@ class Shooter(qtw.QWidget):
         
         # get the size of the monitor
         sizeObject = qtw.QDesktopWidget().screenGeometry(-1)
-        self.ui.previewFrame.resize(((sizeObject.width()/10) + 22), ((sizeObject.height()/10) + 22))
+        """ self.ui.previewFrame.resize(((sizeObject.width()/10) + 22), ((sizeObject.height()/10) + 22))
         self.ui.previewButton.setContainerSize((sizeObject.width()/10) + 22,  (sizeObject.height()/10) + 22) 
         self.ui.previewButton.setDragButtonSize(self.camera.resolution[0]/20 +22, self.camera.resolution[1]/20 + 22)
-        self.ui.previewButton.moveButtonToOrigin()
+        self.ui.previewButton.moveButtonToOrigin() """
         
 
 if __name__ == "__main__":

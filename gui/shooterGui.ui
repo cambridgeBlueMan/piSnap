@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1163</width>
+    <width>851</width>
     <height>889</height>
    </rect>
   </property>
@@ -32,7 +32,7 @@
     <attribute name="title">
      <string>Still</string>
     </attribute>
-    <widget class="QPushButton" name="snapHold">
+    <widget class="QPushButton" name="snapSave">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -43,19 +43,6 @@
      </property>
      <property name="text">
       <string>Snap/Save</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="snapSave">
-     <property name="geometry">
-      <rect>
-       <x>140</x>
-       <y>20</y>
-       <width>99</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Snap/Hold</string>
      </property>
     </widget>
     <widget class="QWidget" name="formLayoutWidget_3">
@@ -373,54 +360,6 @@
     <string/>
    </property>
   </widget>
-  <widget class="QFrame" name="previewFrame">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>650</y>
-     <width>214</width>
-     <height>130</height>
-    </rect>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
-   </property>
-   <widget class="DragButton" name="previewButton">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>31</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>b</string>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QCheckBox" name="unlockPreview">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>790</y>
-     <width>141</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Unlock Preview</string>
-   </property>
-  </widget>
   <widget class="QRadioButton" name="isDatestamp">
    <property name="geometry">
     <rect>
@@ -477,21 +416,6 @@
    </property>
   </widget>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>DragButton</class>
-   <extends>QPushButton</extends>
-   <header location="global">dragbutton</header>
-   <slots>
-    <signal>xChanged(int)</signal>
-    <signal>yChanged(int)</signal>
-    <signal>posChanged(int,int)</signal>
-    <signal>doubleClicked()</signal>
-    <slot>movePreviewX(int)</slot>
-    <slot>movePreviewPos(list)</slot>
-   </slots>
-  </customwidget>
- </customwidgets>
  <resources>
   <include location="../resource.qrc"/>
  </resources>
@@ -578,22 +502,6 @@
   </connection>
   <connection>
    <sender>snapSave</sender>
-   <signal>clicked()</signal>
-   <receiver>Form</receiver>
-   <slot>snapAndHold()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>393</x>
-     <y>718</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>27</x>
-     <y>677</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>snapHold</sender>
    <signal>clicked()</signal>
    <receiver>Form</receiver>
    <slot>snapAndSave()</slot>
@@ -721,38 +629,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>previewButton</sender>
-   <signal>released()</signal>
-   <receiver>Form</receiver>
-   <slot>movePreview()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>165</x>
-     <y>662</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>178</x>
-     <y>556</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>previewButton</sender>
-   <signal>posChanged(int,int)</signal>
-   <receiver>Form</receiver>
-   <slot>movePreviewOrigin(int,int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>151</x>
-     <y>683</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>536</x>
-     <y>775</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>useZoomOnRecord</sender>
    <signal>clicked(bool)</signal>
    <receiver>Form</receiver>
@@ -829,22 +705,6 @@
     <hint type="destinationlabel">
      <x>1029</x>
      <y>535</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>unlockPreview</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>Form</receiver>
-   <slot>setPreviewLockState(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>91</x>
-     <y>794</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>212</x>
-     <y>793</y>
     </hint>
    </hints>
   </connection>
