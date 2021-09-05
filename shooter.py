@@ -14,6 +14,9 @@ import datetime
 import subprocess # allows access to command line
 import signal
 from os import path
+from PIL import Image
+from PIL import ImageQt
+
 import json
 import math
 import vlc
@@ -95,13 +98,16 @@ class Shooter(qtw.QWidget):
             self.imgRoot = self.camvals["stillFileRoot"] + '{:04d}'.format(self.camvals["fileCounter"]) + '.'
         else:
             self.imgRoot = self.camvals["stillFileRoot"] + str(datetime.datetime.now()).replace(':','_') + '.'
+        # now add the extension
         filename = self.camvals["defaultPhotoPath"]+ "/" + self.imgRoot + '.' + self.camvals["stillFormat"]
-        # does the file exist? if not then write it
 
-        if path.exists(filename):
-            # if file exists then put the picture to a stream object
-            stream = BytesIO()
-            self.camera.capture(stream, 'jpeg')
+        # capture the image to a BytesIO
+        imgAsBytes = BytesIO()
+        self.camera.capture(imgAsBytes, self.camvals["stillFormat"])
+        save = True
+
+        # does the file exist?
+        if path.exists(filename):            
             # now find out what to do with it
             msgBox = qtw.QMessageBox()
             msgBox.setWindowTitle("FileExists")
@@ -111,40 +117,57 @@ class Shooter(qtw.QWidget):
             appendButton = qtw.QPushButton( "append timestamp")
             msgBox.addButton(appendButton, qtw.QMessageBox.YesRole)
             msgBox.setDefaultButton(appendButton)
-            
+
+            # save file unless told otherwise in logic
             ret = msgBox.exec_()
             if ret == qtw.QMessageBox.Save:
-                # if save then overwite existing file
-                with open (filename, 'wb') as f:
-                    f.write(stream.getbuffer())
-                    self.showImage(filename)
+                # then pass leaving sdave true
+                pass
             if ret == qtw.QMessageBox.Cancel:
                 # if cancel then get rid of the buffer
-                stream.close()
-                pass
+                save = False
+                imgAsBytes.close()
             if ret == 0: #appendButton:
                 # if save with an appended timestamp then save the buffer/stream with the timestamp
                 filename = self.camvals["defaultPhotoPath"]+ self.imgRoot \
-                + str(datetime.datetime.now()).replace(':','_') + '.'+ self.camvals["stillFormat"]
-                with open (filename, 'wb') as f:
-                    f.write(stream.getbuffer())
-                    self.showImage(filename)
-        else:
-            # take a picture and increment the counter
-            self.camera.capture(filename)
-            self.incFileCounter()
+                + str(datetime.datetime.now()).replace(':','_') + '.'+ self.camvals["stillFormat"]  
+
+        if save == True:
+            # now make the thumbnail and save the stream to file
+            with open (filename, 'wb') as f:
+                f.write(imgAsBytes.getbuffer())
+            # TODO file counter stuff
+            #self.incFileCounter()
             self.showImage(filename)
     
     def showImage(self, filename):
         """ displays a graphic file in the picture window """
-        # no longer sure we want the following behavour
-        #pixmap = qtg.QPixmap(filename)
-        #pixmapResized = pixmap.scaled(self.camvals["imgres"][0]/2, self.camvals["imgres"][1]/2, qtc.Qt.KeepAspectRatio)
-        #self.ui.imgContainer.setPixmap(pixmapResized) #.scaled(size,Qt.keepAspectRatio))
+        
+        # open the file as a PIL image
+        image = Image.open(filename)  
 
-        # then add it to the selector widget
-        self.myIcon = qtg.QIcon(filename) 
-        self.myItem = qtw.QListWidgetItem(self.myIcon, filename, self.ui.thumbnails)        
+        # set max size 
+        MAX_SIZE = (100,100)
+        
+        # thumbnail function modifies the image object in place
+        image.thumbnail(MAX_SIZE)
+        
+        # saving it for diagnostics
+        image.save("thumb.jpeg", "JPEG")
+
+        # myImg is a ImageQt object which is subclassed from Qimage
+        myImg = ImageQt.ImageQt(image)
+
+        # convert to pixmap
+        myPixMap = qtg.QPixmap.fromImage(myImg)
+
+        # save the pixmap for diagnostics
+        myPixMap.save("thePixMap.jpeg")
+
+        myIcon = qtg.QIcon(myPixMap) #qtg.QImage(thumb) 
+
+        # add the icon and the filename to the thumbnail list
+        qtw.QListWidgetItem(myIcon, filename, self.ui.thumbnails)        
         
     def incFileCounter(self):
         """ increments the file counter and saves it to the settings file """
@@ -152,26 +175,6 @@ class Shooter(qtw.QWidget):
         with open("settings.json", "w") as settings:
             json.dump(self.camvals, settings, indent = 4)
             
-    def imgToStream(self):
-        """ uses camera to take a still picture and returns that in a stream/buffer object """
-        stream = BytesIO()
-        ##issue 
-        """
-        all of the camera settings should be being made elsewhere and they shuld therefore be in place 
-        ready for when a shot is taken
-
-        """
-        self.camera.capture(stream, 'jpeg')
-        return stream.getbuffer()
-    
-    def snapAndHold(self):
-        """ take a still picture and store in a stream object """
-        stream = self.imgToStream()
-        # save for this scenario
-        with open ("aPic.jpg", 'wb') as f:
-            f.write(stream)
-
-    
     #################################################################################################
     #
     #                                      start of video stuff
