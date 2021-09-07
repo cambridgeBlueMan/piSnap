@@ -36,7 +36,7 @@
     "exposure_speed": 0,
     "flash_mode": "redeye",
     "framerate": 25,
-    "fileNameFormat": "time",
+    "fileNameFormat": "counter",
     "hflip": false,
     "image_denoise": true,
     "image_effect": "none",
@@ -84,7 +84,7 @@
     "vidFileRoot": "cutaway",
     "stillFormat": "jpeg",
     "videoFormat": "h264",
-    "fileCounter": 156,
+    "fileCounter": 173,
     "vidres": [
         1920,
         1080

@@ -89,15 +89,23 @@ class Shooter(qtw.QWidget):
 
     
     def snapAndSave(self):  
+        # QUERY consider using uuid to generate unique file names
+
+        # import uuid
+
+        # print(str(uuid.uuid4()))
         """ takes a still picture and automatically generates a file name """
         self.camera.zoom = self.window().zoomTab.zoom[:]
         # build a file name
 
         # make file name, less extension
         if self.camvals["fileNameFormat"] == "counter":
-            self.imgRoot = self.camvals["stillFileRoot"] + '{:04d}'.format(self.camvals["fileCounter"]) + '.'
+            self.imgRoot = self.camvals["stillFileRoot"] + '{:04d}'.format(self.camvals["fileCounter"])
         else:
-            self.imgRoot = self.camvals["stillFileRoot"] + str(datetime.datetime.now()).replace(':','_') + '.'
+            formattedDateTime = str(datetime.datetime.now()).replace(':','_')
+            formattedDateTime = formattedDateTime.replace(' ', '-')
+            formattedDateTime = formattedDateTime.replace('.', '_')
+            self.imgRoot = self.camvals["stillFileRoot"] + formattedDateTime
         # now add the extension
         filename = self.camvals["defaultPhotoPath"]+ "/" + self.imgRoot + '.' + self.camvals["stillFormat"]
 
@@ -109,6 +117,10 @@ class Shooter(qtw.QWidget):
         # does the file exist?
         if path.exists(filename):            
             # now find out what to do with it
+
+            # turn off preview so we can see dialog
+            if self.ui.previewVisible.isChecked():
+                self.camera.stop_preview()   
             msgBox = qtw.QMessageBox()
             msgBox.setWindowTitle("FileExists")
             msgBox.setIcon(qtw.QMessageBox.Warning)
@@ -129,15 +141,20 @@ class Shooter(qtw.QWidget):
                 imgAsBytes.close()
             if ret == 0: #appendButton:
                 # if save with an appended timestamp then save the buffer/stream with the timestamp
-                filename = self.camvals["defaultPhotoPath"]+ self.imgRoot \
-                + str(datetime.datetime.now()).replace(':','_') + '.'+ self.camvals["stillFormat"]  
+                formattedDateTime = str(datetime.datetime.now()).replace(':','_')
+                formattedDateTime = formattedDateTime.replace(' ', '-')
+                formattedDateTime = formattedDateTime.replace('.', '_')
 
+                filename = self.camvals["defaultPhotoPath"]+  "/" + self.imgRoot \
+                + formattedDateTime + '.'+ self.camvals["stillFormat"]  
+            # turn preview back on
+            self.showPreview(True)
         if save == True:
             # now make the thumbnail and save the stream to file
             with open (filename, 'wb') as f:
                 f.write(imgAsBytes.getbuffer())
-            # TODO file counter stuff
-            #self.incFileCounter()
+            if self.camvals["fileNameFormat"] == "counter":
+                self.incFileCounter()
             self.showImage(filename)
     
     def showImage(self, filename):
@@ -147,13 +164,13 @@ class Shooter(qtw.QWidget):
         image = Image.open(filename)  
 
         # set max size 
-        MAX_SIZE = (100,100)
+        MAX_SIZE = (138,138)
         
         # thumbnail function modifies the image object in place
         image.thumbnail(MAX_SIZE)
         
         # saving it for diagnostics
-        image.save("thumb.jpeg", "JPEG")
+        #image.save("thumb.jpeg", "JPEG")
 
         # myImg is a ImageQt object which is subclassed from Qimage
         myImg = ImageQt.ImageQt(image)
@@ -162,12 +179,12 @@ class Shooter(qtw.QWidget):
         myPixMap = qtg.QPixmap.fromImage(myImg)
 
         # save the pixmap for diagnostics
-        myPixMap.save("thePixMap.jpeg")
+        myPixMap.save("tempicon.jpeg")
 
-        myIcon = qtg.QIcon(myPixMap) #qtg.QImage(thumb) 
+        myIcon = qtg.QIcon("tempicon.jpeg") #qtg.QImage(thumb) 
 
         # add the icon and the filename to the thumbnail list
-        qtw.QListWidgetItem(myIcon, filename, self.ui.thumbnails)        
+        myItem = qtw.QListWidgetItem(myIcon, filename, self.ui.thumbnails)        
         
     def incFileCounter(self):
         """ increments the file counter and saves it to the settings file """
@@ -264,6 +281,7 @@ class Shooter(qtw.QWidget):
             #self.recordZoom = True
 
             #try:
+            # TODO take a still and make a thumbnail
             self.camera.start_recording(filename, bitrate=int(self.camvals["videoBitRate"]))
             sleep(1)
             _thread.start_new_thread (self.updateTerminalWidgetWhileRecording, (self.camera, str))
