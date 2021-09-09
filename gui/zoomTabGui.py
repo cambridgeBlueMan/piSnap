@@ -49,6 +49,9 @@ class Ui_Form(object):
         self.getSpeed.setObjectName("getSpeed")
         self.zTblView = QtWidgets.QTableView(Form)
         self.zTblView.setGeometry(QtCore.QRect(10, 470, 501, 181))
+        self.zTblView.setAlternatingRowColors(True)
+        self.zTblView.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.zTblView.setCornerButtonEnabled(False)
         self.zTblView.setObjectName("zTblView")
         self.delRow = QtWidgets.QPushButton(Form)
         self.delRow.setGeometry(QtCore.QRect(450, 440, 51, 21))
@@ -77,6 +80,7 @@ class Ui_Form(object):
         self.adjustZoomXYPos.doubleClicked.connect(Form.doSetStart)
         self.playRows.clicked.connect(Form.playSelectedRows)
         self.restartZoom.clicked.connect(Form.doRestartZoom)
+        self.zTblView.clicked['QModelIndex'].connect(Form.isCurrentZoomSelRecordable)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):

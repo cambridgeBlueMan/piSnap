@@ -222,24 +222,23 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         print(self.prefs)
 
     def doOpenZoom(self):
+        # TODO falls over if no file selected
+        # you need to check the data cell by cell for validity, I suspect
+        
         filename = qtw.QFileDialog.getOpenFileName(
             self,
             "Open a zoom file...",
             qtc.QDir.homePath(),
             "Zoom Files (*.zoom)"
         )
-        #print(filename)
-        # zdata = [self.startZoom[0], self.startZoom[1], self.startZoom[2], 600, 1.0]
-        # insert rows (position, numrows, parent, data)
-        # self.model.insertRows(self.model.rowCount(None),1, self.model.parent(), zdata)
-
-        with open(filename[0], "rb") as fp:   # Unpickling
-            zoomData = pickle.load(fp)
-        print("length of zoomData: ", len(zoomData))
-        #self.zoomTab.model.insertRows(self.zoomTab.model.rowCount(None),len(zoomData), self.zoomTab.model.parent(), zoomData)
-        for item in zoomData:
-            # insert rows (position, numrows, parent, data)
-            self.zoomTab.model.insertRows(self.zoomTab.model.rowCount(None),1, self.zoomTab.model.parent(), item)
+        if filename:
+            with open(filename[0], "rb") as fp:   # Unpickling
+                zoomData = pickle.load(fp)
+            print("length of zoomData: ", len(zoomData))
+            #self.zoomTab.model.insertRows(self.zoomTab.model.rowCount(None),len(zoomData), self.zoomTab.model.parent(), zoomData)
+            for item in zoomData:
+                # insert rows (position, numrows, parent, data)
+                self.zoomTab.zTblModel.insertRows(self.zoomTab.zTblModel.rowCount(None),1, self.zoomTab.zTblModel.parent(), item)
 
     def doSaveZoom(self):
         filename, _ = qtw.QFileDialog.getSaveFileName(
@@ -251,12 +250,13 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         if filename:
             try:
                 with open(filename, "wb") as fp:   #Pickling
-                    pickle.dump(self.zoomTab.model._data, fp)
+                    pickle.dump(self.zoomTab.zTblModel._data, fp)
             except Exception as e:
                 # Errata:  Book contains this line:
                 #qtw.QMessageBox.critical(f"Could not save file: {e}")
                 # It should read like this:
-                qtw.QMessageBox.critical(self, f"Could not load file: {e}")
+                print("bloto bloto!", e)
+                #qtw.QMessageBox.critical(self, f"Could not load file: {e}")
         #with open("test.zoom", "wb") as fp:   #Pickling
         #    pickle.dump(self.zoomTab.model._data, fp)
         
@@ -327,6 +327,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
 
         # now make and add ththe terminal window
         self.terminalWidget = qtw.QPlainTextEdit()
+        self.terminalWidget.setReadOnly(True)
         self.terminalWidget.setStyleSheet("background-color:#252526;color:SpringGreen;")
         self.vlayout.addWidget(self.settingsWidget)
         self.vlayout.addWidget(self.terminalWidget)
@@ -398,8 +399,12 @@ if __name__=='__main__':
     palette.setColor(qtg.QPalette.Link, qtg.QColor(42, 130, 218))
     palette.setColor(qtg.QPalette.Highlight, qtg.QColor(42, 130, 218))
     palette.setColor(qtg.QPalette.HighlightedText, qtc.Qt.black)
+    palette.setColor(qtg.QPalette.Disabled, qtg.QPalette.WindowText,  qtg.QColor(128,128,128))
+    palette.setColor(qtg.QPalette.Disabled, qtg.QPalette.Window,  qtg.QColor(128,128,128))
     app.setPalette(palette)
     app.setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }")
+    # TODO sort colors for when a widget is disabled
+    #app.setStyleSheet(":disabled {color:" + disabledForeground + "}")
 
     window = PiSnap()
     

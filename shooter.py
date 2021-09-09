@@ -231,6 +231,7 @@ class Shooter(qtw.QWidget):
 # TODO Sort out video recording
     def doRecordVid(self, test):
         """ record a video stream to a file with automatically generated name """ 
+        # BUG 
         # do nothing if recording is in progress
         if self.camera.recording:
             psFunctions.printT(self.window(),"Camera currently recording!", True)
@@ -252,6 +253,7 @@ class Shooter(qtw.QWidget):
                 # first build the command to run
 
                 # arecord --device="hw:USB,0" -t wav -c 2 -f S32_LE -r 48000  helloEverybody2.wav
+
                 """
                 self.cmd = ["arecord", "-D", "hw:USB,0" "-r", self.camvals["audioSampleRate"], "-f", "S32_LE", "-c", "2", \
                     (self.camvals["defaultVideoPath"] + "/" + self.vidRoot + self.camvals["audioFileFormat"]),]
@@ -282,21 +284,57 @@ class Shooter(qtw.QWidget):
 
             #try:
             # TODO take a still and make a thumbnail
+            if self.recordZoom == True:
+                # set the zoom to its initial position
+                # code below works, but falls over if no data selected
+                startIx = self.window().zoomTab.ui.zTblView.selectedIndexes()[0]
+                print("startIx: ", startIx)
+                myData = self.window().zoomTab.zTblModel.getZoomData(startIx.row(), True)
+                myData = myData[:]
+                self.camera.zoom = (
+                    myData[0],
+                    myData[1],
+                    myData[2],
+                    myData[2]    
+                )
+                
+            sleep(3)
+            # capture a still, with use_video_port set to True
+            # and dimensions according to the video dimension
+            # this is for thumbnail purposes
+            # capture the image to a BytesIO
+            imgAsBytes = BytesIO()
+            self.camera.capture(imgAsBytes, self.camvals["stillFormat"], use_video_port=True)
+
+            # now start recording, maybe?
+            # open the file as a PIL image
+            image = Image.open(imgAsBytes)  
+
+            # set max size 
+            MAX_SIZE = (138,138)
+            
+            # thumbnail function modifies the image object in place
+            image.thumbnail(MAX_SIZE)
+            
+            # saving it for diagnostics
+            #image.save("thumb.jpeg", "JPEG")
+
+            # myImg is a ImageQt object which is subclassed from Qimage
+            myImg = ImageQt.ImageQt(image)
+
+            # convert to pixmap
+            myPixMap = qtg.QPixmap.fromImage(myImg)
+
+            # save the pixmap for diagnostics
+            myPixMap.save("tempicon.jpeg")
+
+            self.myIcon = qtg.QIcon("tempicon.jpeg") #qtg.QImage(thumb) 
+            # start recording
             self.camera.start_recording(filename, bitrate=int(self.camvals["videoBitRate"]))
             sleep(1)
             _thread.start_new_thread (self.updateTerminalWidgetWhileRecording, (self.camera, str))
+
             if self.recordZoom == True:
-            #print(self.window().zoomTab)
-                fh = open("diags.txt", "a")
-                fh.write(filename + "," + str(self.camvals["vidres"]) + "," 
-                #+ str(self.window().zoomTab.startZoom[:]) + "," 
-                #+ str(self.window().zoomTab.endZoom[:]) + ','
-                + str(abs(self.window().zoomTab.endZoom[0] - self.window().zoomTab.startZoom[0])) + ','
-                + str(abs(self.window().zoomTab.endZoom[1] - self.window().zoomTab.startZoom[1])) + ','
-                + str(abs(self.window().zoomTab.endZoom[2] - self.window().zoomTab.startZoom[2])) + ','
-                + str(self.camvals["zoomSpeed"])
-                + "\n")
-                fh.close()
                 self.window().zoomTab.playSelectedRows()
             psFunctions.printT(self.window(),"Camera currently recording!")
                 #self.window().terminalWidget.setPlainText("Camera currently recording!")
@@ -324,6 +362,7 @@ class Shooter(qtw.QWidget):
             psFunctions.printT(self.window(),"Camera stopped recording!", True)
             #if self.getAudio == True:
             if self.camvals["audioActive"]=="true":
+                # TODO this does not legislate for mux being set to false
                 # TODO the current frames/sec needs to be passed to the ffmpeg convesion below
                 # frame rate is -r
                 # TODO note that the val of audioActive could possible currently change while the video is recording
@@ -344,7 +383,7 @@ class Shooter(qtw.QWidget):
             self.mediaplayer.set_xwindow(int(self.ui.imgContainer.winId()))
 
             #self.mediaplayer.set_position(0)
-            self.addToMediaList(output)
+            self.addToMediaList(output, self.myIcon)
             ################################################
             #filename = self.camvals["defaultVideoPath"] + "/" + self.vidRoot + self.camvals["videoFormat"]
             #self.myIcon = qtg.QIcon(filename) 
@@ -574,28 +613,9 @@ class Shooter(qtw.QWidget):
     def setPreviewSize(*args):
         pass 
     
-    def addToMediaList(self, output):
-        """ 
-        Use ffmpegthumbnailer to create a thumbnail image to represent the video
-        and display the thumbnail and file name in a ListWidget
-
-        """
-
-        # ffmpeg -i avid.h264 -frames:v 1 -f image2 frame.png
-        # output is the full file name and path  
-        # the subprocess is working and assembling the file ames from constituents
-        makeThumbnail = subprocess.Popen(["ffmpeg",  "-loglevel",  "warning",  "-i" ,  
-        (self.camvals["defaultVideoPath"] + "/" + self.vidRoot + self.camvals["videoFormat"]),
-        "-frames:v", "1",  "-f",  "image2",   (self.camvals["defaultVideoPath"] + "/" 
-        + self.vidRoot + self.camvals["stillFormat"])])
+    def addToMediaList(self, output, icon):
         
-        # mpeg conversion takes a little time, so we wait for it before loading into the list widget item
-        # I think in an  ideal world this should be a BytesIO object rather than a file.
-        # much easier to clean all that up at end of session
-
-        sleep(2)
-        self.thumb = (self.camvals["defaultVideoPath"] + "/"  + self.vidRoot + self.camvals["stillFormat"]) 
-        self.myIcon = qtg.QIcon(self.thumb) 
+        self.myIcon = qtg.QIcon(icon) 
         self.myItem = qtw.QListWidgetItem(self.myIcon, output,
         self.ui.thumbnails)        
         # then add it to the widget

@@ -165,6 +165,9 @@
      </layout>
     </widget>
     <widget class="QCheckBox" name="useZoomOnRecord">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -276,6 +279,9 @@
      </property>
     </widget>
     <widget class="QCheckBox" name="endRecWhenZoomEnds">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>10</x>

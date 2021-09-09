@@ -36,13 +36,13 @@
     "exposure_speed": 0,
     "flash_mode": "redeye",
     "framerate": 25,
-    "fileNameFormat": "counter",
+    "fileNameFormat": "time",
     "hflip": false,
     "image_denoise": true,
     "image_effect": "none",
     "image_effect_params": null,
     "iso": 0,
-    "zoomSpeed": 0,
+    "zoomSpeed": 49,
     "meter_mode": "backlit",
     "mux": "true",
     "overlays": [],
@@ -73,7 +73,7 @@
     "videoLevel": "4.1",
     "videoProfile": "high",
     "videoQuality": "30",
-    "video_stabilization": "True",
+    "video_stabilization": "False",
     "zoom": [
         0.0,
         0.0,
@@ -86,8 +86,8 @@
     "videoFormat": "h264",
     "fileCounter": 173,
     "vidres": [
-        1920,
-        1080
+        1280,
+        720
     ],
     "imgres": [
         1600,

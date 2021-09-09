@@ -322,17 +322,23 @@ class ZoomTab(QtWidgets.QWidget):
         num_rows = len(set(index.row() for index in selected))
         if selected:
             self.zTblModel.removeRows(selected[0].row(), num_rows, None)
+        self.disableZoomRecordOptionBoxes()
 
-    """ def doQuit(self):
-        sys.exit() """
- 
-    """ def showPreview(self):
-        if self.ui.showPreview.isChecked():
-            self.camera.start_preview(fullscreen = False, window = (int(self.camvals["vidres"][0] /self.previewDivider),0,
-                                                                int(self.camvals["vidres"][0] /self.previewDivider), int(self.camvals["vidres"][1] /self.previewDivider)))
+    def isCurrentZoomSelRecordable(self, ix):
+        selected = self.ui.zTblView.selectedIndexes()
+        # gather rows in a set and then see how many you got
+        num_rows = len(set(index.row() for index in selected))
+        if num_rows > 1:
+            self.window().mWidget.ui.useZoomOnRecord.setEnabled(True)
+            self.window().mWidget.ui.endRecWhenZoomEnds.setEnabled(True)
         else:
-            self.camera.stop_preview()
-        pass """
+            self.disableZoomRecordOptionBoxes()
+            
+    def disableZoomRecordOptionBoxes(self):
+            self.window().mWidget.ui.useZoomOnRecord.setChecked(False)
+            self.window().mWidget.ui.useZoomOnRecord.setEnabled(False)
+            self.window().mWidget.ui.endRecWhenZoomEnds.setChecked(False)
+            self.window().mWidget.ui.endRecWhenZoomEnds.setEnabled(False)
 
     def showThisZoomStart(self, ix):
         """ moves the preview to show the start of the shift-clicked zoom row """
@@ -414,6 +420,25 @@ class ZoomTableModel(QtCore.QAbstractTableModel):
 
     def setData(self, index, value, role):
         if index.isValid() and role == QtCore.Qt.EditRole:
+            # TODO I think we have to validate the supplied data here
+            # i.e. check that speed is in range 1 to 100
+            if index.column() == 3: # if speed
+                value = int(value)
+                if value > 100:
+                    value = 100
+                if value < 1:
+                    value = 1
+
+            # and pause is float in range what? 0 to 10?
+            if index.column() == 4: # if pause
+                value=float(value)
+                print(value)
+                print(type(value))
+                #value = float(value)
+                #if isinstance(value,float):
+                return "%.2f" % value
+                #else:
+                #    return 1
             self._data[index.row()][index.column()] = value
             self.dataChanged.emit(index, index, [role])
             return True

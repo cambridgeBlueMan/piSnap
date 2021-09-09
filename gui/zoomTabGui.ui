@@ -150,6 +150,15 @@
      <height>181</height>
     </rect>
    </property>
+   <property name="alternatingRowColors">
+    <bool>true</bool>
+   </property>
+   <property name="selectionBehavior">
+    <enum>QAbstractItemView::SelectRows</enum>
+   </property>
+   <property name="cornerButtonEnabled">
+    <bool>false</bool>
+   </property>
   </widget>
   <widget class="QPushButton" name="delRow">
    <property name="geometry">
@@ -401,6 +410,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>zTblView</sender>
+   <signal>clicked(QModelIndex)</signal>
+   <receiver>Form</receiver>
+   <slot>isCurrentZoomSelRecordable(QModelIndex)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>229</x>
+     <y>597</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>169</x>
+     <y>382</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>doSetStart()</slot>
@@ -420,5 +445,6 @@
   <slot>slot2()</slot>
   <slot>showThisZoomStart(QModelIndex)</slot>
   <slot>doRestartZoom()</slot>
+  <slot>isCurrentZoomSelRecordable(QModelIndex)</slot>
  </slots>
 </ui>
