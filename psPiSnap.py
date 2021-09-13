@@ -223,7 +223,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
 
     def doOpenZoom(self):
         # TODO falls over if no file selected
-        # you need to check the data cell by cell for validity, I suspect
+        # you need to check the data cell by cell for validity, I suspect       
         
         filename = qtw.QFileDialog.getOpenFileName(
             self,
@@ -232,25 +232,30 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
             "Zoom Files (*.zoom)"
         )
         if filename:
-            with open(filename[0], "rb") as fp:   # Unpickling
+            with open(filename[0], "rt") as fp:   # Unpickling
                 zoomData = pickle.load(fp)
+            # TODO apply the current res got from the file to the app
+            # possibly convert to json rather than pickle
             print("length of zoomData: ", len(zoomData))
             #self.zoomTab.model.insertRows(self.zoomTab.model.rowCount(None),len(zoomData), self.zoomTab.model.parent(), zoomData)
             for item in zoomData:
                 # insert rows (position, numrows, parent, data)
                 self.zoomTab.zTblModel.insertRows(self.zoomTab.zTblModel.rowCount(None),1, self.zoomTab.zTblModel.parent(), item)
-
+            self.zoomTab.zTblModel.dirty = True
     def doSaveZoom(self):
         filename, _ = qtw.QFileDialog.getSaveFileName(
             self,
             "Select the file to save to…",
             qtc.QDir.homePath(),
-            'Text Files (*.txt) ;;Python Files (*.py) ;;All Files (*)'
+            'Zoom files (*.zoom)'
         )
         if filename:
             try:
-                with open(filename, "wb") as fp:   #Pickling
+                with open(filename, "wt") as fp:   #Pickling
+                    # TODO add the current res to the file
+                    # possibly convert to json rather than pickle
                     pickle.dump(self.zoomTab.zTblModel._data, fp)
+                self.zoomTab.zTblModel.dirty = False
             except Exception as e:
                 # Errata:  Book contains this line:
                 #qtw.QMessageBox.critical(f"Could not save file: {e}")

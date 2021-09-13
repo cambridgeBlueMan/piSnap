@@ -145,10 +145,17 @@ class ZoomTab(QtWidgets.QWidget):
         print(val)
 
     def doSetStart(self):
+        """
+        adds a row to the model and populates it with the current x,y,width,speed and
+        pause values.
+        Marks the model as dirty """
+
         self.startZoom = self.zoom[:]
         zdata = [self.startZoom[0], self.startZoom[1], self.startZoom[2], self.camvals["zoomSpeed"], 1.0]
         # insert rows (position, numrows, parent, data)
         self.zTblModel.insertRows(self.zTblModel.rowCount(None),1, self.zTblModel.parent(), zdata)
+        # mark the model dirty
+        self.zTblModel.dirty = True
 
     def doNextZoom(self):
         """ flag to say break from inner zoom loop """
@@ -323,6 +330,7 @@ class ZoomTab(QtWidgets.QWidget):
         if selected:
             self.zTblModel.removeRows(selected[0].row(), num_rows, None)
         self.disableZoomRecordOptionBoxes()
+        self.dirty = True
 
     def isCurrentZoomSelRecordable(self, ix):
         selected = self.ui.zTblView.selectedIndexes()
@@ -364,6 +372,7 @@ class ZoomTableModel(QtCore.QAbstractTableModel):
         super().__init__()
         self._headers = ["X", "Y", "Width", "speed", "pause"]
         # initialise a list of lists
+        self.dirty = False
         self._data = []
         
     # Minimum necessary methods:
@@ -441,6 +450,7 @@ class ZoomTableModel(QtCore.QAbstractTableModel):
                 #    return 1
             self._data[index.row()][index.column()] = value
             self.dataChanged.emit(index, index, [role])
+            self.dirty = True
             return True
         else:
             return False
