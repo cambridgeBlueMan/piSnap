@@ -50,6 +50,7 @@ class Ui_Form(object):
         self.zTblView = QtWidgets.QTableView(Form)
         self.zTblView.setGeometry(QtCore.QRect(10, 470, 501, 181))
         self.zTblView.setAlternatingRowColors(True)
+        self.zTblView.setSelectionMode(QtWidgets.QAbstractItemView.ContiguousSelection)
         self.zTblView.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.zTblView.setCornerButtonEnabled(False)
         self.zTblView.setObjectName("zTblView")

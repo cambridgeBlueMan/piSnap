@@ -39,6 +39,17 @@ class QualityTab(qtw.QWidget):
         self.comboItemsAdded = self.addItemsToCombos(self)
         
         self.applySettings()
+        print(self.soundDevs)
+        if len(self.soundDevs) == 0:
+            self.setActiveStates()
+
+    def setActiveStates(self):
+        self.ui.audioBitRate.setEnabled(False)
+        self.ui.audioSampleRate.setEnabled(False)
+        self.ui.audioFileFormat.setEnabled(False)
+        self.ui.soundDevices.setEnabled(False)
+        self.ui.audioActive.setEnabled(False)
+        self.ui.mux.setEnabled(False)
 
     def getSoundDevs(*args):
         # initialise the list of sound devices

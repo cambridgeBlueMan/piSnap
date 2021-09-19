@@ -205,8 +205,18 @@ class Shooter(qtw.QWidget):
         self.camvals["video_stabilization"] = str(bool)
 
     def setFrameRate(self,myvar):
-        self.camera.framerate = int(myvar)
-        self.camvals["framerate"] = int(myvar)
+        try:
+            self.camera.framerate = int(myvar)
+            self.camvals["framerate"] = int(myvar)
+        except picamera.exc.PiCameraRuntimeError as err:
+            msgBox = qtw.QMessageBox()
+            msgBox.move(100,400)
+            msgBox.setIcon(qtw.QMessageBox.Information)
+            msgBox.setText("You cannot change the framerate while the camera is recording")
+            msgBox.setWindowTitle("Camera is recording!")
+            msgBox.setStandardButtons(qtw.QMessageBox.Ok)
+            returnValue = msgBox.exec()
+
     
     def updateTerminalWidgetWhileRecording(self, camera, str):
         while camera.recording == True: #camera.recording:
@@ -260,35 +270,28 @@ class Shooter(qtw.QWidget):
                 """ 
                 self.cmd = ["rec",  "-r", self.camvals["audioSampleRate"], "-b", self.camvals["audioBitRate"], \
                         (self.camvals["defaultVideoPath"] + "/" + self.vidRoot + self.camvals["audioFileFormat"]),]
-                #try:
+                try:
                     # try to start recording the audio
-                self.proc = subprocess.Popen(self.cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, text=True) ## Run program
-                # communicate holds two element tuple of form (stdout, stderr)
-                """   procRet = self.proc.communicate()
-                #therefore, if we have some stderr raise an error
-                if procRet[1] > "":
-                    psFunctions.printT(self.window(), procRet[1])
-                    psFunctions.printT(self.window(), str(self.proc.poll())) """
-                #sleep(1)
-                """ if self.proc.poll() == 2:
-                    raise subprocess.SubprocessError(2,self.cmd) """
-                #_thread.start_new_thread (self.checkAudio(), (self.proc))
+                    self.proc = subprocess.Popen(self.cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, text=True) ## Run program
+                    # communicate holds two element tuple of form (stdout, stderr)
+                    """   procRet = self.proc.communicate()
+                    #therefore, if we have some stderr raise an error
+                    if procRet[1] > "":
+                        psFunctions.printT(self.window(), procRet[1])
+                        psFunctions.printT(self.window(), str(self.proc.poll())) """
+                    #sleep(1)
+                    """ if self.proc.poll() == 2:
+                        raise subprocess.SubprocessError(2,self.cmd) """
+                    #_thread.start_new_thread (self.checkAudio(), (self.proc))
 
-                #except subprocess.SubprocessError: # as err:
-                #    psFunctions.printT(self.window(), "Audio failed!!" )
-                    #psFunctions.printT(self.window(), str(err) , True)
-                    #self.camvals["audioActive"]="false"
-            # you could capture here a small still
-            # do you want too incude a zoom in the reocrding
-            #self.recordZoom = True
-
-            #try:
-            # TODO take a still and make a thumbnail
+                except subprocess.SubprocessError as err:
+                    psFunctions.printT(self.window(), "There is a problem with the audio!" )
+                    psFunctions.printT(self.window(), str(err))
+                        
             if self.recordZoom == True:
                 # set the zoom to its initial position
                 # code below works, but falls over if no data selected
                 startIx = self.window().zoomTab.ui.zTblView.selectedIndexes()[0]
-                print("startIx: ", startIx)
                 myData = self.window().zoomTab.zTblModel.getZoomData(startIx.row(), True)
                 myData = myData[:]
                 self.camera.zoom = (
@@ -297,8 +300,8 @@ class Shooter(qtw.QWidget):
                     myData[2],
                     myData[2]    
                 )
-                
-            sleep(3)
+                # now restablish exposure setting
+                sleep(1)
             # capture a still, with use_video_port set to True
             # and dimensions according to the video dimension
             # this is for thumbnail purposes
@@ -330,21 +333,37 @@ class Shooter(qtw.QWidget):
 
             self.myIcon = qtg.QIcon("tempicon.jpeg") #qtg.QImage(thumb) 
             # start recording
-            self.camera.start_recording(filename, bitrate=int(self.camvals["videoBitRate"]))
-            sleep(1)
-            _thread.start_new_thread (self.updateTerminalWidgetWhileRecording, (self.camera, str))
+            try:
+                self.camera.start_recording(filename, bitrate=int(self.camvals["videoBitRate"]))
+                sleep(1)
+                _thread.start_new_thread (self.updateTerminalWidgetWhileRecording, (self.camera, str))
 
-            if self.recordZoom == True:
-                self.window().zoomTab.playSelectedRows()
-            psFunctions.printT(self.window(),"Camera currently recording!")
-                #self.window().terminalWidget.setPlainText("Camera currently recording!")
+                if self.recordZoom == True:
+                    self.window().zoomTab.playSelectedRows()
+                psFunctions.printT(self.window(),"Camera currently recording!")
+            except picamera.exc.PiCameraError as err:
+                psFunctions.printT(self.window(),"There was a problem with the camera!", True)
+                psFunctions.printT(self.window(),str(err))
+                # need to stop everything else here eg zoom, sound etc
+                if self.recordZoom == True:
+                    self.window().zoomTab.abortZoom = True
+                if self.camvals["audioActive"]=="true":
+                    self.proc.send_signal(signal.SIGINT) ## Send interrupt signal
+            except picamera.exc.PiCameraRunTimeError as err:
+                # typically caused by changin resolution while recording
+                psFunctions.printT(self.window(),"Can't change while recording!", True)
+                psFunctions.printT(self.window(),str(err))
+                # need to stop everything else here eg zoom, sound etc
+                if self.recordZoom == True:
+                    self.window().zoomTab.abortZoom = True
+                if self.camvals["audioActive"]=="true":
+                    self.proc.send_signal(signal.SIGINT) ## Send interrupt signal
+        
 
-            #except picamera.PiCameraError as err:
-            #    #print("hello!!!", err)
-            #    self.window().terminalWidget.clear()
-            #    txt = "Recording could not be started: " + str(err)
-            #    self.window().terminalWidget.setPlainText(txt)   
 
+
+
+  
     def endRecWithZoom(self,bool):
         self.window().zoomTab.endRecWithZoom = bool
 

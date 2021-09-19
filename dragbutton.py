@@ -48,6 +48,10 @@ class DragButton(qtw.QPushButton):
         self.bHeight = h
 
 
+    def wheelEvent(self, event):
+        print(event.angleDelta().y())
+        if event.angleDelta().y() > 1:
+            pass
     # mousePressEevent
     def mousePressEvent(self, event):
         self.__mousePressPos = None

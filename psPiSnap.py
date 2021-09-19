@@ -96,6 +96,8 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         ui.setupUi(quit)                        
         quit.setModal(True)
         quit.show() """
+
+
         reply = qtw.QMessageBox.question(self, 'Window Close', 'Do you want to save the settings file?',
                                      qtw.QMessageBox.Cancel | qtw.QMessageBox.Yes | qtw.QMessageBox.No, qtw.QMessageBox.Yes)
 
@@ -106,9 +108,10 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
                 f.close() 
                 event.accept()
         if reply == qtw.QMessageBox.No:
-                event.accept()
+            event.accept()
         if reply == qtw.QMessageBox.Cancel:
-                event.ignore()
+            # TODO if preview was on then turn it back on
+            event.ignore()
         
       
 
@@ -233,12 +236,16 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         )
         if filename:
             with open(filename[0], "rt") as fp:   # Unpickling
-                zoomData = pickle.load(fp)
+                zoomData = json.load(fp)
+                print(zoomData)
+
             # TODO apply the current res got from the file to the app
             # possibly convert to json rather than pickle
+            self.camvals["vidres"]=zoomData[0]
+            self.resolutionsTab.applySettings()
             print("length of zoomData: ", len(zoomData))
             #self.zoomTab.model.insertRows(self.zoomTab.model.rowCount(None),len(zoomData), self.zoomTab.model.parent(), zoomData)
-            for item in zoomData:
+            for item in zoomData[1]:
                 # insert rows (position, numrows, parent, data)
                 self.zoomTab.zTblModel.insertRows(self.zoomTab.zTblModel.rowCount(None),1, self.zoomTab.zTblModel.parent(), item)
             self.zoomTab.zTblModel.dirty = True
@@ -251,10 +258,12 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         )
         if filename:
             try:
-                with open(filename, "wt") as fp:   #Pickling
-                    # TODO add the current res to the file
-                    # possibly convert to json rather than pickle
-                    pickle.dump(self.zoomTab.zTblModel._data, fp)
+                #res = json.dumps(self.camvals["vidres"])
+                data = json.dumps([self.camvals["vidres"], self.zoomTab.zTblModel._data])
+                with open(filename, 'w') as fp:
+                    fp.write(data)
+                    fp.close()  
+
                 self.zoomTab.zTblModel.dirty = False
             except Exception as e:
                 # Errata:  Book contains this line:
@@ -391,14 +400,16 @@ if __name__=='__main__':
     app = qtw.QApplication(sys.argv)
     app.setStyle('Fusion')
     palette = qtg.QPalette()
-    palette.setColor(qtg.QPalette.Window, qtg.QColor(53, 53, 53))
-    palette.setColor(qtg.QPalette.WindowText, qtc.Qt.white)
-    palette.setColor(qtg.QPalette.Base, qtg.QColor(25, 25, 25))
-    palette.setColor(qtg.QPalette.AlternateBase, qtg.QColor(53, 53, 53))
-    palette.setColor(qtg.QPalette.ToolTipBase, qtc.Qt.white)
-    palette.setColor(qtg.QPalette.ToolTipText, qtc.Qt.white)
-    palette.setColor(qtg.QPalette.Text, qtc.Qt.white)
-    palette.setColor(qtg.QPalette.Button, qtg.QColor(53, 53, 53))
+    palette.setColor(qtg.QPalette.Window, qtg.QColor(53, 53, 53)) # background color for windows
+    palette.setColor(qtg.QPalette.WindowText, qtc.Qt.white) # text color for windows
+    palette.setColor(qtg.QPalette.Base, qtg.QColor(25, 25, 25)) # background of text entry widgets, combo box drop down lists and toolbar handles
+    palette.setColor(qtg.QPalette.AlternateBase, qtg.QColor(53, 53, 53)) # alternate base used for stripes
+    palette.setColor(qtg.QPalette.ToolTipBase, qtc.Qt.white) # is in inactive group
+    palette.setColor(qtg.QPalette.ToolTipText, qtc.Qt.white) # is in inactive group
+    palette.setColor(qtg.QPalette.Text, qtc.Qt.white) # text color for widgets wit base background
+    #palette.setColor(qtg.QPalette.      #PlaceholderText, qtc.Qt.white) # text color for widgets wit base background
+
+    palette.setColor(qtg.QPalette.Button, qtg.QColor(53, 53, 53)) # button background color
     palette.setColor(qtg.QPalette.ButtonText, qtc.Qt.white)
     palette.setColor(qtg.QPalette.BrightText, qtc.Qt.red)
     palette.setColor(qtg.QPalette.Link, qtg.QColor(42, 130, 218))
@@ -406,10 +417,16 @@ if __name__=='__main__':
     palette.setColor(qtg.QPalette.HighlightedText, qtc.Qt.black)
     palette.setColor(qtg.QPalette.Disabled, qtg.QPalette.WindowText,  qtg.QColor(128,128,128))
     palette.setColor(qtg.QPalette.Disabled, qtg.QPalette.Window,  qtg.QColor(128,128,128))
+    palette.setColor(qtg.QPalette.Disabled, qtg.QPalette.Text,  qtg.QColor(128,128,128))
+
+    
     app.setPalette(palette)
+
     app.setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }")
-    # TODO sort colors for when a widget is disabled
-    #app.setStyleSheet(":disabled {color:" + disabledForeground + "}")
+    app.setStyleSheet("QComboBox:disabled { color: #808080; }")
+    # disabled has no meaning within the context of a label?
+    # app.setStyleSheet("QLabel: disabled { color: #808080; }")
+
 
     window = PiSnap()
     

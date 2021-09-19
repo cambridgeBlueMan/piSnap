@@ -440,14 +440,14 @@ class ZoomTableModel(QtCore.QAbstractTableModel):
 
             # and pause is float in range what? 0 to 10?
             if index.column() == 4: # if pause
-                value=float(value)
-                print(value)
-                print(type(value))
-                #value = float(value)
-                #if isinstance(value,float):
-                return "%.2f" % value
-                #else:
-                #    return 1
+                try:
+                    value=float(value)
+                except:
+                    value = 1.0
+                # max pause 10 secs
+                if value > 10:
+                    value = 10
+                value = "%.2f" % value
             self._data[index.row()][index.column()] = value
             self.dataChanged.emit(index, index, [role])
             self.dirty = True

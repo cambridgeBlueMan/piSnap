@@ -66,71 +66,88 @@ class ResolutionsTab(qtw.QWidget):
         video resolution, and if video is the current setting of the captureTab Tab Widget runs the 
         setupVideoCapture method. (Note this method is also triggered on change of the 
         captureTab widget current index). Finally this method resets the zoom page """
-
-        # first of all, are there unsaved changes on the zoom page?
-        returnValue = None
-        if self.zt.zTblModel.dirty == True:
-            msgBox = qtw.QMessageBox()
-            msgBox.setIcon(qtw.QMessageBox.Information)
-            msgBox.setText("You have unsaved changes on the Zoom Tab. Click OK to lose these, otherwise Cancel, then go to zoom page and save")
-            msgBox.setWindowTitle("Zooming Tool unsaved changes!")
-            msgBox.setStandardButtons(qtw.QMessageBox.Ok | qtw.QMessageBox.Cancel)
-            # what came back from message box?
-            returnValue = msgBox.exec()
-            # if appropriate then do it
-        if returnValue == qtw.QMessageBox.Ok or self.zt.zTblModel.dirty == False:
-            if self.comboItemsAdded == True:
-                # set new camvals value
-                self.camvals["vidres"] = self.resAsTuple[int] 
-                # get the shooter object
-                aShooter = self.cw.findChild(qtw.QWidget, "mWidget")
-                # what is the current mode i.e. video mode (1) or stilll mode  (0)
-                mode = aShooter.ui.captureTab.currentIndex()
-                # is the preview currently displaying
-                isPreview = aShooter.ui.previewVisible.isChecked()
-                if mode == 1 and isPreview == True:
-                    aShooter.setCaptureMode(mode)
-                if mode == 1 and isPreview == False:
-                    width = self.camvals["vidres"][0]/aShooter.resDivider
-                    height = self.camvals["vidres"][1]/aShooter.resDivider
-                    width = math.floor(width)
-                    height = math.floor(height)
-                    # resize the frame
-                    aShooter.ui.imgContainer.resize(width, height)
-                    aShooter.setCaptureMode(mode)
-                # reset the zoomTab settings
-                self.zt.initControls()
-                self.zt.zTblModel.dirty = False
-                #self.zt.zTblModel._data = []
-                self.zt.zTblModel.removeRows(0, self.zt.zTblModel.rowCount(None), None)
+        # if camera is currently recording then you can't change the resolution
+        if self.camera.recording==True:
+            self.camRecording()
+        else:
+            # are there unsaved changes on the zoom page?
+            returnValue = None
+            if self.zt.zTblModel.dirty == True:
+                msgBox = qtw.QMessageBox()
+                msgBox.move(100,400)
+                msgBox.setIcon(qtw.QMessageBox.Information)
+                msgBox.setText("You have unsaved changes on the Zoom Tab. Click OK to lose these, otherwise Cancel, then go to the Zooming Tool page and save")
+                msgBox.setWindowTitle("Zooming Tool unsaved changes!")
+                msgBox.setStandardButtons(qtw.QMessageBox.Ok | qtw.QMessageBox.Cancel)
+                # what came back from message box?
+                returnValue = msgBox.exec()
+                # if appropriate then do it
+            if returnValue == qtw.QMessageBox.Ok or self.zt.zTblModel.dirty == False:
+                if self.comboItemsAdded == True:
+                    # set new camvals value
+                    self.camvals["vidres"] = self.resAsTuple[int] 
+                    # get the shooter object
+                    aShooter = self.cw.findChild(qtw.QWidget, "mWidget")
+                    # what is the current mode i.e. video mode (1) or stilll mode  (0)
+                    mode = aShooter.ui.captureTab.currentIndex()
+                    # is the preview currently displaying
+                    isPreview = aShooter.ui.previewVisible.isChecked()
+                    if mode == 1 and isPreview == True:
+                        aShooter.setCaptureMode(mode)
+                    if mode == 1 and isPreview == False:
+                        width = self.camvals["vidres"][0]/aShooter.resDivider
+                        height = self.camvals["vidres"][1]/aShooter.resDivider
+                        width = math.floor(width)
+                        height = math.floor(height)
+                        # resize the frame
+                        aShooter.ui.imgContainer.resize(width, height)
+                        aShooter.setCaptureMode(mode)
+                    # reset the zoomTab settings
+                    self.zt.initControls()
+                    self.zt.zTblModel.dirty = False
+                    #self.zt.zTblModel._data = []
+                    self.zt.zTblModel.removeRows(0, self.zt.zTblModel.rowCount(None), None)
     def setStillRes(self,int):
         """ slot triggered by the imgres combo box. updates the camvals dictionary with the new
         still image resolution, and if still is the current setting of the captureTab Tab Widget runs the 
         setupStillCapture method. (Note this method is also triggered on change of the 
         captureTab widget current index). """
+        if self.camera.recording==True:
+            self.camRecording()
+        else:
+            if self.comboItemsAdded == True:
+                self.camvals["imgres"] = self.resAsTuple[int]   
+                aShooter = self.cw.findChild(qtw.QWidget, "mWidget")
+                # what is the current mode i.e. video or still tab (or more tabs yet to be defined)
+                mode = aShooter.ui.captureTab.currentIndex()
+                isPreview = aShooter.ui.previewVisible.isChecked()
+                # if still view is the current mode and preview is displaying
+                if mode == 0 and isPreview == True:
+                    #print("condition met ")
+                    aShooter.setCaptureMode(mode)
+                if mode == 0 and isPreview == False:
+                    #just redraw the frame with the new resolution
+                    #print("reDivider: ", type(self.camvals["vidres"][0]/aShooter.resDivider))
+                    width = self.camvals["imgres"][0]/aShooter.resDivider
+                    height = self.camvals["imgres"][1]/aShooter.resDivider
+                    #width = math.floor(width)
+                    #height = math.floor(height)
+                    #(height)
+                    #print (width, height)
+                    # resize the frame
+                    aShooter.ui.imgContainer.resize(width, height)
+                    aShooter.setCaptureMode(mode)
 
-        if self.comboItemsAdded == True:
-            self.camvals["imgres"] = self.resAsTuple[int]   
-            aShooter = self.cw.findChild(qtw.QWidget, "mWidget")
-            # what is the current mode i.e. video or still tab (or more tabs yet to be defined)
-            mode = aShooter.ui.captureTab.currentIndex()
-            isPreview = aShooter.ui.previewVisible.isChecked()
-            # if still view is the current mode and preview is displaying
-            if mode == 0 and isPreview == True:
-                #print("condition met ")
-                aShooter.setCaptureMode(mode)
-            if mode == 0 and isPreview == False:
-                #just redraw the frame with the new resolution
-                #print("reDivider: ", type(self.camvals["vidres"][0]/aShooter.resDivider))
-                width = self.camvals["imgres"][0]/aShooter.resDivider
-                height = self.camvals["imgres"][1]/aShooter.resDivider
-                #width = math.floor(width)
-                #height = math.floor(height)
-                #(height)
-                #print (width, height)
-                # resize the frame
-                aShooter.ui.imgContainer.resize(width, height)
-                aShooter.setCaptureMode(mode)
+    def camRecording(self):
+        print("in cam recording")
+        msgBox = qtw.QMessageBox()
+        msgBox.move(100,400)
+
+        msgBox.setIcon(qtw.QMessageBox.Information)
+        msgBox.setText("You cannot change the resolution while the camera is recording")
+        msgBox.setWindowTitle("Camera is recording!")
+        msgBox.setStandardButtons(qtw.QMessageBox.Ok)
+        returnValue = msgBox.exec()
 
     def addItemsToCombos(self): 
         self.ui.vidres.addItems(self.resAsString) 

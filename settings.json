@@ -26,9 +26,9 @@
         1.0,
         1.0
     ],
-    "defaultFilePath": "/home/pi/Documents",
-    "defaultPhotoPath": "/home/pi/Pictures",
-    "defaultVideoPath": "/home/pi/Videos",
+    "defaultFilePath": "/media/pi/MACBANK/Documents",
+    "defaultPhotoPath": "/media/pi/MACBANK/Pictures",
+    "defaultVideoPath": "/media/pi/MACBANK/Videos",
     "digital_gain": 0,
     "drc_strength": "high",
     "exposure_compensation": 8,
@@ -42,7 +42,7 @@
     "image_effect": "none",
     "image_effect_params": null,
     "iso": 0,
-    "zoomSpeed": 49,
+    "zoomSpeed": 52,
     "meter_mode": "backlit",
     "mux": "true",
     "overlays": [],
@@ -81,13 +81,13 @@
         1.0
     ],
     "stillFileRoot": "img_",
-    "vidFileRoot": "cutaway",
+    "vidFileRoot": "klklklk",
     "stillFormat": "jpeg",
     "videoFormat": "h264",
     "fileCounter": 173,
     "vidres": [
-        1920,
-        1080
+        1400,
+        1050
     ],
     "imgres": [
         1600,
