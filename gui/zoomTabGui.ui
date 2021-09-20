@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>531</width>
-    <height>653</height>
+    <width>1006</width>
+    <height>885</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -241,6 +241,7 @@
     <signal>yChanged(int)</signal>
     <signal>posChanged(int,int)</signal>
     <signal>doubleClicked()</signal>
+    <signal>scrolled(int)</signal>
     <slot>movePreviewX(int)</slot>
     <slot>movePreviewPos(list)</slot>
    </slots>
@@ -287,9 +288,9 @@
   </connection>
   <connection>
    <sender>adjustZoomXYPos</sender>
-   <signal>posChanged(int,int)</signal>
+   <signal>scrolled(int)</signal>
    <receiver>Form</receiver>
-   <slot>setZoomWithButton(int,int)</slot>
+   <slot>doScrollZoom(int)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>202</x>
@@ -429,6 +430,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>adjustZoomXYPos</sender>
+   <signal>posChanged(int,int)</signal>
+   <receiver>Form</receiver>
+   <slot>setZoomWithButton(int,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>14</x>
+     <y>13</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>596</x>
+     <y>171</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>doSetStart()</slot>
@@ -445,7 +462,7 @@
   <slot>deleteSelectedRow()</slot>
   <slot>playSelectedRows()</slot>
   <slot>doNextZoom()</slot>
-  <slot>slot2()</slot>
+  <slot>doScrollZoom(int)</slot>
   <slot>showThisZoomStart(QModelIndex)</slot>
   <slot>doRestartZoom()</slot>
   <slot>isCurrentZoomSelRecordable(QModelIndex)</slot>

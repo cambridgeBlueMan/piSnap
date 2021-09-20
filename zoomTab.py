@@ -116,9 +116,23 @@ class ZoomTab(QtWidgets.QWidget):
         operates is 1/8 of full size
 
         """
+        print("in set zoom with button")
         self.setXZoom(x*8)
         y = self.mapXToY(y)
         self.setYZoom(y*8)
+
+    def doScrollZoom(self,val):
+
+        print("in doScrollZoom!")
+        gearing = 10
+        if val > 1:
+            val = self.ui.getZoom.value() + 1*gearing
+            self.ui.getZoom.setValue(val)
+            self.setZoom(val)
+        else:
+            val = self.ui.getZoom.value() - 1*gearing
+            self.ui.getZoom.setValue(val)
+            self.setZoom(val)
         
     def setXZoom(self, val):
         self.zoom[0] = val/self.sensorWidth

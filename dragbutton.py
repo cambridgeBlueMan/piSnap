@@ -7,6 +7,7 @@ class DragButton(qtw.QPushButton):
     posChanged = qtc.pyqtSignal(int,int)
     # signals for doubleclick
     doubleClicked = qtc.pyqtSignal()
+    scrolled = qtc.pyqtSignal(int)
     clicked = qtc.pyqtSignal()
     global newPos
     def __init__(self, win, bWidth = 22, bHeight = 22):
@@ -50,8 +51,8 @@ class DragButton(qtw.QPushButton):
 
     def wheelEvent(self, event):
         print(event.angleDelta().y())
-        if event.angleDelta().y() > 1:
-            pass
+        self.scrolled.emit(event.angleDelta().y())
+            
     # mousePressEevent
     def mousePressEvent(self, event):
         self.__mousePressPos = None
