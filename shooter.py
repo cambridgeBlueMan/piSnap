@@ -218,13 +218,21 @@ class Shooter(qtw.QWidget):
             returnValue = msgBox.exec()
 
     
-    def updateTerminalWidgetWhileRecording(self, camera, str):
+    def updateTerminalWidgetWhileRecording(self, camera, subproc):
         while camera.recording == True: #camera.recording:
             try:
                 self.window().terminalWidget.moveCursor(qtg.QTextCursor.End)
                 self.window().terminalWidget.insertPlainText(" .")
-                """ if subproc.poll() == 2:
-                    raise subprocess.SubprocessError(2,self.cmd) """
+                if self.camvals["audioActive"] == True and  subproc.poll() == None:
+                    self.window().terminalWidget.moveCursor(qtg.QTextCursor.End)
+                    self.window().terminalWidget.insertPlainText(" _")
+                else:
+                    print(subproc.poll())
+                    self.window().terminalWidget.moveCursor(qtg.QTextCursor.End)
+                    self.window().terminalWidget.insertPlainText("errorsville!")
+
+
+                    #raise subprocess.SubprocessError(2,self.cmd)
             except subprocess.SubprocessError: # as err:
                     psFunctions.printT(self.window(), "Audio failed!!" )
                     #psFunctions.printT(self.window(), str(err) , True)
@@ -336,7 +344,7 @@ class Shooter(qtw.QWidget):
             try:
                 self.camera.start_recording(filename, bitrate=int(self.camvals["videoBitRate"]))
                 sleep(1)
-                _thread.start_new_thread (self.updateTerminalWidgetWhileRecording, (self.camera, str))
+                _thread.start_new_thread (self.updateTerminalWidgetWhileRecording, (self.camera, self.proc))
 
                 if self.recordZoom == True:
                     self.window().zoomTab.playSelectedRows()

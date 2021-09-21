@@ -3,7 +3,7 @@
     "annotate_background": null,
     "annotate_frame_num": false,
     "annotate_text_size": 32,
-    "audioActive": "false",
+    "audioActive": "true",
     "audioBitRate": "24",
     "audioFileFormat": "wav",
     "audioSampleRate": "48000",
@@ -81,7 +81,7 @@
         1.0
     ],
     "stillFileRoot": "img_",
-    "vidFileRoot": "klklklk",
+    "vidFileRoot": "tuesday",
     "stillFormat": "jpeg",
     "videoFormat": "h264",
     "fileCounter": 173,

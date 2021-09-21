@@ -106,8 +106,10 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
             with open('settings.json', 'w') as f:
                 f.write(x)
                 f.close() 
+                self.camera.close()
                 event.accept()
         if reply == qtw.QMessageBox.No:
+            self.camera.close()
             event.accept()
         if reply == qtw.QMessageBox.Cancel:
             # TODO if preview was on then turn it back on
