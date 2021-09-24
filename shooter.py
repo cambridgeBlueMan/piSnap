@@ -30,42 +30,40 @@ class Shooter(qtw.QWidget):
         self.ui = Ui_Form()
         # use its setupUi method to draw the widgets into the main window
         self.ui.setupUi(self)
-        #reference qline edit widget
+
+        # defines a validator for the two file root text edit widgets
         rx = qtc.QRegExp("^[-_A-Za-z0-9]{1,25}")
         self.ui.stillFileRoot.setValidator(qtg.QRegExpValidator(rx))
         self.ui.videoFileRoot.setValidator(qtg.QRegExpValidator(rx))
-        # now show the main window with its widgets (only necessary if this class is stand alone)
-        #self.show()
+        
 
-        # camvals = None means we are running the code as stand alone
-        # so we need to load the settings file
-        if camvals == None:
-            with open("settings.json", "r") as settings:
-                self.camvals = json.load(settings)
-        else:
-            self.camvals = camvals
-
-        # camera passed in on initialisation
+        # camera and camvals passed in on initialisation
+        self.camvals = camvals
         self.camera = camera
+        
+        # set the still file root and the video file root from camvals
+        # set isCounter option box from stored camvals 
         self.initStuffFromCamvals()
 
         # do we want to record zoom?
         self.recordZoom = False
 
+        # resdivider dives actual reslotion to provide preview size
+        # QUERY come back to this, does it need some refinement?
+
         self.resDivider = 2
         
         # next line assumes that video is the chosen default in the designer class
+        """ it might be possible to add the widgets to the tabWidget somewhere here. This  way we could 
+        have video and still inseperate tabs """
         self.setupVideoCapture()   
 
         self.setupVLCPlayer()
 
+
     def initStuffFromCamvals(self):
-        # do we want to capture audio?
         """
-        if self.camvals["audioActive"] == "false":
-            self.getAudio = False
-        else: 
-            self.getAudio = True
+        
         """
         self.ui.stillFileRoot.setText(self.camvals["stillFileRoot"])
         self.ui.videoFileRoot.setText(self.camvals["vidFileRoot"])
@@ -76,6 +74,7 @@ class Shooter(qtw.QWidget):
 
         
     def setupVLCPlayer(self):
+        """ creat an initial vlc instance, and then create a media player from the instance"""
         
         self.timer = qtc.QTimer(self)
         self.timer.setInterval(100)
@@ -141,12 +140,10 @@ class Shooter(qtw.QWidget):
                 imgAsBytes.close()
             if ret == 0: #appendButton:
                 # if save with an appended timestamp then save the buffer/stream with the timestamp
-                formattedDateTime = str(datetime.datetime.now()).replace(':','_')
-                formattedDateTime = formattedDateTime.replace(' ', '-')
-                formattedDateTime = formattedDateTime.replace('.', '_')
+                formattedDateTime = self.getFormattedDateTime()
 
                 filename = self.camvals["defaultPhotoPath"]+  "/" + self.imgRoot \
-                + formattedDateTime + '.'+ self.camvals["stillFormat"]  
+                + formattedDateTime + '.' + self.camvals["stillFormat"]  
             # turn preview back on
             self.showPreview(True)
         if save == True:
@@ -156,6 +153,14 @@ class Shooter(qtw.QWidget):
             if self.camvals["fileNameFormat"] == "counter":
                 self.incFileCounter()
             self.showImage(filename)
+
+    def getFormattedDateTime(self):
+        """ returns  a unique and usable filename from a date and time"""
+        formattedDateTime = str(datetime.datetime.now()).replace(':','_')
+        formattedDateTime = formattedDateTime.replace(' ', '-')
+        formattedDateTime = formattedDateTime.replace('.', '_')
+        return formattedDateTime
+
     
     def showImage(self, filename):
         """ displays a graphic file in the picture window """
@@ -218,23 +223,24 @@ class Shooter(qtw.QWidget):
             returnValue = msgBox.exec()
 
     
-    def updateTerminalWidgetWhileRecording(self, camera, subproc):
+    def updateTerminalWidgetWhileRecording(self, camera, something):
         while camera.recording == True: #camera.recording:
-            try:
+            #try:
+            #print("hello!")
+            self.window().terminalWidget.moveCursor(qtg.QTextCursor.End)
+            self.window().terminalWidget.insertPlainText(" .")
+            """ if self.camvals["audioActive"] == True and  subproc.poll() == None:
                 self.window().terminalWidget.moveCursor(qtg.QTextCursor.End)
-                self.window().terminalWidget.insertPlainText(" .")
-                if self.camvals["audioActive"] == True and  subproc.poll() == None:
-                    self.window().terminalWidget.moveCursor(qtg.QTextCursor.End)
-                    self.window().terminalWidget.insertPlainText(" _")
-                else:
-                    print(subproc.poll())
-                    self.window().terminalWidget.moveCursor(qtg.QTextCursor.End)
-                    self.window().terminalWidget.insertPlainText("errorsville!")
+                self.window().terminalWidget.insertPlainText(" _")
+            else:
+                print(subproc.poll())
+                self.window().terminalWidget.moveCursor(qtg.QTextCursor.End)
+                self.window().terminalWidget.insertPlainText("errorsville!")"""
 
 
                     #raise subprocess.SubprocessError(2,self.cmd)
-            except subprocess.SubprocessError: # as err:
-                    psFunctions.printT(self.window(), "Audio failed!!" )
+            #except subprocess.SubprocessError: # as err:
+            #        psFunctions.printT(self.window(), "Audio failed!!" )
                     #psFunctions.printT(self.window(), str(err) , True)
             sleep(1)
 
@@ -260,7 +266,7 @@ class Shooter(qtw.QWidget):
             if self.camvals["fileNameFormat"] == "counter":
                 self.vidRoot = self.camvals["vidFileRoot"] + '{:04d}'.format(self.camvals["fileCounter"]) + '.'
             else:
-                self.vidRoot = self.camvals["vidFileRoot"] + str(datetime.datetime.now()).replace(':','_') + '.'
+                self.vidRoot = self.camvals["vidFileRoot"] + self.getFormattedDateTime() + '.'
             # make vid file name
             # TODO must ensure that default video path does exist and if not 
             # deal with accordingly
@@ -316,26 +322,19 @@ class Shooter(qtw.QWidget):
             # capture the image to a BytesIO
             imgAsBytes = BytesIO()
             self.camera.capture(imgAsBytes, self.camvals["stillFormat"], use_video_port=True)
-
             # now start recording, maybe?
             # open the file as a PIL image
             image = Image.open(imgAsBytes)  
-
             # set max size 
             MAX_SIZE = (138,138)
-            
             # thumbnail function modifies the image object in place
             image.thumbnail(MAX_SIZE)
-            
             # saving it for diagnostics
             #image.save("thumb.jpeg", "JPEG")
-
             # myImg is a ImageQt object which is subclassed from Qimage
             myImg = ImageQt.ImageQt(image)
-
             # convert to pixmap
             myPixMap = qtg.QPixmap.fromImage(myImg)
-
             # save the pixmap for diagnostics
             myPixMap.save("tempicon.jpeg")
 
@@ -344,7 +343,7 @@ class Shooter(qtw.QWidget):
             try:
                 self.camera.start_recording(filename, bitrate=int(self.camvals["videoBitRate"]))
                 sleep(1)
-                _thread.start_new_thread (self.updateTerminalWidgetWhileRecording, (self.camera, self.proc))
+                _thread.start_new_thread (self.updateTerminalWidgetWhileRecording, (self.camera, None))
 
                 if self.recordZoom == True:
                     self.window().zoomTab.playSelectedRows()
@@ -407,9 +406,11 @@ class Shooter(qtw.QWidget):
                 self.proc = subprocess.Popen(["ffmpeg", "-loglevel",  "warning",  "-stats",  "-i",  vidInput,  "-i",  audioInput,  "-c:v",  "copy","-c:a",  "aac",  output])
             else:
                 output = self.camvals["defaultVideoPath"] + "/"  + self.vidRoot + self.camvals["videoFormat"]  
+            # tell the media player what window to use as canvass for the video
+            sleep(5)
             self.mediaplayer.set_xwindow(int(self.ui.imgContainer.winId()))
-
             #self.mediaplayer.set_position(0)
+
             self.addToMediaList(output, self.myIcon)
             ################################################
             #filename = self.camvals["defaultVideoPath"] + "/" + self.vidRoot + self.camvals["videoFormat"]
@@ -417,8 +418,11 @@ class Shooter(qtw.QWidget):
             #self.myItem = qtw.QListWidgetItem(self.myIcon, filename, self.ui.thumbnails)   
             #############################
             self.media = self.vlcObj.media_new(output)
+            print("exist?")
             self.mediaplayer.set_media(self.media)
+            print("exist?")
             self.mediaplayer.play()
+            print("exist?")
             self.mediaplayer.set_pause(1)
      
     def doPlayVid(self, test): 
