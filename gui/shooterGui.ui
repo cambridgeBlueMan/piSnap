@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>851</width>
+    <width>786</width>
     <height>889</height>
    </rect>
   </property>
@@ -296,34 +296,6 @@
     </widget>
    </widget>
   </widget>
-  <widget class="QListWidget" name="thumbnails">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>10</y>
-     <width>140</width>
-     <height>601</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-     <italic>true</italic>
-    </font>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>128</width>
-     <height>96</height>
-    </size>
-   </property>
-   <property name="viewMode">
-    <enum>QListView::IconMode</enum>
-   </property>
-   <property name="wordWrap">
-    <bool>true</bool>
-   </property>
-  </widget>
   <widget class="QSlider" name="resizePreview">
    <property name="geometry">
     <rect>
@@ -421,27 +393,33 @@
     <string>overlay</string>
    </property>
   </widget>
+  <widget class="QListView" name="thumbnailAsMv">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>10</y>
+     <width>140</width>
+     <height>600</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+     <italic>true</italic>
+    </font>
+   </property>
+   <property name="flow">
+    <enum>QListView::TopToBottom</enum>
+   </property>
+   <property name="viewMode">
+    <enum>QListView::IconMode</enum>
+   </property>
+  </widget>
  </widget>
  <resources>
   <include location="../resource.qrc"/>
  </resources>
  <connections>
-  <connection>
-   <sender>thumbnails</sender>
-   <signal>itemDoubleClicked(QListWidgetItem*)</signal>
-   <receiver>Form</receiver>
-   <slot>doThumbnailClicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>516</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>10</x>
-     <y>522</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>stopVid</sender>
    <signal>clicked()</signal>
@@ -565,7 +543,7 @@
      <y>739</y>
     </hint>
     <hint type="destinationlabel">
-     <x>971</x>
+     <x>785</x>
      <y>627</y>
     </hint>
    </hints>
@@ -693,7 +671,7 @@
      <y>707</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1021</x>
+     <x>785</x>
      <y>466</y>
     </hint>
    </hints>
@@ -709,7 +687,7 @@
      <y>779</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1029</x>
+     <x>785</x>
      <y>535</y>
     </hint>
    </hints>
@@ -741,7 +719,7 @@
      <y>637</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1104</x>
+     <x>785</x>
      <y>742</y>
     </hint>
    </hints>
@@ -759,6 +737,22 @@
     <hint type="destinationlabel">
      <x>8</x>
      <y>574</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>thumbnailAsMv</sender>
+   <signal>doubleClicked(QModelIndex)</signal>
+   <receiver>Form</receiver>
+   <slot>thumbnailDoubleClicked(QModelIndex)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>99</x>
+     <y>602</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>785</x>
+     <y>813</y>
     </hint>
    </hints>
   </connection>
@@ -793,5 +787,6 @@
   <slot>doClearImgContainer()</slot>
   <slot>doShowOverlay(bool)</slot>
   <slot>endRecWithZoom(bool)</slot>
+  <slot>thumbnailDoubleClicked(QModelIndex)</slot>
  </slots>
 </ui>

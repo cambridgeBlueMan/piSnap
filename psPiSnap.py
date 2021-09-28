@@ -112,7 +112,7 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
             self.camera.close()
             event.accept()
         if reply == qtw.QMessageBox.Cancel:
-            # TODO if preview was on then turn it back on
+            # TODO if preview was on then turn it back on 
             event.ignore()
         
       
@@ -407,7 +407,7 @@ if __name__=='__main__':
     palette.setColor(qtg.QPalette.Base, qtg.QColor(25, 25, 25)) # background of text entry widgets, combo box drop down lists and toolbar handles
     palette.setColor(qtg.QPalette.AlternateBase, qtg.QColor(53, 53, 53)) # alternate base used for stripes
     palette.setColor(qtg.QPalette.ToolTipBase, qtc.Qt.white) # is in inactive group
-    palette.setColor(qtg.QPalette.ToolTipText, qtc.Qt.white) # is in inactive group
+    palette.setColor(qtg.QPalette.ToolTipText, qtc.Qt.black) # is in inactive group
     palette.setColor(qtg.QPalette.Text, qtc.Qt.white) # text color for widgets wit base background
     #palette.setColor(qtg.QPalette.      #PlaceholderText, qtc.Qt.white) # text color for widgets wit base background
 

@@ -4,6 +4,7 @@ from PyQt5 import QtWidgets as qtw
 #from qtw import QMessageBox, QPushButton
 from picamera import PiCamera
 from psSettings import PSSettings
+from thumbnailsmodel import ThumbnailsModel
 from gui.shooterGui import Ui_Form
 from io import BytesIO
 from time import sleep
@@ -13,6 +14,7 @@ import os.path
 import datetime
 import subprocess # allows access to command line
 import signal
+import copy
 from os import path
 from PIL import Image
 from PIL import ImageQt
@@ -40,6 +42,10 @@ class Shooter(qtw.QWidget):
         # camera and camvals passed in on initialisation
         self.camvals = camvals
         self.camera = camera
+
+        # model initialisation stuff
+        self.model = ThumbnailsModel()
+        self.ui.thumbnailAsMv.setModel(self.model)
         
         # set the still file root and the video file root from camvals
         # set isCounter option box from stored camvals 
@@ -187,9 +193,12 @@ class Shooter(qtw.QWidget):
         myPixMap.save("tempicon.jpeg")
 
         myIcon = qtg.QIcon("tempicon.jpeg") #qtg.QImage(thumb) 
+        myImg = qtg.QImage("tempicon.jpeg")
 
-        # add the icon and the filename to the thumbnail list
-        myItem = qtw.QListWidgetItem(myIcon, filename, self.ui.thumbnails)        
+        # add the icon and the filename to the thumbnail list  
+        #
+        self.addToMediaView(filename, myImg, self.camvals["imgres"])
+
         
     def incFileCounter(self):
         """ increments the file counter and saves it to the settings file """
@@ -318,27 +327,16 @@ class Shooter(qtw.QWidget):
                 sleep(1)
             # capture a still, with use_video_port set to True
             # and dimensions according to the video dimension
+
             # this is for thumbnail purposes
             # capture the image to a BytesIO
             imgAsBytes = BytesIO()
-            self.camera.capture(imgAsBytes, self.camvals["stillFormat"], use_video_port=True)
-            # now start recording, maybe?
-            # open the file as a PIL image
-            image = Image.open(imgAsBytes)  
-            # set max size 
-            MAX_SIZE = (138,138)
-            # thumbnail function modifies the image object in place
-            image.thumbnail(MAX_SIZE)
-            # saving it for diagnostics
-            #image.save("thumb.jpeg", "JPEG")
-            # myImg is a ImageQt object which is subclassed from Qimage
-            myImg = ImageQt.ImageQt(image)
-            # convert to pixmap
-            myPixMap = qtg.QPixmap.fromImage(myImg)
-            # save the pixmap for diagnostics
-            myPixMap.save("tempicon.jpeg")
-
-            self.myIcon = qtg.QIcon("tempicon.jpeg") #qtg.QImage(thumb) 
+            rs = [138, int(138*self.camvals["vidres"][1]/self.camvals["vidres"][0])]
+            self.camera.capture('tempIcon.jpeg', self.camvals["stillFormat"], resize = rs, use_video_port=True)
+            # next line used by original list widget
+            self.myIcon = qtg.QIcon("tempIcon.jpeg") #qtg.QImage(thumb) 
+            # this line used by the list view 
+            self.myImg = qtg.QImage("tempIcon.jpeg")
             # start recording
             try:
                 self.camera.start_recording(filename, bitrate=int(self.camvals["videoBitRate"]))
@@ -383,8 +381,8 @@ class Shooter(qtw.QWidget):
         if self.camera.recording:
             self.camera.stop_recording() # picamera method
             # if necessary increment the fileCounter
-            if self.camvals["fileNameFormat"] == "counter":
-                self.camvals["fileCounter"] == self.camvals["fileCounter"] + 1
+            #if self.camvals["fileNameFormat"] == "counter":
+            #    self.camvals["fileCounter"] = self.camvals["fileCounter"] + 1
             psFunctions.printT(self.window(),"Camera stopped recording!", True)
             #if self.getAudio == True:
             if self.camvals["audioActive"]=="true":
@@ -410,20 +408,24 @@ class Shooter(qtw.QWidget):
             sleep(5)
             self.mediaplayer.set_xwindow(int(self.ui.imgContainer.winId()))
             #self.mediaplayer.set_position(0)
-
-            self.addToMediaList(output, self.myIcon)
+            # used by list view widget
+            self.addToMediaView(output, self.myImg, self.camvals["vidres"])
             ################################################
             #filename = self.camvals["defaultVideoPath"] + "/" + self.vidRoot + self.camvals["videoFormat"]
             #self.myIcon = qtg.QIcon(filename) 
             #self.myItem = qtw.QListWidgetItem(self.myIcon, filename, self.ui.thumbnails)   
             #############################
-            self.media = self.vlcObj.media_new(output)
-            print("exist?")
-            self.mediaplayer.set_media(self.media)
-            print("exist?")
-            self.mediaplayer.play()
-            print("exist?")
-            self.mediaplayer.set_pause(1)
+            #self.media = self.vlcObj.media_new(output)
+            #print("exist?")
+            #self.mediaplayer.set_media(self.media)
+            #print("exist?")
+            #self.mediaplayer.play()
+            #print("exist?")
+            #self.mediaplayer.set_pause(1)
+            # if necessary increment the file counter
+            if self.camvals["fileNameFormat"] == "counter":
+                self.camvals["fileCounter"] = self.camvals["fileCounter"] + 1
+            
      
     def doPlayVid(self, test): 
         self.mediaplayer.set_xwindow(int(self.ui.imgContainer.winId()))
@@ -477,15 +479,18 @@ class Shooter(qtw.QWidget):
             #if not self.is_paused:
             #    self.stop()
 
-    def doThumbnailClicked(self,vid):
-        # get the dimensions of the media
-        # TODO when thumbnail is clicked it should turn the preview off, if necessary
+    def thumbnailDoubleClicked(self, ix):
+        print("in doSelectedVideo: ", ix)
+        print(self.model.getVideoData(ix))
+        data = self.model.getVideoData(ix)
+        # [thumb, path, res]
+
         # get rid of the preview
-        self.showPreview(False)
+        self.showPreview(False)        
         # get the filename from the list item
-        vid = vid.text()
+        vid = data[1].path()
         # now get the dimensions of the file
-        dimensions = self.getVideoDimensions(vid)
+        dimensions = data[2]
         # resize the imgContainer
         self.ui.imgContainer.resize(dimensions[0]/self.resDivider, dimensions[1]/self.resDivider)
         
@@ -505,12 +510,13 @@ class Shooter(qtw.QWidget):
             self.media = self.vlcObj.media_new(vid)
             self.mediaplayer.set_media(self.media)
             self.mediaplayer.play()    
+
             self.timer.start()
+        
+        # on the other hand if its a still?
 
-        # on the other hand if its a still
 
-
-
+    
     def getVideoDimensions(self, vid):
         """ 
         This method uses a combination of subprocess and ffprobe to get the dimensions of the 
@@ -533,8 +539,11 @@ class Shooter(qtw.QWidget):
 
     def updateStillRoot(self):
         self.camvals["stillFileRoot"] = self.ui.stillFileRoot.text()
+        # BUG will accept a blank file name 
+
 
     def updateVideoRoot(self):
+        # BUG will accept a blank file name 
         #self.ui.videoFileRoot.text()
         self.camvals["vidFileRoot"] = self.ui.videoFileRoot.text()
 
@@ -645,10 +654,19 @@ class Shooter(qtw.QWidget):
         pass 
     
     def addToMediaList(self, output, icon):
-        
+        # add to the old listWidget
         self.myIcon = qtg.QIcon(icon) 
         self.myItem = qtw.QListWidgetItem(self.myIcon, output,
-        self.ui.thumbnails)        
+        self.ui.thumbnails) 
+
+    def addToMediaView(self, output, img, res):
+
+        # now add to the new listView model type widget as well
+        fp = qtc.QUrl.fromLocalFile(output)
+        #tp = qtc.QUrl.fromLocalFile('tempicon.jpeg')
+
+        self.model._data.append([img, fp, res])   
+        self.model.layoutChanged.emit()   
         # then add it to the widget
 
 

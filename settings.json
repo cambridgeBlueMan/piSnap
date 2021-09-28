@@ -3,7 +3,7 @@
     "annotate_background": null,
     "annotate_frame_num": false,
     "annotate_text_size": 32,
-    "audioActive": "true",
+    "audioActive": "false",
     "audioBitRate": "24",
     "audioFileFormat": "wav",
     "audioSampleRate": "48000",
@@ -36,7 +36,7 @@
     "exposure_speed": 0,
     "flash_mode": "redeye",
     "framerate": 25,
-    "fileNameFormat": "time",
+    "fileNameFormat": "counter",
     "hflip": false,
     "image_denoise": true,
     "image_effect": "none",
@@ -84,7 +84,7 @@
     "vidFileRoot": "tuesday",
     "stillFormat": "jpeg",
     "videoFormat": "h264",
-    "fileCounter": 173,
+    "fileCounter": 187,
     "vidres": [
         1920,
         1080
