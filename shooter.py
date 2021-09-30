@@ -236,21 +236,16 @@ class Shooter(qtw.QWidget):
         while camera.recording == True: #camera.recording:
             #try:
             #print("hello!")
-            self.window().terminalWidget.moveCursor(qtg.QTextCursor.End)
-            self.window().terminalWidget.insertPlainText(" .")
-            """ if self.camvals["audioActive"] == True and  subproc.poll() == None:
-                self.window().terminalWidget.moveCursor(qtg.QTextCursor.End)
-                self.window().terminalWidget.insertPlainText(" _")
+            if self.camvals["audioActive"] == "true":
+                if self.proc.poll() == None:
+                    myStr = "._"
+                else:
+                    myStr = "There was a problem with the audio!"
             else:
-                print(subproc.poll())
-                self.window().terminalWidget.moveCursor(qtg.QTextCursor.End)
-                self.window().terminalWidget.insertPlainText("errorsville!")"""
+                myStr = "."
 
-
-                    #raise subprocess.SubprocessError(2,self.cmd)
-            #except subprocess.SubprocessError: # as err:
-            #        psFunctions.printT(self.window(), "Audio failed!!" )
-                    #psFunctions.printT(self.window(), str(err) , True)
+            self.window().terminalWidget.moveCursor(qtg.QTextCursor.End)
+            self.window().terminalWidget.insertPlainText(myStr)
             sleep(1)
 
     def checkAudio(self,subproc):
@@ -401,11 +396,19 @@ class Shooter(qtw.QWidget):
                 vidInput = self.camvals["defaultVideoPath"] + "/" +self.vidRoot + self.camvals["videoFormat"]
                 audioInput = self.camvals["defaultVideoPath"] + "/" +self.vidRoot + self.camvals["audioFileFormat"]
                 output = self.camvals["defaultVideoPath"] + "/" +self.vidRoot + "mp4"
-                self.proc = subprocess.Popen(["ffmpeg", "-loglevel",  "warning",  "-stats",  "-i",  vidInput,  "-i",  audioInput,  "-c:v",  "copy","-c:a",  "aac",  output])
+                # BUG if file already exists then you get interactive response from ffmpeg asking if you want to overwrite. This can happen currently, if you are 
+                # using counter method fro file naming and thge app falls over without incrementing the counter
+                self.proc = subprocess.run(["ffmpeg", "-loglevel",  "warning",  "-stats",  "-i",  vidInput,  "-i",  audioInput,  "-c:v",  "copy","-c:a",  "aac",  output])
+                # report on muxing
+                if self.proc.returncode == 0:
+                    psFunctions.printT(self.window(),"muxing completed succesfully!", True)
+                else:
+                    psFunctions.printT(self.window(),"there was a problem muxing audio and video files!", True)
             else:
                 output = self.camvals["defaultVideoPath"] + "/"  + self.vidRoot + self.camvals["videoFormat"]  
             # tell the media player what window to use as canvass for the video
-            sleep(5)
+            # TODO we need tests to establish when the muxing is complete
+            # and possible a progress bar while it takes place
             self.mediaplayer.set_xwindow(int(self.ui.imgContainer.winId()))
             #self.mediaplayer.set_position(0)
             # used by list view widget

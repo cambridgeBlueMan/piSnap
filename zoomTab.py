@@ -124,7 +124,7 @@ class ZoomTab(QtWidgets.QWidget):
     def doScrollZoom(self,val):
 
         print("in doScrollZoom!")
-        gearing = 10
+        gearing = 40
         if val > 1:
             val = self.ui.getZoom.value() + 1*gearing
             self.ui.getZoom.setValue(val)
