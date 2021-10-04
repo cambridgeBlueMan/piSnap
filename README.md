@@ -1,6 +1,3 @@
-Test changes from aq local machine
+This is readme for assets
 
-This ireadme for mutlizoom
-
-multizoom feature will allow the running of a series of zooms ins equence, and the recording of such a sequence prior to running
-
+this branchs is to develop a version suitable for making marketing material for the app
