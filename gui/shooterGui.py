@@ -159,7 +159,7 @@ class Ui_Form(object):
         self.resizePreview.valueChanged['int'].connect(Form.setPreviewSize)
         self.vidPosSlider.sliderMoved['int'].connect(Form.setPosition)
         self.snapSave.clicked.connect(Form.snapAndSave)
-        self.previewVisible.clicked.connect(Form.showPreview)
+        self.previewVisible.clicked.connect(Form.prePreview)
         self.playVid.clicked.connect(Form.doPlayVid)
         self.pauseVid.clicked.connect(Form.doPauseVid)
         self.isDatestamp.clicked.connect(Form.setFileNameFormat)

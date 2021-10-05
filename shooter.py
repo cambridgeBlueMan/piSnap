@@ -262,7 +262,30 @@ class Shooter(qtw.QWidget):
         # BUG 
         # do nothing if recording is in progress
         if self.camera.recording:
-            psFunctions.printT(self.window(),"Camera currently recording!", True)
+            #####################################################################
+            #if camera is recording and preview is on then we need to start showing messages for recording
+            #################################################################################################
+            if self.camvals["doingAssets"] == "yes":
+                sleep(0.5)    
+                psFunctions.printT(self.window(),"Camera recording!", True)
+                _thread.start_new_thread (self.updateTerminalWidgetWhileRecording, (self.camera, None))
+                if self.recordZoom == True:
+                    # set the zoom to its initial position
+                    # code below works, but falls over if no data selected
+                    startIx = self.window().zoomTab.ui.zTblView.selectedIndexes()[0]
+                    myData = self.window().zoomTab.zTblModel.getZoomData(startIx.row(), True)
+                    myData = myData[:]
+                    self.camera.zoom = (
+                        myData[0],
+                        myData[1],
+                        myData[2],
+                        myData[2]    
+                    )
+                    self.window().zoomTab.playSelectedRows()
+
+            #################################################################################################
+            #psFunctions.printT(self.window(),"Camera currently recording!", True)
+            #####################################################################
         else:
             # various settings for video
             self.camera.framerate = self.camvals["framerate"]
@@ -319,7 +342,9 @@ class Shooter(qtw.QWidget):
                     myData[2]    
                 )
                 # now restablish exposure setting
-                sleep(1)
+                ####################################################################
+                #sleep(1)
+                ####################################################################
             # capture a still, with use_video_port set to True
             # and dimensions according to the video dimension
 
@@ -328,19 +353,25 @@ class Shooter(qtw.QWidget):
             imgAsBytes = BytesIO()
             rs = [138, int(138*self.camvals["vidres"][1]/self.camvals["vidres"][0])]
             self.camera.capture('tempIcon.jpeg', self.camvals["stillFormat"], resize = rs, use_video_port=True)
-            # next line used by original list widget
-            self.myIcon = qtg.QIcon("tempIcon.jpeg") #qtg.QImage(thumb) 
             # this line used by the list view 
             self.myImg = qtg.QImage("tempIcon.jpeg")
             # start recording
             try:
                 self.camera.start_recording(filename, bitrate=int(self.camvals["videoBitRate"]))
                 sleep(1)
-                _thread.start_new_thread (self.updateTerminalWidgetWhileRecording, (self.camera, None))
+                #################################################################################################
+                if self.camvals["doingAssets"] != "yes":
+                    _thread.start_new_thread (self.updateTerminalWidgetWhileRecording, (self.camera, None))
+                #################################################################################################
 
                 if self.recordZoom == True:
                     self.window().zoomTab.playSelectedRows()
-                psFunctions.printT(self.window(),"Camera currently recording!")
+
+                #################################################################################################
+                if self.camvals["doingAssets"] != "yes":
+                    psFunctions.printT(self.window(),"Camera currently recording!")
+                #################################################################################################
+
             except picamera.exc.PiCameraError as err:
                 psFunctions.printT(self.window(),"There was a problem with the camera!", True)
                 psFunctions.printT(self.window(),str(err))
@@ -594,7 +625,15 @@ class Shooter(qtw.QWidget):
             self.showPreview(x)
             self.ui.previewButton.move(0,0)
             
+    def prePreview(self,state):
+        """ this is only called from the gui, never from the internals"""
+        ############################################################################
+        print("Doing assets!")
+        self.doRecordVid("fromPreview")
+        self.showPreview(state)
+        ##############################################################################
 
+    
     def showPreview(self, state):
 
         """ on/off toggle for preview. 'state' is boolean on/off value. Typically passed from one of 
@@ -615,6 +654,11 @@ class Shooter(qtw.QWidget):
             """ TODO divider is currently hard coded at 2. This should be settable via a preview
             size gui control
             """
+            ###############################################################################
+            # if doingAssets is true we need to start recording here, but without 
+            # any of the message reporting
+            #  
+            ###############################################################################
             # calculate x and y position for preview
             x = self.ui.imgContainer.geometry().x() + self.geometry().x() + self.window().geometry().x()
             y = self.ui.imgContainer.geometry().y() + self.geometry().y() + self.window().geometry().y() + 27

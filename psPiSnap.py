@@ -429,7 +429,6 @@ if __name__=='__main__':
     # disabled has no meaning within the context of a label?
     # app.setStyleSheet("QLabel: disabled { color: #808080; }")
 
-
     window = PiSnap()
     
     sys.exit(app.exec_())

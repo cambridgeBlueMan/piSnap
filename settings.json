@@ -26,6 +26,7 @@
         1.0,
         1.0
     ],
+    "doingAssets": "yes",
     "defaultFilePath": "/media/pi/MACBANK/Documents",
     "defaultPhotoPath": "/media/pi/MACBANK/Pictures",
     "defaultVideoPath": "/media/pi/MACBANK/Videos",
@@ -84,7 +85,7 @@
     "vidFileRoot": "tuesday",
     "stillFormat": "jpeg",
     "videoFormat": "h264",
-    "fileCounter": 203,
+    "fileCounter": 213,
     "vidres": [
         1920,
         1080

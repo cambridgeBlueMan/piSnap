@@ -504,7 +504,7 @@
    <sender>previewVisible</sender>
    <signal>clicked()</signal>
    <receiver>Form</receiver>
-   <slot>showPreview()</slot>
+   <slot>prePreview()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>267</x>
@@ -766,7 +766,7 @@
   <slot>setPreviewSize(int)</slot>
   <slot>snapAndHold()</slot>
   <slot>snapAndSave()</slot>
-  <slot>showPreview()</slot>
+  <slot>prePreview()</slot>
   <slot>doPlayVid()</slot>
   <slot>doPauseVid()</slot>
   <slot>setFileNameFormat()</slot>
