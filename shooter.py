@@ -629,7 +629,8 @@ class Shooter(qtw.QWidget):
         """ this is only called from the gui, never from the internals"""
         ############################################################################
         print("Doing assets!")
-        self.doRecordVid("fromPreview")
+        if self.camvals["doingAssets"] == "yes":
+            self.doRecordVid("fromPreview")
         self.showPreview(state)
         ##############################################################################
 

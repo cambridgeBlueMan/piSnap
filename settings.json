@@ -3,7 +3,7 @@
     "annotate_background": null,
     "annotate_frame_num": false,
     "annotate_text_size": 32,
-    "audioActive": "false",
+    "audioActive": "true",
     "audioBitRate": "24",
     "audioFileFormat": "wav",
     "audioSampleRate": "48000",
@@ -29,7 +29,7 @@
     "doingAssets": "yes",
     "defaultFilePath": "/media/pi/MACBANK/Documents",
     "defaultPhotoPath": "/media/pi/MACBANK/Pictures",
-    "defaultVideoPath": "/media/pi/MACBANK/Videos",
+    "defaultVideoPath": "/media/pi/MACBANK/assets",
     "digital_gain": 0,
     "drc_strength": "high",
     "exposure_compensation": 8,
@@ -85,7 +85,7 @@
     "vidFileRoot": "tuesday",
     "stillFormat": "jpeg",
     "videoFormat": "h264",
-    "fileCounter": 213,
+    "fileCounter": 218,
     "vidres": [
         1920,
         1080
