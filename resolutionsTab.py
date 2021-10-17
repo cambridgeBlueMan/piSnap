@@ -64,15 +64,20 @@ class ResolutionsTab(qtw.QWidget):
     def setVideoRes(self,int):
         """ slot triggered by the vidres combo box. updates the camvals dictionary with the new
         video resolution, and if video is the current setting of the captureTab Tab Widget runs the 
-        setupVideoCapture method. (Note this method is also triggered on change of the 
-        captureTab widget current index). Finally this method resets the zoom page """
+        setupVideoCapture method. Note this method is also triggered:
+        
+        1. on change of the captureTab widget current index
+        2. when a zoom is being loaded from file
+        
+        Finally this method resets the zoom page """
         # if camera is currently recording then you can't change the resolution
         if self.camera.recording==True:
             self.camRecording()
         else:
-            # are there unsaved changes on the zoom page?
             returnValue = None
+            # are there unsaved changes on the zoom page?
             if self.zt.zTblModel.dirty == True:
+                # if so then point this out to the user
                 msgBox = qtw.QMessageBox()
                 msgBox.move(100,400)
                 msgBox.setIcon(qtw.QMessageBox.Information)
@@ -175,6 +180,6 @@ if __name__ == "__main__":
         # pass the main window and camera objects to a settings object
     # settings = CameraSettings(camera)
     # instantiate an object containing the logic code
-    resolutionsTab = resolutionsTab(None)
+    resolutionsTab = ResolutionsTab(None)
     resolutionsTab.show()
     sys.exit(app.exec_())

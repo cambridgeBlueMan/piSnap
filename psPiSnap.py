@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # import necessary modules
 import sys
+import os
 import json
 import pickle
 from PyQt5 import QtWidgets as qtw 
@@ -89,6 +90,12 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         :param event:
         :return:
         """
+        
+        if self.camera.previewing:
+            previewOn = True
+        else:
+            previewOn = False
+
         self.camera.stop_preview()
         
         """ quit = qtw.QDialog(self)
@@ -113,6 +120,8 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
             event.accept()
         if reply == qtw.QMessageBox.Cancel:
             # TODO if preview was on then turn it back on 
+            if previewOn == True:
+                self.camera.start_preview()
             event.ignore()
         
       
@@ -226,42 +235,101 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.prefs.show()
         print(self.prefs)
 
-    def doOpenZoom(self):
-        # TODO falls over if no file selected
-        # you need to check the data cell by cell for validity, I suspect       
-        
+    def doOpenZoom(self):  
+        # check state of preview and store in previewOn, so if necessary preview can be turned on later 
+        if self.camera.previewing:
+            previewOn = True
+            self.camera.stop_preview()
+        else:
+            previewOn = False
+        # get file name
         filename = qtw.QFileDialog.getOpenFileName(
             self,
             "Open a zoom file...",
             qtc.QDir.homePath(),
             "Zoom Files (*.zoom)"
         )
-        if filename:
-            with open(filename[0], "rt") as fp:   # Unpickling
-                zoomData = json.load(fp)
-                print(zoomData)
+        # filename is a two element tuple!
+        if os.path.isfile(filename[0]):
+            #print (filename, len(filename))
+            with open(filename[0], "rt") as fp:   
+                #print("filename",filename)
+                try:
+                    zoomData = json.load(fp)
+                    print(zoomData)
+                    if zoomData["version"] == 1:
+                        if zoomData["resolution"] != self.camvals["vidres"]:
+                            msgBox = qtw.QMessageBox()
+                            msgBox.setWindowTitle("Resolution will change!")
+                            msgBox.setIcon(qtw.QMessageBox.Warning)
+                            msgBox.setText("This will overwrite existing zoom and change current resolution")
+                            msgBox.setStandardButtons(qtw.QMessageBox.Ok | qtw.QMessageBox.Cancel)
+                            #msgBox.move(100,400)
+                            but = msgBox.exec_()
+
+                            if but == qtw.QMessageBox.Ok: 
+                                self.camvals["vidres"]=zoomData["resolution"]
+                                # since it is ok to overwrite we can set dirty false
+                                self.resolutionsTab.zt.zTblModel.dirty = False
+                                self.resolutionsTab.applySettings()
+                                #print("length of zoomData: ", len(zoomData))
+                                for item in zoomData["data"]:
+                                # insert rows (position, numrows, parent, data)
+                                    self.zoomTab.zTblModel.insertRows(self.zoomTab.zTblModel.rowCount(None),1, self.zoomTab.zTblModel.parent(), item)
+                                self.zoomTab.zTblModel.dirty = True
+                    else:
+                        msgBox = qtw.QMessageBox()
+                        msgBox.width = 200
+                        msgBox.height = 100
+                        msgBox.setWindowTitle("load failed, invalid data")
+                        msgBox.setIcon(qtw.QMessageBox.Warning)
+                        msgBox.setText("invalid zoom file!")
+                        msgBox.setStandardButtons(qtw.QMessageBox.Ok)
+                        #msgBox.move(100,400)
+                        val = msgBox.exec()
+                except json.JSONDecodeError:
+                    msgBox = qtw.QMessageBox()
+                    msgBox.width = 200
+                    msgBox.height = 100
+                    msgBox.setWindowTitle("load failed, invalid file format")
+                    msgBox.setIcon(qtw.QMessageBox.Warning)
+                    msgBox.setText("invalid zoom file!")
+                    msgBox.setStandardButtons(qtw.QMessageBox.Ok)
+                    #msgBox.move(100,400)
+                    val = msgBox.exec()
+
+        # turn preview back on if necessary
+        if previewOn == True:
+            self.camera.start_preview()
 
             # TODO apply the current res got from the file to the app
             # possibly convert to json rather than pickle
-            self.camvals["vidres"]=zoomData[0]
-            self.resolutionsTab.applySettings()
-            print("length of zoomData: ", len(zoomData))
-            #self.zoomTab.model.insertRows(self.zoomTab.model.rowCount(None),len(zoomData), self.zoomTab.model.parent(), zoomData)
-            for item in zoomData[1]:
-                # insert rows (position, numrows, parent, data)
-                self.zoomTab.zTblModel.insertRows(self.zoomTab.zTblModel.rowCount(None),1, self.zoomTab.zTblModel.parent(), item)
-            self.zoomTab.zTblModel.dirty = True
+           
     def doSaveZoom(self):
+        # check state of preview and store in previewOn
+        if self.camera.previewing:
+            previewOn = True
+            self.camera.stop_preview()
+        else:
+            previewOn = False
         filename, _ = qtw.QFileDialog.getSaveFileName(
             self,
             "Select the file to save to…",
             qtc.QDir.homePath(),
             'Zoom files (*.zoom)'
         )
+        # turn preview back on if necessary
+        if previewOn == True:
+            self.camera.start_preview()
         if filename:
             try:
                 #res = json.dumps(self.camvals["vidres"])
-                data = json.dumps([self.camvals["vidres"], self.zoomTab.zTblModel._data])
+                data = json.dumps(
+                    {
+                        "version": 1,
+                        "resolution": self.camvals["vidres"],
+                        "data":  self.zoomTab.zTblModel._data
+                    })
                 with open(filename, 'w') as fp:
                     fp.write(data)
                     fp.close()  
