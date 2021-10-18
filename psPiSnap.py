@@ -182,7 +182,8 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
 
         #create actions for edit menu
         undoAction = qtw.QAction('&Undo',self)
-        prefsAction = qtw.QAction('Preferences', self)
+        prefsAction = qtw.QAction('&Preferences', self)
+        scanSoundInterfaceAction = qtw.QAction('&Scan sound interfaces', self)
 
         #create menubar
         menuBar = self.menuBar()
@@ -201,6 +202,8 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         editMenu= menuBar.addMenu('&Edit')
         editMenu.addAction(prefsAction)
         editMenu.addAction(undoAction)
+        editMenu.addAction(scanSoundInterfaceAction)
+        scanSoundInterfaceAction.triggered.connect(self.scanSoundInterface)
         undoAction.setShortcut('Ctrl+Z')
         prefsAction.triggered.connect(self.openPreferencesDialogue)
 
@@ -235,6 +238,20 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.prefs.show()
         print(self.prefs)
 
+    def scanSoundInterface(self):
+        soundDevs = self.qualityTab.getSoundDevs(self)
+        if len(soundDevs) > 0:
+            state = True
+        else:
+            state=False
+
+        self.qualityTab.ui.audioBitRate.setEnabled(state)
+        self.qualityTab.ui.audioSampleRate.setEnabled(state)
+        self.qualityTab.ui.audioFileFormat.setEnabled(state)
+        self.qualityTab.ui.soundDevices.setEnabled(state)
+        self.qualityTab.ui.audioActive.setEnabled(state)
+        self.qualityTab.ui.mux.setEnabled(state)
+       
     def doOpenZoom(self):  
         # check state of preview and store in previewOn, so if necessary preview can be turned on later 
         if self.camera.previewing:

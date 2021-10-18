@@ -299,6 +299,10 @@ class Shooter(qtw.QWidget):
             # deal with accordingly
             filename = self.camvals["defaultVideoPath"] + "/" + self.vidRoot + self.camvals["videoFormat"]
             #if self.getAudio == True:
+            # TODO check that the audio interface is present if audioActive is true
+            #soundDevs = self.window().qualityTab.getSoundDevs()
+            #if len(soundDevs) == 0:
+            #    psFunctions.printT(self.window(), "There is no active sound device!" )
             if self.camvals["audioActive"]=="true":
                 # TODO add try statement to ensure safe return from subprocess
                 # first build the command to run
