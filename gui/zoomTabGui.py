@@ -54,6 +54,7 @@ class Ui_Form(object):
         self.zTblView.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.zTblView.setCornerButtonEnabled(False)
         self.zTblView.setObjectName("zTblView")
+        self.zTblView.verticalHeader().setVisible(False)
         self.delRow = QtWidgets.QPushButton(Form)
         self.delRow.setGeometry(QtCore.QRect(450, 440, 51, 21))
         self.delRow.setObjectName("delRow")

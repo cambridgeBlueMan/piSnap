@@ -162,6 +162,9 @@
    <property name="cornerButtonEnabled">
     <bool>false</bool>
    </property>
+   <attribute name="verticalHeaderVisible">
+    <bool>false</bool>
+   </attribute>
   </widget>
   <widget class="QPushButton" name="delRow">
    <property name="geometry">

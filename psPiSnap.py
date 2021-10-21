@@ -4,6 +4,7 @@ import sys
 import os
 import json
 import pickle
+import threading
 from PyQt5 import QtWidgets as qtw 
 from PyQt5 import QtGui as qtg 
 from PyQt5 import QtCore as qtc 
@@ -18,6 +19,7 @@ from adjustmentsTab import Adjustments
 from zoomTab import ZoomTab
 from keyboardslider import KeyboardSlider
 from psSettings import PSSettings
+from time import sleep
 #from picamera import PiCamera
 import picamera
 from quit import Quit
@@ -54,6 +56,24 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         self.initUI()
         # if focus changes then deal with the preview appropriately
         app.focusChanged.connect(self.on_focusChanged)
+        # check for soundcard on a thread
+        # recorder = QAudioRecorder()
+        # recorder.availableAudioInputsChanged.connect(self.audioInputsChanged)
+
+        x = threading.Thread(target=self.scanSoundInterface, daemon=True)
+        x.start()
+    
+    """ def audioInputsChanged(self):
+        print("audio inputs changed")
+
+    def snoopForSoundInterface(self):
+        while True:
+            devs = QAudioRecorder().audioInputs()
+            print ("hello")
+            print(devs)
+            #print(dev)
+            sleep(5)
+ """
 
     def on_focusChanged(self, then, now):
         """
@@ -239,19 +259,23 @@ class PiSnap(qtw.QMainWindow): #declare a method to initialize empty window
         print(self.prefs)
 
     def scanSoundInterface(self):
-        soundDevs = self.qualityTab.getSoundDevs(self)
-        if len(soundDevs) > 0:
-            state = True
-        else:
-            state=False
+        while True:
+            soundDevs = self.qualityTab.getSoundDevs(self)
+            if len(soundDevs) > 0:
+                state = True
+            else:
+                state=False
+                self.qualityTab.ui.audioActive.setChecked(False)
 
-        self.qualityTab.ui.audioBitRate.setEnabled(state)
-        self.qualityTab.ui.audioSampleRate.setEnabled(state)
-        self.qualityTab.ui.audioFileFormat.setEnabled(state)
-        self.qualityTab.ui.soundDevices.setEnabled(state)
-        self.qualityTab.ui.audioActive.setEnabled(state)
-        self.qualityTab.ui.mux.setEnabled(state)
-       
+            self.qualityTab.ui.audioBitRate.setEnabled(state)
+            self.qualityTab.ui.audioSampleRate.setEnabled(state)
+            self.qualityTab.ui.audioFileFormat.setEnabled(state)
+            self.qualityTab.ui.soundDevices.setEnabled(state)
+            self.qualityTab.ui.audioActive.setEnabled(state)
+            self.qualityTab.ui.mux.setEnabled(state)
+            print('in sound devs')
+            sleep(5)
+        
     def doOpenZoom(self):  
         # check state of preview and store in previewOn, so if necessary preview can be turned on later 
         if self.camera.previewing:
