@@ -36,6 +36,10 @@ class ZoomTab(QtWidgets.QWidget):
         # TODO dont think the next two lines are used?
         #self.pixelWidth  = 1/self.sensorWidth
         #self.pixelHeight = 1/self.sensorHeight
+        # TODO start of removing zoom slider
+        ####################################
+        # self.getZoom is now a variable
+        ####################################
 
         #set to bullet point
         self.ui.adjustZoomXYPos.setText(u"\u26AB")
@@ -72,9 +76,16 @@ class ZoomTab(QtWidgets.QWidget):
         max is set in designer at 3470, I'm not sure where that figure comes from?
         but i am sure  that it is a good figue !!!!! 
         represents 0.855 of sensor size. This may have to do with modes?
+
+        getZoom will no longer be a slider, but a var. It is ajusted by the mouse scroll
+        wheel.
+
         
         """
 
+        # so int ehfollowing lines 
+        # self.getZoom = self.camvals["vidres"][0]
+        # this line now irrelevant
         self.ui.getZoom.setMinimum(self.camvals["vidres"][0] )
 
         # QUERY should the following be set to max rather than min?
@@ -122,8 +133,11 @@ class ZoomTab(QtWidgets.QWidget):
         self.setYZoom(y*8)
 
     def doScrollZoom(self,val):
-
+        # here it will be getZoom the var, but the extremities
+        # of the vars range need to be constrained in this method
+        # as opposed to the slider
         print("in doScrollZoom!")
+        # max value == 3470
         gearing = 40
         if val > 1:
             val = self.ui.getZoom.value() + 1*gearing
