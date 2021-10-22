@@ -32,7 +32,7 @@ class ZoomTab(QtWidgets.QWidget):
         ########################
         self.previewDivider = 3
         # 
-        self.ui.getZoom.setInvertedAppearance(True)
+        #self.ui.getZoom.setInvertedAppearance(True)
         # TODO dont think the next two lines are used?
         #self.pixelWidth  = 1/self.sensorWidth
         #self.pixelHeight = 1/self.sensorHeight
@@ -86,10 +86,10 @@ class ZoomTab(QtWidgets.QWidget):
         # so int ehfollowing lines 
         # self.getZoom = self.camvals["vidres"][0]
         # this line now irrelevant
-        self.ui.getZoom.setMinimum(self.camvals["vidres"][0] )
+        self.getZoom = self.camvals["vidres"][0] 
 
         # QUERY should the following be set to max rather than min?
-        self.ui.getZoom.setValue(self.camvals["vidres"][0] )
+        #self.ui.getZoom.setValue(self.camvals["vidres"][0] )
 
         # dragbutton size varies according to the current res
         # QUERY if previous QUERY is set to max then drag button size should be set accordingly
@@ -140,13 +140,19 @@ class ZoomTab(QtWidgets.QWidget):
         # max value == 3470
         gearing = 40
         if val > 1:
-            val = self.ui.getZoom.value() + 1*gearing
-            self.ui.getZoom.setValue(val)
-            self.setZoom(val)
+            self.getZoom = self.getZoom + 1*gearing
+            if self.getZoom > 3470:
+                self.getZoom = 3470
+                self.setZoom(3470)
+            else:
+                self.setZoom(self.getZoom)
         else:
-            val = self.ui.getZoom.value() - 1*gearing
-            self.ui.getZoom.setValue(val)
-            self.setZoom(val)
+            self.getZoom = self.getZoom - 1*gearing
+            if self.getZoom < self.camvals["vidres"][0]:
+                self.getZoom = self.camvals["vidres"][0]
+                self.setZoom(self.camvals["vidres"][0])
+            else:
+                self.setZoom(self.getZoom)
         
     def setXZoom(self, val):
         self.zoom[0] = val/self.sensorWidth

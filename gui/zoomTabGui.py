@@ -12,14 +12,6 @@ class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(1006, 885)
-        self.getZoom = KeyboardSlider(Form)
-        self.getZoom.setGeometry(QtCore.QRect(0, 410, 501, 21))
-        self.getZoom.setMinimum(1920)
-        self.getZoom.setMaximum(3470)
-        self.getZoom.setSingleStep(1)
-        self.getZoom.setProperty("value", 3470)
-        self.getZoom.setOrientation(QtCore.Qt.Horizontal)
-        self.getZoom.setObjectName("getZoom")
         self.start = QtWidgets.QPushButton(Form)
         self.start.setGeometry(QtCore.QRect(20, 430, 61, 20))
         self.start.setObjectName("start")
@@ -34,9 +26,6 @@ class Ui_Form(object):
         self.adjustZoomXYPos = DragButton(self.frame)
         self.adjustZoomXYPos.setGeometry(QtCore.QRect(0, 0, 22, 22))
         self.adjustZoomXYPos.setObjectName("adjustZoomXYPos")
-        self.label = QtWidgets.QLabel(Form)
-        self.label.setGeometry(QtCore.QRect(10, 390, 68, 22))
-        self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(Form)
         self.label_2.setGeometry(QtCore.QRect(90, 430, 81, 22))
         self.label_2.setObjectName("label_2")
@@ -73,7 +62,6 @@ class Ui_Form(object):
 
         self.retranslateUi(Form)
         self.start.clicked.connect(Form.doSetStart)
-        self.getZoom.valueChanged['int'].connect(Form.setZoom)
         self.adjustZoomXYPos.scrolled['int'].connect(Form.doScrollZoom)
         self.getSpeed.sliderMoved['int'].connect(Form.setSpeed)
         self.delRow.clicked.connect(Form.deleteSelectedRow)
@@ -92,7 +80,6 @@ class Ui_Form(object):
         self.start.setText(_translate("Form", "add"))
         self.label_3.setText(_translate("Form", "zoom"))
         self.adjustZoomXYPos.setText(_translate("Form", "b"))
-        self.label.setText(_translate("Form", "Set Zoom"))
         self.label_2.setText(_translate("Form", "Set Speed"))
         self.delRow.setText(_translate("Form", "del row"))
         self.playRows.setToolTip(_translate("Form", "play or abandon zoom"))
@@ -102,4 +89,3 @@ class Ui_Form(object):
         self.restartZoom.setText(_translate("Form", "*"))
 
 from dragbutton import DragButton
-from keyboardslider import KeyboardSlider
