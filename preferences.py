@@ -26,16 +26,25 @@ class Preferences(QtWidgets.QDialog):
             self.ui.defaultFilePath.setText(self.camvals["defaultFilePath"]) 
         else:
             self.ui.defaultFilePath.setText("/home/pi/Documents")
+            self.camvals["defaultFilePath"] = "/home/pi/Documents"
 
         if os.path.isdir(self.camvals["defaultPhotoPath"]) == True:
             self.ui.defaultPhotoPath.setText(self.camvals["defaultPhotoPath"]) 
+
         else:
-            self.ui.defaultPhotoPath.setText("/home/pi/Photos")
+            self.ui.defaultPhotoPath.setText("/home/pi/Pictures")
+            self.camvals["defaultPhotoPath"] = "/home/pi/Pictures"
 
         if os.path.isdir(self.camvals["defaultVideoPath"]) == True:
             self.ui.defaultVideoPath.setText(self.camvals["defaultVideoPath"]) 
         else:
-            self.ui.defaultViedoPath.setText("/home/pi/Videos")
+            self.ui.defaultVideoPath.setText("/home/pi/Videos")
+            self.camvals["defaultVideoPath"] = "/home/pi/Videos"
+        x = json.dumps(self.camvals, indent=4)
+        # write camvals
+        with open('settings.json', 'w') as f:
+            f.write(x)
+            f.close() 
 
     def setDefaultFilePath(self):        
         directory = QtWidgets.QFileDialog.getExistingDirectory(self, "Set Default File Directory", self.ui.defaultFilePath.text())

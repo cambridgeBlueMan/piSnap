@@ -110,7 +110,7 @@ class ZoomTab(QtWidgets.QWidget):
         self.camera.resolution = (self.camvals["vidres"][0] , self.camvals["vidres"][1] )
 
     def convertZoomSpeedToLoopSize(self, zoomSpeed):
-        return 100 + (8*zoomSpeed)
+        return 100 + (8*(100-zoomSpeed))
 
     def mapXToY(self, value):
         # TODO describe this method
@@ -152,7 +152,7 @@ class ZoomTab(QtWidgets.QWidget):
                 self.getZoom = self.camvals["vidres"][0]
                 self.setZoom(self.camvals["vidres"][0])
             else:
-                self.setZoom(self.getZoom)
+                self.setZoom(self.getZoom) 
         
     def setXZoom(self, val):
         self.zoom[0] = val/self.sensorWidth
